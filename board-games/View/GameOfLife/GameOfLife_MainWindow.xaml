@@ -1,0 +1,951 @@
+﻿<Page x:Class="BoardGames.GameOfLife_MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignHeight="571.16" d:DesignWidth="1054.983">
+
+    <Viewbox xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Name="MAIN_GAME_Canvas_xaml">
+        <Canvas x:Name="GameCanvas" UseLayoutRounding="False" Width="1920.0" Height="1080.0">
+            <Canvas.Clip>
+                <RectangleGeometry Rect="0.0,0.0,1920.0,1080.0"/>
+            </Canvas.Clip>
+            <Canvas UseLayoutRounding="False">
+                <Canvas.Clip>
+                    <RectangleGeometry Rect="0.0,0.0,1920.0,1080.0"/>
+                </Canvas.Clip>
+                <Path Fill="#fff5f5f5">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1919.5 0.5 H 0.5 V 1079.5 H 1919.5 V 0.5 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Stroke="#ff000000" StrokeThickness="1.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1919.5 0.5 H 0.5 V 1079.5 H 1919.5 V 0.5 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile2" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1651.6 488.289 L 1643.51 425.585 L 1598.76 468.636 L 1581.15 532.744 C 1572.73 569.013 1571.12 586.997 1571.63 616.505 L 1598.76 561.756 L 1637.32 532.744 L 1651.6 488.289 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile7" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1702.05 844.86 L 1723 800.405 C 1721.19 768.769 1740.14 761.098 1742.04 686.696 L 1706.34 740.509 L 1685.39 675.933 C 1685.39 726.471 1663.5 787.771 1667.31 805.553 L 1702.05 844.86 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile1" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1598.29 562.692 L 1571.15 617.441 V 669.382 C 1572.24 684.978 1577 717.21 1582.1 728.343 C 1588.38 722.748 1595.15 720.184 1609.23 716.644 C 1624.44 716.021 1633.2 717.153 1643.51 722.259 L 1631.13 688.1 L 1627.8 663.299 V 617.441 L 1598.29 562.692 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="StartTile" Fill="#ff833e91" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1669.16 770.925 C 1669.16 800.901 1645.71 825.142 1616.85 825.142 C 1587.99 825.142 1564.54 800.901 1564.54 770.925 C 1564.54 740.948 1587.99 716.708 1616.85 716.708 C 1645.71 716.708 1669.16 740.948 1669.16 770.925 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile80" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1649.22 816.783 L 1621.61 770.925 L 1592.1 820.995 C 1593.85 860.057 1602.99 872.387 1621.61 891.654 L 1704.43 937.98 L 1678.25 881.359 L 1740.14 899.609 L 1682.54 867.321 C 1662.23 853.942 1651.94 845.483 1649.22 816.783 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile79" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1740.14 900.076 L 1678.73 881.359 L 1703.96 937.98 C 1737.91 961.41 1735.84 971.217 1686.35 981.498 L 1740.14 987.113 L 1700.15 1035.78 C 1751.75 1020.75 1770.29 1007.05 1788.21 974.947 C 1788.59 939.817 1773.32 924.885 1740.14 900.076 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile78" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1700.63 1036.25 L 1742.04 986.645 L 1677.3 982.434 C 1625.57 981.817 1599.61 975.613 1554.49 962.312 L 1597.81 1011.91 L 1531.64 1015.66 C 1596.02 1033.47 1632.98 1038.25 1700.63 1036.25 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile77" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1553.54 962.78 L 1596.86 1011.45 L 1533.07 1016.13 C 1460.57 993.997 1424.75 976.253 1377.42 926.281 L 1441.2 948.274 L 1423.12 889.781 C 1460.62 931.237 1486.95 949.372 1553.54 962.78 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile76" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1422.16 889.781 L 1441.2 948.274 L 1379.32 927.217 C 1349.73 869.493 1337.6 834.85 1327.44 767.181 L 1379.32 802.277 V 739.105 C 1400.74 797.597 1398.36 845.795 1422.16 889.781 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile74" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1292.21 687.632 L 1294.59 623.992 L 1242.23 661.427 C 1219.62 718.463 1214.99 750.299 1214.15 806.956 L 1242.23 752.675 L 1272.22 809.296 C 1270.73 766.526 1275.62 739.626 1292.21 687.632 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile73" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1270.79 810.232 L 1242.71 752.676 L 1214.15 807.425 C 1219.92 861.891 1209.81 887.874 1169.88 926.749 L 1227.95 898.673 L 1214.15 961.845 C 1257.89 916.912 1268.87 882.779 1270.79 810.232 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile72" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1212.72 963.248 L 1227.48 899.608 L 1168.93 927.217 C 1129.75 970.358 1105.79 987.224 1056.12 991.792 L 1119.9 1008.64 L 1070.4 1047.95 C 1117.13 1039.35 1146.15 1026.73 1212.72 963.248 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile71" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1057.07 992.261 L 1119.9 1008.64 L 1069.44 1047.95 C 1002.22 1047.52 966.347 1044.08 914.742 1016.13 L 978.051 1008.64 L 941.874 968.864 C 984.231 985.73 1008.24 994.423 1057.07 992.261 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile65" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 942.35 969.331 L 978.051 1008.64 L 914.742 1015.66 C 896.407 1009.02 869.412 998.066 852.385 974.479 L 800.501 928.153 C 795.474 914.115 799.974 917.467 792.885 906.627 L 845.245 938.915 L 842.865 877.147 C 863.35 942.258 903.769 957.928 942.35 969.331 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile69" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 675.311 988.049 L 720.056 942.191 L 656.747 934.704 C 611.292 951.573 586.537 964.053 543.934 992.729 L 608.67 985.709 L 576.778 1039.99 C 617.324 1011.71 638.957 1000.11 675.311 988.049 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile68" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 576.302 1039.99 L 608.67 985.71 L 544.886 993.197 C 502.008 1002.45 481.006 1002 454.921 980.095 L 487.289 1033.44 L 423.504 1028.29 C 443.83 1042.5 454.902 1046.7 474.437 1051.69 C 535.917 1057.59 552.745 1052.38 576.302 1039.99 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile66" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 415.412 887.91 L 383.044 942.191 L 358.768 884.167 C 360.753 835.495 365.749 809.278 379.712 763.906 L 402.084 817.251 C 403.349 838.488 407.791 849.146 415.412 868.257 V 887.91 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile64" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 842.389 876.212 L 845.245 937.98 L 792.884 905.692 C 779.428 878.78 758.44 869.011 687.211 868.257 L 751.472 847.199 L 696.731 810.232 L 756.232 820.995 C 799.675 824.894 822.957 846.023 842.389 876.212 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile63" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 697.207 811.168 L 750.52 846.732 L 687.687 866.853 C 646.077 863.68 623.244 866.771 584.394 890.718 L 619.619 838.777 L 556.786 842.052 C 598.849 813.703 631.476 809.34 697.207 811.168 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile62" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 583.918 892.122 L 619.142 838.776 L 556.786 842.988 C 543.324 852.023 531.966 870.062 515.849 867.789 C 499.185 862.409 489.017 861.073 474.913 850.475 L 509.661 903.352 L 444.448 898.673 L 500.141 922.07 C 544.108 927.834 559.48 916.666 583.918 892.122 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile61" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 473.485 849.071 L 509.185 902.884 L 444.925 898.205 C 420.12 876.666 406.987 863.638 401.608 818.187 L 437.784 769.989 C 429.032 786.236 441.729 806.699 473.485 849.071 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile59" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 430.644 607.614 L 418.744 669.85 L 374.476 623.524 C 354.885 567.767 351.923 536.311 360.672 479.866 L 378.284 543.038 L 418.744 492.033 C 407.73 549.231 412.867 572.589 430.644 607.614 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile58" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 417.316 492.501 L 379.712 541.635 L 361.148 480.334 C 363.634 462.01 366.39 451.624 371.62 433.073 C 392.578 390.414 421.029 395.475 480.149 419.034 L 419.696 435.88 L 470.153 474.251 C 450.269 466.256 437.735 460.366 424.456 460.681 C 418.996 473.612 417.554 479.824 417.316 492.501 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile57" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 471.581 474.251 L 420.172 436.816 L 479.673 418.566 C 504.322 425.765 522.441 413.225 556.31 384.874 L 545.362 446.175 L 593.438 420.438 C 567.219 461.014 528.607 482.721 471.581 474.251 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile55" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 471.105 318.895 L 508.709 371.304 L 443.973 367.561 C 403.988 345.568 361.624 278.652 369.24 233.262 L 391.136 295.966 L 425.885 243.557 C 425.991 268.538 433.911 284.534 471.105 318.895 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile54" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 426.36 242.621 L 392.088 294.562 L 369.716 233.73 C 379.32 201.272 388.226 186.082 407.796 162.135 L 475.389 123.296 L 442.545 179.449 L 507.281 171.962 L 463.965 193.955 C 441.233 202.575 434.936 216.694 426.36 242.621 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile53" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 476.341 123.296 L 443.496 179.449 L 507.757 171.494 C 544.052 149.492 569.602 142.227 621.046 134.995 L 557.738 123.296 L 604.862 79.7777 C 544.933 90.6132 517.172 100.382 476.341 123.296 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile52" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 605.814 80.7136 L 558.69 123.296 L 621.522 134.527 C 668.186 127.721 694.122 129.182 740.048 139.674 L 684.355 108.79 L 746.712 83.5212 C 724.016 79.0532 710.275 77.3822 684.355 75.5662 C 651.09 74.0189 634.234 75.6134 605.814 80.7136 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile51" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 746.236 83.9891 L 685.783 108.322 L 740.048 139.674 L 794.312 154.648 C 819.541 161.199 829.537 169.154 844.293 185.532 L 819.541 127.508 L 881.897 143.418 C 872.789 134.134 868.679 129.436 852.861 116.745 C 810.119 98.7843 787.266 91.3245 746.236 83.9891 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile50" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 881.897 143.418 L 820.017 127.508 L 844.293 184.596 C 869.535 210.232 882.455 224.873 900.938 251.98 L 933.782 207.057 L 956.154 271.165 C 961.365 254.439 963.606 244.54 938.066 204.25 C 916.839 179.753 904.848 166.112 881.897 143.418 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile47" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 729.1 284.267 L 758.612 228.115 L 696.732 237.941 L 673.883 256.659 L 661.031 310.004 C 654.865 339.96 648.559 350.726 631.995 358.67 L 691.019 337.613 L 671.503 401.72 C 697.544 378.381 710.895 360.346 724.34 287.075 L 729.1 284.267 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile44" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 656.747 601.531 L 663.887 539.295 L 609.146 571.115 C 581.693 594.517 561.546 602.467 523.465 613.229 L 583.918 622.12 L 550.122 664.235 C 602.229 643.65 630.785 632.671 656.747 601.531 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile43" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 442.335 632.415 C 429.55 647.551 432.016 653.556 434.719 664.703 L 496.123 686.228 L 489.935 679.209 L 550.388 664.703 L 583.708 621.652 L 523.256 613.697 C 492.39 621.954 475.112 627.763 442.335 632.415 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile42" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 447.781 717.58 L 435.404 663.767 L 494.905 686.228 C 512.387 703.503 523.817 715.679 539.65 727.875 C 550.344 733.939 555.241 733.203 567.258 730.214 L 523.465 759.227 L 580.586 784.495 C 560.206 791.216 548.652 794.823 506.805 774.669 L 447.781 717.58 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile41" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 572.018 727.874 L 523.465 759.226 L 580.586 784.495 L 625.807 769.989 C 660.941 760.903 678.277 759.18 703.395 764.373 L 654.367 727.874 L 713.868 708.221 C 667.169 704.04 637.465 706.496 572.018 727.874 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile40" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 713.392 707.753 L 653.891 726.471 L 704.823 764.374 L 732.908 769.053 C 765.533 781.81 782.966 786.133 810.973 782.624 C 843.185 773.749 852.626 763.322 864.285 741.445 L 810.973 775.604 L 814.781 712.901 C 809.443 724.375 805.69 730.183 781.936 726.471 L 713.392 707.753 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile37" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 781.46 561.288 L 783.841 499.988 C 780.559 493.806 779.898 491.79 781.46 491.565 C 803.533 494.213 812.361 498.025 827.633 505.135 L 789.077 457.873 L 852.861 455.066 C 824.027 441.27 804.998 435.617 758.136 434.944 C 735.72 435.98 725.362 440.109 714.82 460.213 C 710.566 483.772 715.049 497.224 731.48 521.513 L 781.46 561.288 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile36" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 829.061 506.071 L 788.6 458.341 L 850.481 455.066 C 880.144 467.412 894.473 477.182 913.79 502.328 C 931.471 526.695 937.177 538.943 947.077 560.195 L 947.586 561.288 L 893.321 522.449 V 584.685 C 880.972 549.861 877.516 529.216 829.061 506.071 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile35" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 946.158 559.884 L 894.274 521.513 V 583.281 L 906.174 610.89 C 916.39 642.321 919.581 659.884 912.362 690.907 L 946.158 643.177 L 967.102 698.394 C 976.596 646.877 974.523 616.915 946.158 559.884 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile38" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 854.289 596.851 L 783.364 498.584 L 780.984 561.756 L 731.48 521.513 L 802.881 621.184 L 854.289 658.619 V 596.851 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile34" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 967.578 700.266 L 947.11 642.242 L 910.458 692.779 C 906.174 707.753 893.076 734.224 870.473 795.258 L 919.978 759.695 V 820.527 L 935.21 786.835 C 948.834 750.951 955.956 731.927 967.578 700.266 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile33" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 919.502 820.995 V 759.695 L 870.473 794.79 L 854.289 831.289 C 862.145 875.725 869.979 887.654 886.658 898.673 C 904.363 913.038 922.522 913.019 960.438 907.564 L 908.554 871.532 L 963.77 850.007 C 946.203 852.864 936.45 854.047 919.502 854.218 C 911.727 846.193 911.087 839.327 919.502 820.995 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile31" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1064.68 789.175 C 1101.98 749.114 1115.36 733.452 1134.18 710.093 L 1123.23 764.842 L 1185.11 736.297 L 1166.55 758.759 C 1144.24 786.781 1130.02 802.904 1102.29 832.225 L 1039.93 846.731 L 1064.68 789.175 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile30" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1135.13 710.093 C 1147.83 702.355 1156.71 665.047 1156.55 617.441 L 1176.07 676.401 L 1214.15 622.588 L 1210.34 657.684 C 1204.79 700.101 1197.62 713.309 1184.64 736.297 L 1123.23 766.714 L 1135.13 710.093 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile29" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1157.5 598.255 C 1156.88 568.761 1148.76 553.868 1128.47 528.532 L 1184.16 553.801 L 1170.83 490.161 C 1187.44 508.166 1194.92 519.699 1204.15 543.506 C 1215.64 576.88 1216.07 593.948 1213.67 623.524 L 1177.02 674.997 L 1157.5 616.037 V 598.255 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile28" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1099.43 508.411 C 1063.66 507.469 1046.33 507.617 1017.56 508.411 L 1081.82 486.885 L 1027.56 452.258 H 1102.76 C 1133.48 460.592 1148.38 468.703 1169.88 490.629 L 1184.16 553.333 L 1126.56 526.192 C 1118.48 517.485 1112.03 513.948 1099.43 508.411 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile27" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1027.08 453.194 L 1080.87 485.95 L 1020.89 506.539 C 995.795 510.292 981.726 510.612 956.63 506.539 C 933.292 498.301 922.705 488.479 912.362 453.194 C 915.461 427.407 920.865 413.101 932.83 387.682 L 941.398 449.918 L 986.143 411.079 C 976.225 427.151 969.404 436.251 970.434 453.194 H 1027.08 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile25" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1053.74 285.671 L 996.615 315.151 L 1053.74 342.292 C 1069.01 345.434 1076.97 348.651 1090.39 356.33 L 1167.5 412.483 L 1123.23 360.542 L 1179.88 353.055 L 1123.23 310.472 C 1093.43 294.994 1078.48 290.123 1053.74 285.671 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile26" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 932.83 388.15 L 941.874 449.918 L 985.667 409.675 L 1013.75 359.606 C 1024.42 342.705 1033.53 339.787 1052.78 340.888 L 998.519 315.151 L 1052.78 285.203 C 1023.03 282.79 1006.29 286.321 976.147 315.151 L 932.83 388.15 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile24" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1181.3 353.055 L 1122.76 359.606 L 1167.98 412.483 L 1191.3 421.842 C 1234.51 421.561 1239.16 407.837 1242.23 379.727 C 1239.36 338.963 1231.45 317.99 1211.29 282.396 V 343.696 L 1161.31 304.389 L 1181.3 353.055 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile23" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1088.65 203.505 L 1088.01 203.314 L 1128.94 252.448 L 1065.16 256.191 C 1096.62 265.573 1112.25 271.379 1139.42 281.928 C 1153.05 290.536 1156.77 295.217 1160.36 303.453 L 1209.87 342.292 L 1212.25 281.928 C 1207.75 268.42 1201.9 260.484 1187.49 245.896 C 1152.83 222.549 1129.64 215.67 1088.65 203.505 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile22" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 985.191 218.756 C 961.297 198.963 959.952 183.612 976.622 149.501 L 989.475 211.737 L 1028.98 171.494 C 1024.86 179.406 1025.4 182.562 1032.32 185.532 L 1087.53 204.25 L 1128.47 252.916 L 1068.02 256.191 C 1035.93 248.922 1017.86 242.502 985.191 218.756 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile21" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1032.79 167.75 L 988.047 211.737 L 977.575 148.565 C 995.349 122.671 1009.16 110.855 1044.22 97.0916 C 1080.51 85.582 1098.63 84.8789 1129.9 86.329 L 1071.82 115.341 L 1129.9 142.95 C 1082.13 138.658 1062.04 145.742 1032.79 167.75 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile20" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1131.32 142.482 L 1072.3 115.341 L 1127.99 85.8609 C 1162.1 85.2308 1181.27 88.8636 1215.58 105.514 C 1245.06 121.777 1255.57 133.398 1270.79 155.584 L 1208.44 134.059 L 1229.86 194.891 C 1219.34 179.985 1212.34 169.672 1198.44 159.327 C 1177.57 143.633 1163.35 141.961 1131.32 142.482 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile19" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1230.81 195.359 L 1209.87 134.527 L 1270.32 154.648 C 1285.98 171.489 1292.1 184.49 1301.73 209.397 C 1306.06 237.442 1306.48 253.959 1307.45 283.332 L 1270.32 235.134 L 1251.28 294.094 C 1252.19 246.744 1250.74 222.139 1230.81 195.359 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile18" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1308.4 283.8 L 1270.79 233.73 L 1251.75 291.287 C 1256.56 340.124 1269.65 350.913 1296.97 363.817 C 1324.63 375.725 1338.99 379.937 1361.23 380.195 L 1312.21 342.76 L 1369.8 325.914 C 1342.65 322.792 1330.54 318.729 1312.21 309.068 C 1308.17 299.498 1306.26 294.092 1308.4 283.8 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile17" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1411.22 273.037 C 1417.88 287.543 1411.22 317.491 1372.18 324.978 L 1311.73 341.356 L 1360.76 380.195 C 1407.07 381.564 1424.9 371.052 1448.82 341.356 C 1473.05 307.349 1470.55 291.264 1470.24 261.806 L 1448.82 321.703 L 1411.22 273.037 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile15" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1411.69 150.905 V 210.333 L 1358.85 172.43 L 1346.48 142.95 C 1343.37 110.75 1353.81 101.039 1381.7 90.0723 C 1416 84.0024 1434.81 82.8557 1467.86 83.5212 L 1418.36 120.02 L 1478.33 138.738 C 1451.48 139.253 1436.42 139.549 1405.98 142.95 L 1411.69 150.905 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile16" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1411.69 149.501 C 1441.41 194.049 1456.18 218.889 1469.76 262.274 L 1459.05 292.223 L 1448.34 322.171 L 1411.69 271.165 C 1410.36 252.435 1392.57 223.912 1360.28 172.43 L 1411.69 209.865 V 149.501 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile14" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1467.86 83.5212 L 1418.36 120.021 L 1478.81 138.27 L 1518.32 142.95 C 1555.82 150.968 1570.88 159.567 1595.91 176.173 L 1554.02 127.04 L 1619.23 123.764 C 1559.68 91.9793 1527.3 82.1896 1467.86 83.5212 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile13" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1595.43 175.237 L 1554.97 127.976 L 1618.28 122.36 C 1668.4 160.152 1690.11 184.005 1723.95 228.583 L 1665.4 200.038 L 1674.92 258.063 C 1649.55 224.078 1633.51 205.548 1595.43 175.237 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile4" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1674.92 257.595 L 1665.4 200.038 L 1723.95 227.179 L 1768.7 281.928 H 1734.9 L 1754.42 335.273 L 1710.15 381.599 L 1726.81 321.235 L 1665.4 345.567 L 1710.15 298.773 L 1674.92 257.595 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#fff0e15a">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1710.15 380.195 C 1683.55 418.729 1669.54 441.364 1650.65 488.757 L 1643.51 426.989 L 1597.33 468.636 L 1616.85 421.842 C 1634.1 390.637 1644.93 374.008 1665.88 345.568 L 1726.81 320.299 L 1710.15 380.195 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile3" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1650.65 488.757 C 1669.54 441.364 1683.55 418.729 1710.15 380.195 L 1726.81 320.299 L 1665.88 345.568 C 1644.93 374.008 1634.1 390.637 1616.85 421.842 L 1597.33 468.636 L 1643.51 426.989 L 1650.65 488.757 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile12" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1755.84 335.273 L 1734.42 282.396 H 1770.12 C 1784.85 285.074 1810.62 298.399 1820.58 306.729 C 1837.37 331.866 1838.87 345.864 1842 370.836 L 1816.3 442.899 L 1805.35 379.259 L 1761.56 424.181 C 1770.12 400.316 1780.89 390.169 1782.98 359.138 C 1782.98 346.437 1777.15 341.187 1755.84 335.273 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile10" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1803.92 569.243 L 1773.93 512.622 L 1746.8 569.243 C 1747.83 580.584 1748.6 586.893 1751.56 598.723 L 1779.17 656.28 C 1785.11 674.932 1786.91 685.392 1787.26 704.01 L 1807.73 639.902 L 1843.43 687.164 L 1839.14 660.023 C 1830.67 631.324 1825.41 615.135 1807.73 584.685 L 1803.92 569.243 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile9" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1783.93 728.811 C 1778.24 754.549 1772.64 768.754 1760.13 793.854 L 1807.25 757.355 L 1811.06 820.527 C 1825.02 792.171 1831.16 773.76 1840.57 738.637 C 1843.78 719.015 1845.39 707.7 1842.48 687.164 L 1807.25 640.37 L 1788.69 699.798 L 1783.93 728.811 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile8" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1752.51 808.828 C 1734.3 810.092 1726.78 809.045 1723 800.873 L 1702.53 846.263 L 1666.35 804.616 C 1676.06 830.169 1670.71 846.056 1723 865.448 C 1747.1 865.376 1759.85 865.382 1781.55 865.448 L 1810.11 821.93 L 1806.78 757.822 L 1761.08 793.854 L 1752.51 808.828 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile6" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1685.48 676.055 C 1683.93 644.568 1681.55 626.894 1673.97 595.312 L 1728.71 625.396 L 1720.14 565.031 C 1728.31 582.257 1734.2 587.925 1739.65 632.891 L 1741.56 687.228 L 1706.57 740.041 L 1685.48 676.055 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile5" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1729.66 626.331 L 1720.62 564.563 L 1708.72 550.993 C 1695.73 538.339 1682.7 533.166 1665.4 529.936 C 1654.49 529.367 1648.35 529.807 1637.32 532.276 L 1597.33 562.692 L 1627.32 617.441 V 600.127 C 1640.55 588.563 1646.85 586.255 1657.31 585.153 C 1667.38 587.805 1670.35 590.811 1674.45 596.851 L 1729.66 626.331 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile11" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1799.16 502.795 C 1794.47 531.55 1800.47 542.942 1802.97 566.435 L 1773.93 512.154 L 1746.32 569.711 L 1742.99 497.18 L 1761.56 424.181 L 1806.3 379.727 L 1815.82 441.495 C 1810.58 463.02 1803.85 474.041 1799.16 502.795 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile32" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 966.15 850.007 L 907.602 872.468 L 960.914 906.628 L 1003.28 901.948 L 1039.46 879.955 C 1066.86 863.012 1079.57 852.04 1101.81 832.225 L 1039.46 847.199 L 1063.73 789.643 C 1035.7 815.818 1019.43 829.809 984.238 847.199 L 966.15 850.007 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile39" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 854.765 659.087 V 595.915 L 863.809 608.55 C 871.164 633.597 874.512 647.734 875.234 673.593 C 876.818 706.84 873.739 721.052 863.809 741.445 L 810.973 775.604 L 814.781 715.24 C 822.606 674.052 818.885 645.582 805.261 623.524 L 854.765 659.087 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile60" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 380.188 764.374 L 397.324 667.978 L 374 623.524 L 419.22 670.786 L 430.644 607.614 C 433.816 618.892 437.017 623.679 442.544 632.415 C 431.339 643.751 430.553 650.817 435.404 664.235 L 447.305 717.112 L 437.784 769.521 L 402.084 818.655 L 380.188 764.374 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile45" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 660.555 456.002 L 613.43 415.291 L 608.67 478.931 L 619.142 504.199 C 629.204 536.349 623.902 554.737 608.67 572.051 L 663.887 537.891 L 656.747 602.935 C 678.68 574.12 682.7 557.177 680.547 526.193 C 679.517 503.599 675.013 488.411 660.555 456.002 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile46" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 670.551 401.72 L 691.019 339.016 L 630.09 359.606 L 610.574 362.413 C 614.111 382.998 607.344 399.395 583.918 434.944 L 608.67 478.93 L 613.43 414.355 L 661.507 456.001 L 637.707 414.355 C 650.813 412.026 658.033 409.538 670.551 401.72 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile48" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 834.297 228.115 L 872.377 278.652 H 808.117 C 796.346 271.37 789.856 267.433 776.7 264.146 C 762.171 259.527 750.259 268.19 728.624 284.735 L 757.184 228.115 L 697.207 237.006 C 727.609 214.722 739.303 210.485 757.184 207.525 C 786.831 207.335 803.691 211.388 834.297 228.115 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile49" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 955.678 271.633 L 933.782 206.122 L 900.462 251.044 C 891.373 253.677 886.136 254.348 876.661 254.787 L 835.249 228.115 L 873.805 279.12 H 808.117 C 831.492 291.72 841.787 299.045 859.753 311.828 L 860.477 312.344 C 897.606 312.344 932.83 301.113 940.922 292.222 C 949.014 283.332 951.394 282.864 955.678 271.633 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile56" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 592.962 419.97 L 545.838 445.707 L 556.31 384.407 C 547.149 378.621 540.317 376.019 507.281 379.259 C 478.847 382.489 464.267 381.216 443.496 367.093 L 509.185 371.772 L 471.581 318.895 C 485.409 330.081 513.671 322.303 551.55 325.914 C 589.428 329.525 610.592 353.831 610.098 360.074 C 614.138 387.458 605.391 398.714 592.962 419.97 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile67" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 454.921 979.626 L 487.289 1033.91 L 423.98 1028.29 C 408.566 1014.67 399.666 1006.44 379.712 982.434 C 365.944 946.693 360.954 925.455 358.768 884.634 L 382.568 942.659 L 415.888 888.846 C 421.309 946.404 431.443 962.708 454.921 979.626 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile70" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 801.453 929.556 L 850.481 974.011 L 801.453 987.581 C 760.045 978.009 714.68 975.756 675.311 987.581 L 720.532 942.191 L 656.747 934.704 C 676.663 928.866 688.216 926.517 709.108 923.005 C 744.832 920.435 765.039 921.674 801.453 929.556 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path x:Name="Tile75" Fill="#fff0e15a" Stroke="#ffffffff" StrokeThickness="3.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1378.37 739.105 V 803.213 L 1328.39 767.181 C 1317.02 728.604 1312.75 702.437 1291.26 685.76 L 1294.12 623.056 C 1344.69 633.053 1354.74 675.241 1378.37 739.105 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 40.3167 964.833 C 38.3735 964.833 38.3587 967.83 40.3167 967.8 H 105.583 C 106.432 967.8 107.067 968.435 107.067 969.283 V 1007.85 C 107.067 1009.81 110.033 1009.81 110.033 1007.85 V 969.283 C 110.033 966.845 108.022 964.833 105.583 964.833 H 40.3167 Z M 34.3833 970.767 C 32.4431 970.767 32.4431 973.733 34.3833 973.733 H 99.65 C 100.498 973.733 101.133 974.368 101.133 975.217 V 1013.78 C 101.133 1015.76 104.13 1015.74 104.1 1013.78 V 975.217 C 104.1 972.778 102.089 970.767 99.65 970.767 H 34.3833 Z M 28.45 976.7 C 26.0114 976.7 24 978.711 24 981.15 V 1016.75 C 24 1019.19 26.0114 1021.2 28.45 1021.2 H 93.7167 C 96.1553 1021.2 98.1667 1019.19 98.1667 1016.75 V 981.15 C 98.1667 978.711 96.1553 976.7 93.7167 976.7 H 28.45 Z M 28.45 979.667 H 93.7167 C 94.5651 979.667 95.2 980.302 95.2 981.15 V 1016.75 C 95.2 1017.6 94.5651 1018.23 93.7167 1018.23 H 28.45 C 27.6015 1018.23 26.9667 1017.6 26.9667 1016.75 V 981.15 C 26.9667 980.302 27.6015 979.667 28.45 979.667 Z M 31.4167 982.633 C 30.5979 982.633 29.9333 983.298 29.9333 984.117 V 990.05 C 29.9333 992.044 32.9 991.996 32.9 990.05 V 985.6 H 37.35 C 39.3436 985.6 39.2961 982.633 37.35 982.633 H 31.4167 Z M 61.0833 982.633 C 52.0884 982.633 44.7667 989.955 44.7667 998.95 C 44.7667 1007.94 52.0884 1015.27 61.0833 1015.27 C 70.0783 1015.27 77.4 1007.94 77.4 998.95 C 77.4 989.955 70.0783 982.633 61.0833 982.633 Z M 84.8167 982.633 C 82.8705 982.633 82.8231 985.6 84.8167 985.6 H 89.2667 V 990.05 C 89.2667 991.996 92.2333 992.044 92.2333 990.05 V 984.117 C 92.2333 983.298 91.5688 982.633 90.75 982.633 H 84.8167 Z M 61.0833 985.6 C 68.4703 985.6 74.4333 991.563 74.4333 998.95 C 74.4333 1006.34 68.4703 1012.3 61.0833 1012.3 C 53.6963 1012.3 47.7333 1006.34 47.7333 998.95 C 47.7333 991.563 53.6963 985.6 61.0833 985.6 Z M 61.0833 988.567 C 60.2616 988.567 59.6 989.228 59.6 990.05 V 991.812 C 57.8853 992.435 56.6333 994.067 56.6333 995.983 C 56.6333 998.416 58.6507 1000.43 61.0833 1000.43 C 61.914 1000.43 62.5667 1001.06 62.5667 1001.92 C 62.5667 1002.77 61.914 1003.4 61.0833 1003.4 H 58.1167 C 57.1139 1003.39 56.6333 1004.14 56.6333 1004.88 C 56.6333 1005.63 57.1139 1006.38 58.1167 1006.37 H 59.6 V 1007.85 C 59.6 1008.67 60.2616 1009.33 61.0833 1009.33 C 61.9051 1009.33 62.5667 1008.67 62.5667 1007.85 V 1006.09 C 64.2814 1005.46 65.5333 1003.83 65.5333 1001.92 C 65.5333 999.484 63.516 997.467 61.0833 997.467 C 60.2527 997.467 59.6 996.838 59.6 995.983 C 59.6 995.129 60.2527 994.5 61.0833 994.5 H 64.05 C 65.0527 994.515 65.5333 993.764 65.5333 993.017 C 65.5333 992.269 65.0527 991.519 64.05 991.533 H 62.5667 V 990.05 C 62.5667 989.228 61.9051 988.567 61.0833 988.567 Z M 31.4167 1006.37 C 30.675 1006.37 29.9333 1006.85 29.9333 1007.85 V 1013.78 C 29.9333 1014.6 30.5979 1015.27 31.4167 1015.27 H 37.35 C 39.2961 1015.27 39.3436 1012.3 37.35 1012.3 H 32.9 V 1007.85 C 32.9 1006.88 32.1583 1006.38 31.4167 1006.37 Z M 90.75 1006.37 C 90.0083 1006.38 89.2667 1006.88 89.2667 1007.85 V 1012.3 H 84.8167 C 82.8231 1012.3 82.8705 1015.27 84.8167 1015.27 H 90.75 C 91.5688 1015.27 92.2333 1014.6 92.2333 1013.78 V 1007.85 C 92.2333 1006.85 91.4917 1006.37 90.75 1006.37 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffe40613" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1577.48 737.613 L 1577.75 736.926 L 1577.17 736.465 C 1574.79 734.565 1573.27 731.642 1573.27 728.364 C 1573.27 722.64 1577.91 718 1583.64 718 C 1589.36 718 1594 722.64 1594 728.364 C 1594 731.641 1592.48 734.563 1590.1 736.463 L 1589.53 736.924 L 1589.8 737.611 L 1594.25 748.919 C 1595.58 752.317 1596.28 756.005 1596.28 759.738 V 764.727 C 1596.28 765.43 1595.71 766 1595 766 H 1572.27 C 1571.57 766 1571 765.43 1571 764.727 V 759.738 C 1571 756.005 1571.69 752.317 1573.03 748.919 L 1577.48 737.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffffe400" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1609.48 730.613 L 1609.75 729.926 L 1609.17 729.465 C 1606.79 727.565 1605.27 724.642 1605.27 721.364 C 1605.27 715.64 1609.91 711 1615.64 711 C 1621.36 711 1626 715.64 1626 721.364 C 1626 724.641 1624.48 727.563 1622.1 729.463 L 1621.53 729.924 L 1621.8 730.611 L 1626.25 741.919 C 1627.58 745.317 1628.28 749.005 1628.28 752.738 V 757.727 C 1628.28 758.43 1627.71 759 1627 759 H 1604.27 C 1603.57 759 1603 758.43 1603 757.727 V 752.738 C 1603 749.005 1603.69 745.317 1605.03 741.919 L 1609.48 730.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff009440" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1642.48 734.613 L 1642.75 733.926 L 1642.17 733.465 C 1639.79 731.565 1638.27 728.642 1638.27 725.364 C 1638.27 719.64 1642.91 715 1648.64 715 C 1654.36 715 1659 719.64 1659 725.364 C 1659 728.641 1657.48 731.563 1655.1 733.463 L 1654.53 733.924 L 1654.8 734.611 L 1659.25 745.919 C 1660.58 749.317 1661.28 753.005 1661.28 756.738 V 761.727 C 1661.28 762.43 1660.71 763 1660 763 H 1637.27 C 1636.57 763 1636 762.43 1636 761.727 V 756.738 C 1636 753.005 1636.69 749.317 1638.03 745.919 L 1642.48 734.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff534a99" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1590.48 765.613 L 1590.75 764.926 L 1590.17 764.465 C 1587.79 762.565 1586.27 759.642 1586.27 756.364 C 1586.27 750.64 1590.91 746 1596.64 746 C 1602.36 746 1607 750.64 1607 756.364 C 1607 759.641 1605.48 762.563 1603.1 764.463 L 1602.53 764.924 L 1602.8 765.611 L 1607.25 776.919 C 1608.58 780.317 1609.28 784.005 1609.28 787.738 V 792.727 C 1609.28 793.43 1608.71 794 1608 794 H 1585.27 C 1584.57 794 1584 793.43 1584 792.727 V 787.738 C 1584 784.005 1584.69 780.317 1586.03 776.919 L 1590.48 765.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffe0008f" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat" Canvas.Left="212" Canvas.Top="532" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1430.48 233.613 L 1430.75 232.926 L 1430.17 232.465 C 1427.79 230.565 1426.27 227.642 1426.27 224.364 C 1426.27 218.64 1430.91 214 1436.64 214 C 1442.36 214 1447 218.64 1447 224.364 C 1447 227.641 1445.48 230.563 1443.1 232.463 L 1442.53 232.924 L 1442.8 233.611 L 1447.25 244.919 C 1448.58 248.317 1449.28 252.005 1449.28 255.738 V 260.727 C 1449.28 261.43 1448.71 262 1448 262 H 1425.27 C 1424.57 262 1424 261.43 1424 260.727 V 255.738 C 1424 252.005 1424.69 248.317 1426.03 244.919 L 1430.48 233.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffff8500" Stroke="#ffffffff" StrokeThickness="2.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 1617.48 778.613 L 1617.75 777.926 L 1617.17 777.465 C 1614.79 775.565 1613.27 772.642 1613.27 769.364 C 1613.27 763.64 1617.91 759 1623.64 759 C 1629.36 759 1634 763.64 1634 769.364 C 1634 772.641 1632.48 775.563 1630.1 777.463 L 1629.53 777.924 L 1629.8 778.611 L 1634.25 789.919 C 1635.58 793.317 1636.28 797.005 1636.28 800.738 V 805.727 C 1636.28 806.43 1635.71 807 1635 807 H 1612.27 C 1611.57 807 1611 806.43 1611 805.727 V 800.738 C 1611 797.005 1611.69 793.317 1613.03 789.919 L 1617.48 778.613 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Canvas UseLayoutRounding="False">
+                    <Path Fill="#ffe5333d">
+                        <Path.Data>
+                            <PathGeometry Figures="M 286 195 H 48 C 39.7157 195 33 201.716 33 210 V 337 C 33 345.284 39.7157 352 48 352 H 286 C 294.284 352 301 345.284 301 337 V 210 C 301 201.716 294.284 195 286 195 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 107.08 331.48 V 326.96 V 326.56 H 107.44 C 107.6 326.72 107.773 326.827 107.96 326.88 C 108.147 326.907 108.467 326.92 108.92 326.92 H 117.2 V 319.24 H 107.08 V 314.68 V 314.32 H 107.44 C 107.6 314.48 107.773 314.573 107.96 314.6 C 108.147 314.627 108.467 314.64 108.92 314.64 H 132 V 319.24 H 120.8 V 326.92 H 132 V 331.48 H 107.08 Z M 132 310.96 H 107.08 V 294.72 H 110.76 V 306.56 H 117.16 V 296.84 H 120.88 V 306.56 H 128.32 V 294.84 H 132 V 310.96 Z M 126.2 278.32 V 288.08 L 122.96 287.44 V 279.08 L 126.2 278.32 Z M 115.28 283 L 132 288.04 V 292.52 L 106.92 284.08 V 281.92 L 132 273.48 V 278.04 L 115.28 283 Z M 107.08 270.72 V 266.2 V 265.8 H 107.44 C 107.6 265.96 107.773 266.067 107.96 266.12 C 108.147 266.147 108.467 266.16 108.92 266.16 H 128.32 V 254.72 H 132 V 270.72 H 107.08 Z M 132 245.36 H 110.88 V 252.08 H 107.08 V 233.96 H 110.88 V 241.04 H 132 V 245.36 Z M 107.08 231.48 V 226.96 V 226.56 H 107.44 C 107.6 226.72 107.773 226.827 107.96 226.88 C 108.147 226.907 108.467 226.92 108.92 226.92 H 117.2 V 219.24 H 107.08 V 214.68 V 214.32 H 107.44 C 107.6 214.48 107.773 214.573 107.96 214.6 C 108.147 214.627 108.467 214.64 108.92 214.64 H 132 V 219.24 H 120.8 V 226.92 H 132 V 231.48 H 107.08 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 212.583 237.541 C 222.439 243.577 233.068 252.517 244.472 264.359 L 247.817 267.892 C 248.378 268.495 248.941 269.104 249.506 269.72 L 252.917 273.5 C 251.2 275.431 249.5 277.3 247.817 279.108 L 244.472 282.641 C 233.068 294.483 222.439 303.423 212.583 309.459 V 297.395 C 220.16 292.046 228.404 284.793 237.26 275.592 L 239.249 273.5 L 238.922 273.149 C 229.433 263.118 220.632 255.287 212.583 249.605 V 237.541 Z M 171.06 288.625 L 201.305 273.5 L 186.185 265.937 L 197.458 260.301 V 223.083 H 207.542 V 265.343 L 223.857 273.5 L 193.607 288.625 L 207.542 295.592 V 323.917 H 197.458 V 301.829 L 171.06 288.625 Z M 157.125 255.35 C 157.125 240.314 169.314 228.125 184.35 228.125 C 186.961 228.125 189.65 228.416 192.416 228.998 V 239.36 C 189.946 238.691 187.589 238.314 185.348 238.228 L 184.35 238.208 C 174.883 238.208 167.208 245.883 167.208 255.35 C 167.208 259.245 168.501 262.915 170.837 265.893 L 171.569 266.765 L 177.599 273.492 L 171.573 280.222 C 168.774 283.348 167.208 287.364 167.208 291.65 C 167.208 301.117 174.883 308.792 184.35 308.792 C 186.886 308.792 189.577 308.409 192.417 307.64 L 192.416 318.002 C 189.65 318.584 186.961 318.875 184.35 318.875 C 169.314 318.875 157.125 306.686 157.125 291.65 C 157.125 284.675 159.748 278.313 164.061 273.496 C 159.746 268.683 157.125 262.322 157.125 255.35 Z"/>
+                    </Path.Data>
+                </Path>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="327.0 46.0 60.0 60.0" Viewport="327.0 46.0 60.0 60.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 387 46 H 327 V 106 H 387 V 46 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 384.07 62.4334 C 383.024 61.0066 381.407 60.104 379.642 59.9634 L 343.125 57.0712 L 342.461 53.3102 C 341.854 49.876 339.121 47.2166 335.672 46.7064 L 335.008 46.6074 L 331.061 46.0217 C 329.961 45.8602 328.937 46.6182 328.774 47.718 C 328.611 48.8187 329.37 49.8422 330.47 50.0048 L 335.082 50.6875 L 335.083 50.6905 C 336.816 50.9441 338.192 52.2827 338.497 54.0098 L 344.748 89.4358 C 345.334 92.761 348.222 95.1835 351.598 95.1845 H 377.285 C 378.397 95.1845 379.298 94.2829 379.298 93.1722 C 379.298 92.0605 378.397 91.1589 377.285 91.1589 H 351.598 C 350.177 91.16 348.957 90.1364 348.711 88.7364 L 347.836 83.7795 H 376.47 C 379.305 83.7795 381.764 81.8235 382.401 79.0613 L 385.092 67.3984 C 385.49 65.6743 385.117 63.8622 384.07 62.4334 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 353.134 97.3424 C 350.743 97.3424 348.806 99.2823 348.806 101.672 C 348.806 104.062 350.743 106 353.134 106 C 355.525 106 357.464 104.062 357.464 101.672 C 357.463 99.2823 355.525 97.3424 353.134 97.3424 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 372.366 97.3424 C 369.975 97.3424 368.038 99.2823 368.038 101.672 C 368.038 104.062 369.975 106 372.366 106 C 374.757 106 376.695 104.062 376.695 101.672 C 376.695 99.2823 374.757 97.3424 372.366 97.3424 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Canvas UseLayoutRounding="False">
+                    <Path Fill="#ff2ba3ab">
+                        <Path.Data>
+                            <PathGeometry Figures="M 286 422 H 48 C 39.7157 422 33 428.716 33 437 V 564 C 33 572.284 39.7157 579 48 579 H 286 C 294.284 579 301 572.284 301 564 V 437 C 301 428.716 294.284 422 286 422 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 132.44 548.84 C 132.44 550.2 132.2 551.48 131.72 552.68 C 131.213 553.88 130.44 554.947 129.4 555.88 C 128.36 556.787 127.04 557.493 125.44 558 C 123.813 558.507 121.893 558.76 119.68 558.76 C 117.733 558.76 116.027 558.56 114.56 558.16 C 113.093 557.76 111.867 557.227 110.88 556.56 C 109.867 555.867 109.053 555.093 108.44 554.24 C 107.827 553.36 107.387 552.453 107.12 551.52 C 106.853 550.56 106.72 549.613 106.72 548.68 C 106.72 546.787 107.147 545.187 108 543.88 C 108.853 542.547 110.053 541.52 111.6 540.8 L 113.72 543.64 L 113.92 543.96 L 113.6 544.16 C 113.387 544.133 113.187 544.16 113 544.24 C 112.813 544.293 112.533 544.427 112.16 544.64 C 111.44 545.227 110.96 545.84 110.72 546.48 C 110.48 547.093 110.36 547.747 110.36 548.44 C 110.36 549.213 110.56 549.947 110.96 550.64 C 111.333 551.333 111.907 551.96 112.68 552.52 C 113.453 553.08 114.413 553.52 115.56 553.84 C 116.68 554.133 117.987 554.28 119.48 554.28 C 120.92 554.28 122.213 554.147 123.36 553.88 C 124.48 553.587 125.44 553.2 126.24 552.72 C 127.04 552.213 127.653 551.627 128.08 550.96 C 128.507 550.267 128.72 549.52 128.72 548.72 C 128.72 548.08 128.627 547.493 128.44 546.96 C 128.253 546.4 127.96 545.893 127.56 545.44 C 127.16 544.987 126.627 544.573 125.96 544.2 L 128.28 541.08 C 129.773 542.013 130.84 543.107 131.48 544.36 C 132.12 545.613 132.44 547.107 132.44 548.84 Z M 126.2 525.32 V 535.08 L 122.96 534.44 V 526.08 L 126.2 525.32 Z M 115.28 530 L 132 535.04 V 539.52 L 106.92 531.08 V 528.92 L 132 520.48 V 525.04 L 115.28 530 Z M 132 518.2 H 107.08 V 510.32 C 107.08 508.267 107.387 506.6 108 505.32 C 108.587 504.013 109.44 503.053 110.56 502.44 C 111.653 501.827 112.933 501.52 114.4 501.52 C 115.307 501.52 116.213 501.72 117.12 502.12 C 118.027 502.493 118.84 503.027 119.56 503.72 C 120.28 504.413 120.827 505.24 121.2 506.2 L 132 500.84 V 505.6 L 121.64 510.64 V 513.64 H 132 V 518.2 Z M 117.88 513.64 V 510 C 117.88 508.72 117.587 507.76 117 507.12 C 116.387 506.48 115.56 506.16 114.52 506.16 C 113.853 506.16 113.267 506.307 112.76 506.6 C 112.227 506.867 111.8 507.293 111.48 507.88 C 111.16 508.44 111 509.147 111 510 V 513.64 H 117.88 Z M 132 497.96 H 107.08 V 481.72 H 110.76 V 493.56 H 117.16 V 483.84 H 120.88 V 493.56 H 128.32 V 481.84 H 132 V 497.96 Z M 132 477.96 H 107.08 V 461.72 H 110.76 V 473.56 H 117.16 V 463.84 H 120.88 V 473.56 H 128.32 V 461.84 H 132 V 477.96 Z M 132 458.2 H 107.08 V 450.32 C 107.08 448.267 107.387 446.6 108 445.32 C 108.587 444.013 109.44 443.053 110.56 442.44 C 111.653 441.827 112.933 441.52 114.4 441.52 C 115.307 441.52 116.213 441.72 117.12 442.12 C 118.027 442.493 118.84 443.027 119.56 443.72 C 120.28 444.413 120.827 445.24 121.2 446.2 L 132 440.84 V 445.6 L 121.64 450.64 V 453.64 H 132 V 458.2 Z M 117.88 453.64 V 450 C 117.88 448.72 117.587 447.76 117 447.12 C 116.387 446.48 115.56 446.16 114.52 446.16 C 113.853 446.16 113.267 446.307 112.76 446.6 C 112.227 446.867 111.8 447.293 111.48 447.88 C 111.16 448.44 111 449.147 111 450 V 453.64 H 117.88 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="142.0 440.0 121.0 121.0" Viewport="142.0 440.0 121.0 121.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 142 440 V 561 H 263 V 440 H 142 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 159.66 495.968 C 159.66 491.091 155.707 487.136 150.83 487.136 C 145.953 487.136 142 491.091 142 495.968 C 142 500.844 145.953 504.797 150.83 504.797 C 155.707 504.797 159.66 500.844 159.66 495.968 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 241.257 473.039 V 494.249 H 225.813 V 515.451 H 210.365 V 536.66 H 194.918 V 554.723 H 201.214 V 542.954 H 216.661 V 521.745 H 232.109 V 500.543 H 247.553 V 479.333 H 263 V 452.233 H 256.706 L 256.704 473.039 H 241.257 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 184.833 448.039 C 183.83 448.189 183.139 449.123 183.289 450.128 L 183.926 454.366 L 181.517 454.728 C 180.537 454.878 179.865 455.79 180.011 456.769 L 180.077 457.213 C 179.667 457.274 179.263 457.416 178.89 457.65 L 169.104 463.77 C 168.048 464.431 167.256 465.437 166.861 466.619 L 161.694 477.699 C 159.947 481.446 160.135 485.784 162.125 489.378 L 176.137 491.682 L 168.899 500.22 L 173.197 507.046 L 168.518 517.015 C 167.65 518.564 168.164 520.517 169.68 521.437 L 169.885 521.564 C 170.638 522.018 171.538 522.158 172.391 521.946 C 173.243 521.736 173.975 521.191 174.426 520.437 L 181.516 508.555 C 182.399 507.078 182.558 505.276 181.95 503.666 L 178.159 496.629 L 191.619 493.292 L 191.562 504.384 C 191.557 506.252 192.385 508.026 193.825 509.218 C 195.264 510.41 197.162 510.893 198.997 510.538 L 218.207 506.807 C 220.334 506.394 221.759 504.377 221.438 502.234 L 221.414 502.073 C 221.096 499.951 219.178 498.447 217.042 498.643 L 203.278 499.907 L 203.668 483.17 C 203.722 480.767 202.686 478.47 200.847 476.921 C 199.009 475.372 196.567 474.742 194.207 475.205 L 192.032 475.633 L 172.606 479.075 L 173.915 470.205 L 181.441 463.716 C 181.831 464.098 182.363 464.322 182.944 464.237 L 185.357 463.875 L 185.994 468.111 C 186.144 469.115 187.08 469.805 188.084 469.653 L 199.661 467.913 C 200.664 467.761 201.355 466.827 201.205 465.824 L 198.5 447.84 C 198.35 446.837 197.414 446.147 196.41 446.298 L 184.833 448.039 Z M 181.82 491.245 C 181.216 491.245 180.727 490.755 180.727 490.152 C 180.727 489.549 181.216 489.059 181.82 489.059 C 182.425 489.059 182.913 489.549 182.913 490.152 C 182.913 490.755 182.425 491.245 181.82 491.245 Z M 189.034 488.987 C 189.034 489.59 188.545 490.081 187.941 490.081 C 187.336 490.081 186.848 489.59 186.848 488.987 C 186.848 488.385 187.336 487.895 187.941 487.895 C 188.545 487.895 189.034 488.385 189.034 488.987 Z M 182.801 462.511 C 183.794 461.488 183.982 459.916 183.207 458.693 L 183.161 458.621 C 182.835 458.106 182.377 457.723 181.865 457.48 L 181.718 456.511 L 181.773 456.435 L 184.184 456.073 L 185.099 462.166 L 182.801 462.511 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 232.947 467.966 C 234.5 466.48 234.593 464.026 233.157 462.426 L 233.057 462.311 C 231.626 460.716 229.185 460.542 227.538 461.915 L 215.265 471.061 L 201.055 473.978 C 201.34 474.176 201.622 474.379 201.89 474.605 C 204.474 476.78 205.956 479.968 205.956 483.347 L 205.92 484.901 L 217.006 481.491 C 218.639 480.702 220.148 479.676 221.489 478.449 L 232.947 467.966 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 170.099 496.25 L 171.547 493.431 L 168.426 492.264 L 165.178 493.786 L 167.466 497.483 L 170.099 496.25 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Canvas UseLayoutRounding="False">
+                    <Path Fill="#fff19736">
+                        <Path.Data>
+                            <PathGeometry Figures="M 286 649 H 48 C 39.7157 649 33 655.716 33 664 V 791 C 33 799.284 39.7157 806 48 806 H 286 C 294.284 806 301 799.284 301 791 V 664 C 301 655.716 294.284 649 286 649 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 132.44 777.32 C 132.44 778.973 132.2 780.533 131.72 782 C 131.213 783.44 130.453 784.64 129.44 785.6 L 125.72 783.4 L 125.4 783.24 L 125.6 782.88 C 125.787 782.827 125.987 782.76 126.2 782.68 C 126.413 782.573 126.667 782.36 126.96 782.04 C 127.467 781.373 127.88 780.64 128.2 779.84 C 128.493 779.013 128.653 778.12 128.68 777.16 C 128.68 776.547 128.613 775.987 128.48 775.48 C 128.347 774.947 128.147 774.493 127.88 774.12 C 127.613 773.747 127.28 773.453 126.88 773.24 C 126.453 773.027 125.973 772.92 125.44 772.92 C 125.12 772.92 124.813 772.96 124.52 773.04 C 124.227 773.12 123.947 773.267 123.68 773.48 C 123.387 773.667 123.107 773.947 122.84 774.32 C 122.547 774.693 122.24 775.16 121.92 775.72 C 121.573 776.28 121.213 776.987 120.84 777.84 C 120.093 779.547 119.333 780.907 118.56 781.92 C 117.787 782.907 116.96 783.613 116.08 784.04 C 115.2 784.467 114.2 784.68 113.08 784.68 C 111.853 784.68 110.76 784.347 109.8 783.68 C 108.84 782.987 108.08 782.04 107.52 780.84 C 106.96 779.64 106.68 778.267 106.68 776.72 C 106.68 775.68 106.8 774.707 107.04 773.8 C 107.28 772.893 107.64 772.053 108.12 771.28 C 108.573 770.507 109.16 769.8 109.88 769.16 L 112.92 771.8 L 113.2 772.04 L 112.96 772.36 C 112.747 772.387 112.547 772.44 112.36 772.52 C 112.147 772.573 111.88 772.747 111.56 773.04 C 111.08 773.547 110.76 774.093 110.6 774.68 C 110.44 775.24 110.36 775.907 110.36 776.68 C 110.36 777.24 110.427 777.733 110.56 778.16 C 110.693 778.587 110.88 778.96 111.12 779.28 C 111.36 779.573 111.64 779.813 111.96 780 C 112.253 780.16 112.56 780.24 112.88 780.24 C 113.2 780.24 113.507 780.2 113.8 780.12 C 114.067 780.04 114.333 779.907 114.6 779.72 C 114.867 779.507 115.147 779.213 115.44 778.84 C 115.707 778.44 116 777.933 116.32 777.32 C 116.64 776.707 117 775.947 117.4 775.04 C 117.987 773.787 118.56 772.733 119.12 771.88 C 119.653 771.027 120.227 770.36 120.84 769.88 C 121.427 769.373 122.08 769.013 122.8 768.8 C 123.493 768.587 124.28 768.48 125.16 768.48 C 126.36 768.48 127.52 768.787 128.64 769.4 C 129.76 770.013 130.68 770.973 131.4 772.28 C 132.093 773.587 132.44 775.267 132.44 777.32 Z M 132.48 756.92 C 132.48 758.973 131.973 760.693 130.96 762.08 C 129.947 763.44 128.48 764.48 126.56 765.2 C 124.64 765.893 122.307 766.24 119.56 766.24 C 116.867 766.24 114.573 765.893 112.68 765.2 C 110.76 764.48 109.293 763.44 108.28 762.08 C 107.24 760.693 106.72 758.973 106.72 756.92 C 106.72 754.893 107.24 753.2 108.28 751.84 C 109.293 750.453 110.76 749.413 112.68 748.72 C 114.573 748 116.867 747.64 119.56 747.64 C 122.307 747.64 124.653 748 126.6 748.72 C 128.52 749.413 129.987 750.453 131 751.84 C 131.987 753.2 132.48 754.893 132.48 756.92 Z M 128.8 756.92 C 128.8 755.907 128.467 755.053 127.8 754.36 C 127.107 753.64 126.08 753.093 124.72 752.72 C 123.333 752.32 121.6 752.12 119.52 752.12 C 117.573 752.12 115.92 752.32 114.56 752.72 C 113.2 753.093 112.173 753.64 111.48 754.36 C 110.76 755.053 110.4 755.907 110.4 756.92 C 110.4 757.933 110.76 758.8 111.48 759.52 C 112.173 760.24 113.2 760.8 114.56 761.2 C 115.92 761.573 117.573 761.76 119.52 761.76 C 121.6 761.76 123.333 761.573 124.72 761.2 C 126.08 760.8 127.107 760.24 127.8 759.52 C 128.467 758.8 128.8 757.933 128.8 756.92 Z M 132.44 735.84 C 132.44 737.2 132.2 738.48 131.72 739.68 C 131.213 740.88 130.44 741.947 129.4 742.88 C 128.36 743.787 127.04 744.493 125.44 745 C 123.813 745.507 121.893 745.76 119.68 745.76 C 117.733 745.76 116.027 745.56 114.56 745.16 C 113.093 744.76 111.867 744.227 110.88 743.56 C 109.867 742.867 109.053 742.093 108.44 741.24 C 107.827 740.36 107.387 739.453 107.12 738.52 C 106.853 737.56 106.72 736.613 106.72 735.68 C 106.72 733.787 107.147 732.187 108 730.88 C 108.853 729.547 110.053 728.52 111.6 727.8 L 113.72 730.64 L 113.92 730.96 L 113.6 731.16 C 113.387 731.133 113.187 731.16 113 731.24 C 112.813 731.293 112.533 731.427 112.16 731.64 C 111.44 732.227 110.96 732.84 110.72 733.48 C 110.48 734.093 110.36 734.747 110.36 735.44 C 110.36 736.213 110.56 736.947 110.96 737.64 C 111.333 738.333 111.907 738.96 112.68 739.52 C 113.453 740.08 114.413 740.52 115.56 740.84 C 116.68 741.133 117.987 741.28 119.48 741.28 C 120.92 741.28 122.213 741.147 123.36 740.88 C 124.48 740.587 125.44 740.2 126.24 739.72 C 127.04 739.213 127.653 738.627 128.08 737.96 C 128.507 737.267 128.72 736.52 128.72 735.72 C 128.72 735.08 128.627 734.493 128.44 733.96 C 128.253 733.4 127.96 732.893 127.56 732.44 C 127.16 731.987 126.627 731.573 125.96 731.2 L 128.28 728.08 C 129.773 729.013 130.84 730.107 131.48 731.36 C 132.12 732.613 132.44 734.107 132.44 735.84 Z M 132 724.2 H 128.36 V 719.32 H 110.72 V 723.92 H 107.08 V 710.16 H 110.72 V 715.04 H 128.36 V 709.96 H 132 V 724.2 Z M 126.2 692.32 V 702.08 L 122.96 701.44 V 693.08 L 126.2 692.32 Z M 115.28 697 L 132 702.04 V 706.52 L 106.92 698.08 V 695.92 L 132 687.48 V 692.04 L 115.28 697 Z M 107.08 684.72 V 680.2 V 679.8 H 107.44 C 107.6 679.96 107.773 680.067 107.96 680.12 C 108.147 680.147 108.467 680.16 108.92 680.16 H 128.32 V 668.72 H 132 V 684.72 H 107.08 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 178.478 758.488 H 178.48 C 178.479 758.483 178.477 758.478 178.476 758.472 C 178.476 758.467 178.475 758.462 178.475 758.457 H 178.473 C 177.488 753.056 172.354 749.419 166.914 750.311 C 161.475 751.204 157.772 756.29 158.565 761.724 H 158.564 C 158.564 761.729 158.566 761.734 158.567 761.739 C 158.568 761.744 158.568 761.749 158.569 761.754 H 158.57 C 159.556 767.155 164.689 770.792 170.128 769.9 C 175.568 769.007 179.27 763.921 178.478 758.488 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 238.036 721.428 L 218.276 740.926 C 216.673 742.265 193.951 745.876 193.007 746.031 C 190.589 746.428 189.054 745.741 189.054 745.741 C 189.054 745.741 163.877 735.942 161.105 734.949 C 158.333 733.956 156.52 734.013 155.144 735.927 C 153.768 737.844 153.727 741.114 156.122 741.889 L 181.314 752.388 C 181.314 752.388 180.339 755.064 180.772 758.02 C 180.777 758.045 180.782 758.069 180.787 758.093 C 180.79 758.118 180.793 758.142 180.797 758.168 C 181.33 761.106 183.11 763.331 183.11 763.331 L 162.594 781.329 C 160.518 783.453 161.655 785.914 163.572 787.291 C 165.487 788.665 167.648 787.881 169.533 786.313 C 171.418 784.745 192.568 767.155 192.568 767.155 C 192.568 767.155 193.804 766.015 196.222 765.619 C 196.413 765.587 196.469 765.578 219.447 761.807 L 258.323 759.278 C 260.858 759.113 262.803 757.005 262.803 754.501 C 262.803 754.396 262.8 754.291 262.793 754.185 C 262.621 751.544 260.341 749.543 257.7 749.715 C 257.7 749.715 223.896 751.995 222.653 751.995 C 221.89 751.995 221.455 751.252 222.343 750.376 C 223.231 749.5 244.767 728.249 244.767 728.249 C 246.65 726.39 246.671 723.356 244.812 721.473 C 242.953 719.589 239.92 719.569 238.036 721.428 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 187.833 699.441 H 187.834 C 187.836 699.437 187.837 699.434 187.838 699.429 C 187.839 699.425 187.841 699.422 187.842 699.418 C 187.854 699.383 187.861 699.349 187.872 699.315 C 187.884 699.281 187.899 699.248 187.911 699.214 L 187.912 699.215 C 187.913 699.211 187.914 699.207 187.915 699.203 C 187.916 699.199 187.918 699.196 187.92 699.192 C 189.233 695.126 187.052 690.743 182.993 689.351 C 178.936 687.961 174.525 690.084 173.068 694.101 V 694.1 C 173.066 694.105 173.065 694.108 173.064 694.112 C 173.063 694.116 173.061 694.119 173.06 694.124 C 173.049 694.158 173.04 694.193 173.03 694.227 C 173.017 694.26 173.003 694.293 172.991 694.327 L 172.99 694.326 C 172.989 694.33 172.988 694.334 172.986 694.338 C 172.985 694.342 172.984 694.345 172.982 694.35 H 172.983 C 171.67 698.415 173.85 702.798 177.908 704.189 C 181.965 705.58 186.376 703.457 187.833 699.441 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 191.084 667.12 C 189.294 667.533 188.514 669.269 189.166 672.405 L 191.699 695.94 C 191.699 695.94 190.388 697.038 189.424 699.853 C 188.459 702.669 188.824 704.328 188.824 704.328 L 172.385 721.359 C 169.946 723.435 169.497 725.286 170.657 726.709 C 172.053 728.422 174.26 728.738 175.505 727.735 C 177.384 726.222 193.004 710.984 193.899 710.432 C 194.794 709.88 195.166 710.105 196.97 710.724 C 197.736 710.987 209.023 715.038 213.208 716.574 L 226.766 736.695 C 227.949 738.45 230.332 738.914 232.087 737.731 C 233.843 736.549 234.307 734.166 233.124 732.41 C 233.124 732.41 218.865 711.192 218.48 710.678 C 218.095 710.165 218.336 709.476 219.068 709.708 C 219.8 709.94 247.827 718.814 247.827 718.814 C 249.845 719.453 251.999 718.335 252.638 716.317 C 252.76 715.932 252.818 715.542 252.818 715.159 C 252.818 713.532 251.774 712.022 250.141 711.505 L 218.509 701.49 C 218.376 701.448 218.241 701.416 218.106 701.389 C 201.502 695.696 201.622 695.737 202.057 695.886 C 200.253 695.268 199.821 695.217 199.453 694.233 C 199.085 693.248 196.098 671.631 195.542 669.284 C 195.173 667.728 193.236 666.624 191.084 667.12 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Stroke="#ff0f0c34" StrokeThickness="5.0" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 47 937.333 C 59.8866 937.333 70.3333 926.887 70.3333 914 C 70.3333 901.113 59.8866 890.667 47 890.667 C 34.1134 890.667 23.6667 901.113 23.6667 914 C 23.6667 926.887 34.1134 937.333 47 937.333 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Stroke="#ff0f0c34" StrokeThickness="5.0" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 40.9377 917.5 C 41.5521 918.564 42.4357 919.448 43.4999 920.062 C 44.5641 920.677 45.7712 921 46.9999 921 C 48.2286 921 49.4357 920.677 50.4999 920.062 C 51.5641 919.448 52.4478 918.564 53.0621 917.5" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 40 904.375 H 37.6667 C 36.2169 904.375 35.0417 905.55 35.0417 907 C 35.0417 908.45 36.2169 909.625 37.6667 909.625 H 40 C 41.4497 909.625 42.625 908.45 42.625 907 C 42.625 905.55 41.4497 904.375 40 904.375 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 56.3333 904.375 H 54 C 52.5503 904.375 51.375 905.55 51.375 907 C 51.375 908.45 52.5503 909.625 54 909.625 H 56.3333 C 57.7831 909.625 58.9583 908.45 58.9583 907 C 58.9583 905.55 57.7831 904.375 56.3333 904.375 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffececec" Stroke="#ff0f0c34" StrokeThickness="4.0" StrokeDashCap="Flat">
+                    <Path.Data>
+                        <PathGeometry Figures="M 333 899 H 99 C 90.7157 899 84 905.716 84 914 C 84 922.284 90.7157 929 99 929 H 333 C 341.284 929 348 922.284 348 914 C 348 905.716 341.284 899 333 899 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ffffe400">
+                    <Path.Data>
+                        <PathGeometry Figures="M 147.031 901 H 98.9691 C 91.8065 901 86 906.806 86 913.969 C 86 921.132 91.8065 926.938 98.9691 926.938 H 147.031 C 154.194 926.938 160 921.132 160 913.969 C 160 906.806 154.194 901 147.031 901 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 142.182 1002.5 C 144.326 1000.7 146.278 999.104 148.038 997.696 C 149.798 996.288 151.35 995.008 152.694 993.856 C 154.07 992.704 155.222 991.616 156.15 990.592 C 157.11 989.568 157.83 988.576 158.31 987.616 C 158.79 986.624 159.03 985.568 159.03 984.448 C 159.03 983.616 158.886 982.912 158.598 982.336 C 158.31 981.76 157.894 981.296 157.35 980.944 C 156.838 980.592 156.214 980.336 155.478 980.176 C 154.774 979.984 153.99 979.888 153.126 979.888 C 152.198 979.888 151.302 979.984 150.438 980.176 C 149.574 980.368 148.758 980.656 147.99 981.04 C 147.254 981.392 146.582 981.872 145.974 982.48 C 145.654 982.896 145.446 983.216 145.35 983.44 C 145.286 983.664 145.254 983.904 145.254 984.16 L 145.014 984.448 L 144.678 984.16 L 141.318 981.472 C 142.15 980.256 143.158 979.232 144.342 978.4 C 145.526 977.568 146.854 976.928 148.326 976.48 C 149.83 976 151.43 975.76 153.126 975.76 C 155.174 975.76 156.998 976.112 158.598 976.816 C 160.23 977.52 161.51 978.512 162.438 979.792 C 163.366 981.072 163.83 982.608 163.83 984.4 C 163.83 985.68 163.59 986.896 163.109 988.048 C 162.661 989.2 162.006 990.32 161.142 991.408 C 160.278 992.496 159.254 993.6 158.07 994.72 C 156.918 995.808 155.622 996.944 154.182 998.128 C 152.774 999.312 151.27 1000.59 149.67 1001.97 H 161.814 C 162.358 1001.97 162.742 1001.94 162.966 1001.87 C 163.19 1001.81 163.398 1001.68 163.59 1001.49 H 163.974 V 1001.97 V 1006 H 142.182 V 1002.5 Z M 181.619 1006.53 C 179.283 1006.53 177.139 1006.14 175.187 1005.38 C 173.267 1004.58 171.747 1003.41 170.627 1001.87 L 174.179 999.04 L 174.563 998.752 L 174.803 999.04 C 174.771 999.296 174.819 999.536 174.947 999.76 C 175.075 999.952 175.315 1000.24 175.667 1000.62 C 176.435 1001.26 177.315 1001.74 178.307 1002.06 C 179.299 1002.35 180.451 1002.5 181.763 1002.5 C 182.627 1002.5 183.459 1002.37 184.259 1002.11 C 185.091 1001.82 185.827 1001.42 186.467 1000.91 C 187.107 1000.4 187.603 999.76 187.955 998.992 C 188.339 998.224 188.531 997.376 188.531 996.448 C 188.531 995.456 188.339 994.576 187.955 993.808 C 187.603 993.04 187.107 992.4 186.467 991.888 C 185.827 991.344 185.075 990.944 184.211 990.688 C 183.347 990.4 182.419 990.256 181.427 990.256 C 180.659 990.256 179.875 990.352 179.075 990.544 C 178.307 990.736 177.587 991.024 176.915 991.408 C 176.243 991.76 175.635 992.208 175.091 992.752 L 171.923 991.744 L 173.171 976.096 H 191.891 V 980.128 H 177.299 L 176.771 987.472 C 177.347 987.216 177.955 987.008 178.595 986.848 C 179.267 986.656 179.939 986.528 180.611 986.464 C 181.283 986.368 181.939 986.32 182.579 986.32 C 184.115 986.32 185.523 986.544 186.803 986.992 C 188.115 987.408 189.251 988.048 190.211 988.912 C 191.203 989.744 191.955 990.784 192.467 992.032 C 193.011 993.248 193.283 994.672 193.283 996.304 C 193.283 998.416 192.771 1000.24 191.747 1001.78 C 190.755 1003.31 189.379 1004.5 187.619 1005.33 C 185.891 1006.13 183.891 1006.53 181.619 1006.53 Z M 202.096 997.648 L 217.504 982 L 218.8 985.12 L 203.392 1000.62 L 202.096 997.648 Z M 210.4 1006.53 C 208 1006.53 205.92 1005.94 204.16 1004.75 C 202.432 1003.54 201.088 1001.79 200.128 999.52 C 199.2 997.216 198.736 994.448 198.736 991.216 C 198.736 988.048 199.2 985.312 200.128 983.008 C 201.088 980.704 202.432 978.928 204.16 977.68 C 205.92 976.4 208 975.76 210.4 975.76 C 212.8 975.76 214.864 976.4 216.592 977.68 C 218.352 978.928 219.696 980.704 220.624 983.008 C 221.584 985.312 222.064 988.048 222.064 991.216 C 222.064 994.448 221.584 997.216 220.624 999.52 C 219.696 1001.79 218.352 1003.54 216.592 1004.75 C 214.864 1005.94 212.8 1006.53 210.4 1006.53 Z M 210.4 1002.64 C 211.872 1002.64 213.12 1002.19 214.144 1001.3 C 215.2 1000.4 215.984 999.104 216.496 997.408 C 217.04 995.712 217.312 993.648 217.312 991.216 C 217.312 988.848 217.04 986.816 216.496 985.12 C 215.984 983.424 215.2 982.112 214.144 981.184 C 213.12 980.256 211.872 979.792 210.4 979.792 C 208.96 979.792 207.712 980.256 206.656 981.184 C 205.632 982.112 204.848 983.424 204.304 985.12 C 203.76 986.816 203.488 988.848 203.488 991.216 C 203.488 993.68 203.76 995.76 204.304 997.456 C 204.848 999.152 205.632 1000.45 206.656 1001.34 C 207.712 1002.21 208.96 1002.64 210.4 1002.64 Z M 235.005 991.792 L 232.029 994.528 V 1006 H 227.133 V 976.096 H 231.981 H 232.461 V 976.48 C 232.269 976.672 232.141 976.88 232.077 977.104 C 232.045 977.328 232.029 977.712 232.029 978.256 V 989.008 L 245.949 975.856 C 246.205 975.888 246.493 975.92 246.813 975.952 C 247.133 975.984 247.469 976.016 247.821 976.048 C 248.173 976.048 248.509 976.064 248.829 976.096 C 249.149 976.096 249.405 976.096 249.597 976.096 H 251.757 L 238.653 988.72 L 252.573 1006 L 246.621 1006.24 L 235.005 991.792 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Fill="#ff0f0c34">
+                    <Path.Data>
+                        <PathGeometry Figures="M 43.2311 865.396 C 41.9111 865.396 40.6871 865.192 39.5591 864.784 C 38.4311 864.352 37.4591 863.752 36.6431 862.984 C 35.8271 862.216 35.1911 861.304 34.7351 860.248 C 34.2791 859.192 34.0511 858.04 34.0511 856.792 C 34.0511 855.544 34.2791 854.392 34.7351 853.336 C 35.1911 852.28 35.8271 851.368 36.6431 850.6 C 37.4591 849.808 38.4311 849.196 39.5591 848.764 C 40.6871 848.332 41.8991 848.116 43.1951 848.116 C 44.7311 848.116 46.0991 848.392 47.2991 848.944 C 48.4991 849.472 49.4711 850.228 50.2151 851.212 L 48.3791 853.12 L 48.1271 853.372 L 47.9111 853.192 C 47.9111 853 47.8631 852.82 47.7671 852.652 C 47.6951 852.484 47.5151 852.256 47.2271 851.968 C 46.6511 851.488 46.0151 851.164 45.3191 850.996 C 44.6231 850.804 43.8431 850.708 42.9791 850.708 C 42.2591 850.708 41.5511 850.84 40.8551 851.104 C 40.1831 851.368 39.5711 851.764 39.0191 852.292 C 38.4911 852.796 38.0591 853.42 37.7231 854.164 C 37.4111 854.884 37.2551 855.712 37.2551 856.648 C 37.2551 857.56 37.4111 858.388 37.7231 859.132 C 38.0591 859.852 38.5031 860.488 39.0551 861.04 C 39.6071 861.568 40.2551 861.976 40.9991 862.264 C 41.7671 862.552 42.5711 862.696 43.4111 862.696 C 43.9871 862.696 44.5631 862.624 45.1391 862.48 C 45.7151 862.336 46.2551 862.108 46.7591 861.796 C 47.2871 861.484 47.7671 861.1 48.1991 860.644 L 49.9631 862.768 C 49.0511 863.656 48.0191 864.316 46.8671 864.748 C 45.7151 865.18 44.5031 865.396 43.2311 865.396 Z M 60.036 865.396 C 57.996 865.396 56.412 864.976 55.284 864.136 C 54.18 863.272 53.628 862.168 53.628 860.824 C 53.628 859.912 53.856 859.096 54.312 858.376 C 54.768 857.656 55.416 857.044 56.256 856.54 C 57.096 856.036 58.092 855.64 59.244 855.352 C 60.42 855.064 61.692 854.92 63.06 854.92 C 63.444 854.92 63.8521 854.932 64.284 854.956 C 64.74 854.956 65.208 854.98 65.688 855.028 C 66.1921 855.052 66.684 855.1 67.164 855.172 L 67.272 857.44 C 66.84 857.392 66.384 857.356 65.904 857.332 C 65.448 857.284 64.98 857.26 64.5 857.26 C 64.044 857.236 63.612 857.224 63.204 857.224 C 62.22 857.224 61.332 857.296 60.54 857.44 C 59.748 857.56 59.076 857.764 58.524 858.052 C 57.972 858.316 57.54 858.664 57.228 859.096 C 56.94 859.504 56.796 859.996 56.796 860.572 C 56.796 861.004 56.892 861.388 57.084 861.724 C 57.276 862.036 57.54 862.288 57.876 862.48 C 58.212 862.648 58.596 862.78 59.028 862.876 C 59.484 862.948 59.976 862.984 60.504 862.984 C 61.464 862.984 62.316 862.852 63.06 862.588 C 63.828 862.324 64.476 861.916 65.004 861.364 C 65.556 860.812 65.9641 860.14 66.2281 859.348 C 66.516 858.532 66.66 857.596 66.66 856.54 C 66.66 854.98 66.444 853.78 66.012 852.94 C 65.604 852.076 65.004 851.464 64.212 851.104 C 63.444 850.744 62.472 850.564 61.296 850.564 C 60.408 850.564 59.556 850.708 58.74 850.996 C 57.924 851.26 57.156 851.716 56.436 852.364 L 54.78 850.456 C 55.668 849.64 56.688 849.04 57.84 848.656 C 58.992 848.272 60.204 848.08 61.476 848.08 C 62.652 848.08 63.732 848.212 64.716 848.476 C 65.7 848.716 66.552 849.136 67.272 849.736 C 67.9921 850.336 68.544 851.152 68.928 852.184 C 69.336 853.192 69.54 854.464 69.54 856 V 865 H 66.2281 V 862.696 C 65.868 863.248 65.448 863.704 64.968 864.064 C 64.488 864.4 63.972 864.664 63.42 864.856 C 62.868 865.048 62.304 865.18 61.728 865.252 C 61.152 865.348 60.588 865.396 60.036 865.396 Z M 73.817 871.012 L 73.781 848.44 H 76.949 V 851.392 C 77.285 850.624 77.741 850 78.317 849.52 C 78.893 849.04 79.541 848.68 80.261 848.44 C 81.005 848.2 81.797 848.08 82.637 848.08 C 83.645 848.08 84.593 848.26 85.481 848.62 C 86.393 848.98 87.185 849.508 87.857 850.204 C 88.553 850.9 89.105 851.788 89.513 852.868 C 89.921 853.948 90.125 855.208 90.125 856.648 C 90.125 858.112 89.909 859.396 89.477 860.5 C 89.045 861.604 88.469 862.528 87.749 863.272 C 87.053 863.992 86.249 864.532 85.337 864.892 C 84.425 865.252 83.501 865.432 82.565 865.432 C 81.797 865.432 81.053 865.336 80.333 865.144 C 79.637 864.952 79.001 864.676 78.425 864.316 C 77.8731 863.956 77.405 863.524 77.021 863.02 V 871.012 H 73.817 Z M 81.8811 862.804 C 82.5051 862.804 83.105 862.708 83.681 862.516 C 84.281 862.324 84.821 862 85.301 861.544 C 85.805 861.064 86.189 860.428 86.453 859.636 C 86.741 858.844 86.885 857.86 86.885 856.684 C 86.885 855.412 86.693 854.344 86.309 853.48 C 85.949 852.592 85.421 851.92 84.725 851.464 C 84.029 850.984 83.201 850.72 82.241 850.672 C 81.545 850.648 80.873 850.756 80.225 850.996 C 79.601 851.212 79.037 851.584 78.533 852.112 C 78.053 852.616 77.669 853.288 77.3811 854.128 C 77.1171 854.968 76.985 855.988 76.985 857.188 C 77.009 857.956 77.093 858.64 77.237 859.24 C 77.405 859.84 77.633 860.368 77.921 860.824 C 78.233 861.28 78.5811 861.652 78.965 861.94 C 79.349 862.228 79.781 862.444 80.261 862.588 C 80.765 862.732 81.305 862.804 81.8811 862.804 Z M 95.194 865 V 862.48 H 99.91 V 850.96 H 95.446 V 848.44 H 103.042 V 862.48 H 107.362 V 865 H 95.194 Z M 101.314 845.272 C 100.738 845.272 100.246 845.068 99.838 844.66 C 99.43 844.252 99.226 843.76 99.226 843.184 C 99.226 842.584 99.418 842.092 99.802 841.708 C 100.21 841.3 100.714 841.096 101.314 841.096 C 101.89 841.096 102.382 841.312 102.79 841.744 C 103.222 842.152 103.438 842.632 103.438 843.184 C 103.438 843.76 103.222 844.252 102.79 844.66 C 102.382 845.068 101.89 845.272 101.314 845.272 Z M 122.979 865.288 C 121.851 865.288 120.915 865.12 120.171 864.784 C 119.427 864.424 118.839 863.884 118.407 863.164 C 117.999 862.42 117.723 861.472 117.579 860.32 C 117.435 859.168 117.387 857.776 117.435 856.144 L 117.939 844.336 L 121.215 843.94 L 121.575 843.904 L 121.611 844.192 C 121.491 844.36 121.383 844.528 121.287 844.696 C 121.215 844.864 121.155 845.152 121.107 845.56 L 120.711 849.88 L 120.855 850.42 L 120.567 856.252 C 120.495 857.98 120.555 859.324 120.747 860.284 C 120.939 861.22 121.263 861.868 121.719 862.228 C 122.199 862.564 122.823 862.732 123.591 862.732 C 124.455 862.732 125.223 862.576 125.895 862.264 C 126.591 861.952 127.287 861.568 127.983 861.112 L 128.811 863.488 C 127.923 864.088 126.999 864.544 126.039 864.856 C 125.079 865.144 124.059 865.288 122.979 865.288 Z M 113.835 848.44 H 127.083 V 850.96 H 113.799 L 113.835 848.44 Z M 139.208 865.396 C 137.168 865.396 135.584 864.976 134.456 864.136 C 133.352 863.272 132.8 862.168 132.8 860.824 C 132.8 859.912 133.028 859.096 133.484 858.376 C 133.94 857.656 134.588 857.044 135.428 856.54 C 136.268 856.036 137.264 855.64 138.416 855.352 C 139.592 855.064 140.864 854.92 142.232 854.92 C 142.616 854.92 143.024 854.932 143.456 854.956 C 143.912 854.956 144.38 854.98 144.86 855.028 C 145.364 855.052 145.856 855.1 146.336 855.172 L 146.444 857.44 C 146.012 857.392 145.556 857.356 145.076 857.332 C 144.62 857.284 144.152 857.26 143.672 857.26 C 143.216 857.236 142.784 857.224 142.376 857.224 C 141.392 857.224 140.504 857.296 139.712 857.44 C 138.92 857.56 138.248 857.764 137.696 858.052 C 137.144 858.316 136.712 858.664 136.4 859.096 C 136.112 859.504 135.968 859.996 135.968 860.572 C 135.968 861.004 136.064 861.388 136.256 861.724 C 136.448 862.036 136.712 862.288 137.048 862.48 C 137.384 862.648 137.768 862.78 138.2 862.876 C 138.656 862.948 139.148 862.984 139.676 862.984 C 140.636 862.984 141.488 862.852 142.232 862.588 C 143 862.324 143.648 861.916 144.176 861.364 C 144.728 860.812 145.136 860.14 145.4 859.348 C 145.688 858.532 145.832 857.596 145.832 856.54 C 145.832 854.98 145.616 853.78 145.184 852.94 C 144.776 852.076 144.176 851.464 143.384 851.104 C 142.616 850.744 141.644 850.564 140.468 850.564 C 139.58 850.564 138.728 850.708 137.912 850.996 C 137.096 851.26 136.328 851.716 135.608 852.364 L 133.952 850.456 C 134.84 849.64 135.86 849.04 137.012 848.656 C 138.164 848.272 139.376 848.08 140.648 848.08 C 141.824 848.08 142.904 848.212 143.888 848.476 C 144.872 848.716 145.724 849.136 146.444 849.736 C 147.164 850.336 147.716 851.152 148.1 852.184 C 148.508 853.192 148.712 854.464 148.712 856 V 865 H 145.4 V 862.696 C 145.04 863.248 144.62 863.704 144.14 864.064 C 143.66 864.4 143.144 864.664 142.592 864.856 C 142.04 865.048 141.476 865.18 140.9 865.252 C 140.324 865.348 139.76 865.396 139.208 865.396 Z M 153.709 865 V 862.48 H 159.109 V 843.508 H 153.961 V 840.988 H 162.313 V 862.48 H 167.677 V 865 H 153.709 Z M 174.366 865 V 862.48 H 179.082 V 850.96 H 174.618 V 848.44 H 182.214 V 862.48 H 186.534 V 865 H 174.366 Z M 180.486 845.272 C 179.91 845.272 179.418 845.068 179.01 844.66 C 178.602 844.252 178.398 843.76 178.398 843.184 C 178.398 842.584 178.59 842.092 178.974 841.708 C 179.382 841.3 179.886 841.096 180.486 841.096 C 181.062 841.096 181.554 841.312 181.962 841.744 C 182.394 842.152 182.61 842.632 182.61 843.184 C 182.61 843.76 182.394 844.252 181.962 844.66 C 181.554 845.068 181.062 845.272 180.486 845.272 Z M 200.423 865.36 C 199.367 865.36 198.371 865.264 197.435 865.072 C 196.499 864.904 195.623 864.628 194.807 864.244 C 193.991 863.836 193.235 863.332 192.539 862.732 L 194.195 860.032 L 194.411 859.708 L 194.627 859.888 C 194.675 860.056 194.735 860.236 194.807 860.428 C 194.879 860.62 195.059 860.86 195.347 861.148 C 195.947 861.652 196.655 862.06 197.471 862.372 C 198.287 862.684 199.295 862.84 200.495 862.84 C 201.431 862.84 202.223 862.744 202.871 862.552 C 203.519 862.36 204.023 862.084 204.383 861.724 C 204.743 861.364 204.923 860.956 204.923 860.5 C 204.923 860.164 204.839 859.876 204.671 859.636 C 204.503 859.372 204.239 859.132 203.879 858.916 C 203.519 858.7 203.039 858.484 202.439 858.268 C 201.863 858.052 201.155 857.836 200.315 857.62 C 198.899 857.26 197.675 856.852 196.643 856.396 C 195.635 855.916 194.867 855.352 194.339 854.704 C 193.811 854.056 193.547 853.3 193.547 852.436 C 193.547 851.572 193.811 850.816 194.339 850.168 C 194.867 849.52 195.635 849.004 196.643 848.62 C 197.651 848.236 198.887 848.044 200.351 848.044 C 201.191 848.044 201.959 848.104 202.655 848.224 C 203.351 848.32 203.987 848.476 204.563 848.692 C 205.163 848.908 205.703 849.184 206.183 849.52 C 206.687 849.832 207.167 850.216 207.623 850.672 L 205.895 852.76 L 205.643 853.048 L 205.427 852.868 C 205.427 852.676 205.379 852.496 205.283 852.328 C 205.187 852.16 204.995 851.944 204.707 851.68 C 204.131 851.272 203.459 850.972 202.691 850.78 C 201.947 850.564 201.203 850.456 200.459 850.456 C 199.355 850.456 198.431 850.612 197.687 850.924 C 196.943 851.236 196.571 851.704 196.571 852.328 C 196.571 852.688 196.727 853.024 197.039 853.336 C 197.351 853.648 197.879 853.96 198.623 854.272 C 199.367 854.56 200.387 854.86 201.683 855.172 C 203.195 855.58 204.407 856.012 205.319 856.468 C 206.231 856.924 206.891 857.452 207.299 858.052 C 207.731 858.652 207.947 859.36 207.947 860.176 C 207.947 861.136 207.671 862.012 207.119 862.804 C 206.567 863.596 205.727 864.22 204.599 864.676 C 203.495 865.132 202.103 865.36 200.423 865.36 Z M 211.576 865 V 848.44 H 214.384 V 850.06 C 214.672 849.652 214.996 849.304 215.356 849.016 C 215.74 848.704 216.148 848.464 216.58 848.296 C 217.036 848.128 217.492 848.044 217.948 848.044 C 218.452 848.044 218.92 848.152 219.352 848.368 C 219.808 848.56 220.192 848.836 220.504 849.196 C 220.816 849.532 221.032 849.94 221.152 850.42 C 221.416 849.94 221.74 849.532 222.124 849.196 C 222.532 848.836 223 848.56 223.528 848.368 C 224.056 848.152 224.608 848.044 225.184 848.044 C 225.88 848.044 226.468 848.164 226.948 848.404 C 227.428 848.644 227.8 848.968 228.064 849.376 C 228.352 849.784 228.556 850.264 228.676 850.816 C 228.82 851.368 228.88 851.956 228.856 852.58 V 865 H 225.976 V 853.516 C 225.976 852.604 225.904 851.92 225.76 851.464 C 225.64 851.008 225.448 850.708 225.184 850.564 C 224.944 850.42 224.656 850.348 224.32 850.348 C 223.864 850.348 223.432 850.54 223.024 850.924 C 222.616 851.284 222.28 851.764 222.016 852.364 C 221.752 852.964 221.62 853.6 221.62 854.272 V 865 H 218.776 V 853.696 C 218.776 852.4 218.632 851.524 218.344 851.068 C 218.08 850.612 217.612 850.384 216.94 850.384 C 216.652 850.384 216.364 850.468 216.076 850.636 C 215.788 850.804 215.512 851.056 215.248 851.392 C 215.008 851.704 214.804 852.1 214.636 852.58 C 214.492 853.036 214.42 853.564 214.42 854.164 V 865 H 211.576 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="1795.0 30.0 73.0 73.0" Viewport="1795.0 30.0 73.0 73.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 1868 30 H 1795 V 103 H 1868 V 30 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Canvas UseLayoutRounding="False">
+                        <Canvas.OpacityMask>
+                            <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="1795.0 30.0 73.0 74.0" Viewport="1795.0 30.0 73.0 74.0">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <GeometryDrawing Brush="#ffffffff">
+                                            <GeometryDrawing.Geometry>
+                                                <PathGeometry Figures="M 1868 30.0036 H 1795 V 103.004 H 1868 V 30.0036 Z" FillRule="Nonzero"/>
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Canvas.OpacityMask>
+                        <Path Stroke="#ff0f0c34" StrokeLineJoin="Round" StrokeThickness="5.0" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="M 1840.63 42.1696 H 1810.21 V 84.753 C 1810.21 88.1125 1812.93 90.8363 1816.29 90.8363 H 1840.63" FillRule="Nonzero"/>
+                            </Path.Data>
+                        </Path>
+                        <Path Stroke="#ff0f0c34" StrokeLineJoin="Round" StrokeThickness="5.0" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round">
+                            <Path.Data>
+                                <PathGeometry Figures="M 1843.67 75.628 L 1852.79 66.503 M 1852.79 66.503 L 1843.67 57.3779 M 1852.79 66.503 H 1822.38" FillRule="Nonzero"/>
+                            </Path.Data>
+                        </Path>
+                    </Canvas>
+                </Canvas>
+                <Path Fill="#6de5333d">
+                    <Path.Data>
+                        <PathGeometry Figures="M 98 40 H 53 C 46.3726 40 41 45.3726 41 52 V 96.1154 C 41 102.743 46.3726 108.115 53 108.115 H 98 C 104.627 108.115 110 102.743 110 96.1154 V 52 C 110 45.3726 104.627 40 98 40 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Path Stroke="#ff0f0c34" StrokeLineJoin="Round" StrokeThickness="5.0" StrokeDashCap="Round" StrokeEndLineCap="Round" StrokeStartLineCap="Round">
+                    <Path.Data>
+                        <PathGeometry Figures="M 68.1667 62.3333 L 79.8332 74 M 79.8332 62.3333 L 68.1667 74 M 94.4167 68.75 C 94.4167 80.3478 84.2083 89.75 74 100.25 C 63.7917 89.75 53.5833 80.3478 53.5833 68.75 C 53.5833 57.152 62.7242 47.75 74 47.75 C 85.2758 47.75 94.4167 57.152 94.4167 68.75 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="37.0 36.0 80.0 80.0" Viewport="37.0 36.0 80.0 80.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 117 36 H 37 V 116 H 117 V 36 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 112.412 102 H 109.418 C 108.541 102 107.83 102.782 107.83 103.747 V 106.212 H 105.588 C 104.711 106.212 104 106.994 104 107.959 V 111.253 C 104 112.218 104.711 113 105.588 113 H 112.412 C 113.289 113 114 112.218 114 111.253 V 103.747 C 114 102.782 113.289 102 112.412 102 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 71.3295 108.009 H 59.2342 C 58.0986 108.009 57.1777 108.586 57.1777 109.296 V 111.723 C 57.1777 112.433 58.0986 113.009 59.2342 113.009 H 71.3295 C 72.4651 113.009 73.386 112.433 73.386 111.723 V 109.296 C 73.386 108.586 72.4651 108.009 71.3295 108.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 94.766 108.009 H 82.671 C 81.5351 108.009 80.6144 108.586 80.6144 109.296 V 111.723 C 80.6144 112.433 81.5351 113.009 82.671 113.009 H 94.766 C 95.9016 113.009 96.8225 112.433 96.8225 111.723 V 109.296 C 96.8225 108.586 95.9016 108.009 94.766 108.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 45.4118 106.263 H 43.1704 V 103.798 C 43.1704 102.833 42.4592 102.051 41.5822 102.051 H 38.5882 C 37.7112 102.051 37 102.833 37 103.798 V 111.304 C 37 112.269 37.7112 113.051 38.5882 113.051 H 45.4118 C 46.2887 113.051 47 112.269 47 111.304 V 108.01 C 47 107.045 46.2887 106.263 45.4118 106.263 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 38.2869 95.8223 H 40.7131 C 41.4237 95.8223 42 94.9016 42 93.7658 V 81.6708 C 42 80.5349 41.4237 79.6142 40.7131 79.6142 H 38.2869 C 37.5763 79.6142 37 80.5349 37 81.6708 V 93.7658 C 37 94.9016 37.5763 95.8223 38.2869 95.8223 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 38.2869 72.3858 H 40.7131 C 41.4237 72.3858 42 71.4651 42 70.3292 V 58.2342 C 42 57.0984 41.4237 56.1777 40.7131 56.1777 H 38.2869 C 37.5763 56.1777 37 57.0984 37 58.2342 V 70.3292 C 37 71.4651 37.5763 72.3858 38.2869 72.3858 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 45.4118 36 H 38.5882 C 37.7112 36 37 36.7821 37 37.7469 V 45.2531 C 37 46.2179 37.7112 47 38.5882 47 H 41.5822 C 42.4592 47 43.1704 46.2179 43.1704 45.2531 V 42.7876 H 45.4118 C 46.2887 42.7876 47 42.0055 47 41.0406 V 37.7469 C 47 36.7823 46.2887 36 45.4118 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 94.766 36 H 82.671 C 81.5353 36 80.6144 36.5761 80.6144 37.2869 V 39.7131 C 80.6144 40.4239 81.5353 41 82.671 41 H 94.766 C 95.9016 41 96.8225 40.4239 96.8225 39.7131 V 37.2869 C 96.8225 36.5763 95.9016 36 94.766 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 59.234 41 H 71.3293 C 72.4649 41 73.3858 40.4239 73.3858 39.7131 V 37.2869 C 73.3858 36.5761 72.4649 36 71.3293 36 H 59.234 C 58.0984 36 57.1775 36.5761 57.1775 37.2869 V 39.7131 C 57.1775 40.4239 58.0984 41 59.234 41 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 112.412 36 H 105.588 C 104.711 36 104 36.7821 104 37.7469 V 41.0406 C 104 42.0055 104.711 42.7876 105.588 42.7876 H 107.83 V 45.2531 C 107.83 46.2179 108.541 47 109.418 47 H 112.412 C 113.289 47 114 46.2179 114 45.2531 V 37.7469 C 114 36.7823 113.289 36 112.412 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 112.723 79.6142 H 110.297 C 109.586 79.6142 109.01 80.5349 109.01 81.6708 V 93.7658 C 109.01 94.9014 109.586 95.8223 110.297 95.8223 H 112.723 C 113.434 95.8223 114.01 94.9014 114.01 93.7658 V 81.6708 C 114.01 80.5349 113.434 79.6142 112.723 79.6142 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 112.723 56.1777 H 110.297 C 109.586 56.1777 109.01 57.0984 109.01 58.2342 V 70.3292 C 109.01 71.4651 109.586 72.3858 110.297 72.3858 H 112.723 C 113.434 72.3858 114.01 71.4651 114.01 70.3292 V 58.2342 C 114.01 57.0984 113.434 56.1777 112.723 56.1777 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="132.0 35.0 80.0 80.0" Viewport="132.0 35.0 80.0 80.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 212 35 H 132 V 115 H 212 V 35 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 207.412 101 H 204.418 C 203.541 101 202.83 101.782 202.83 102.747 V 105.212 H 200.588 C 199.711 105.212 199 105.994 199 106.959 V 110.253 C 199 111.218 199.711 112 200.588 112 H 207.412 C 208.289 112 209 111.218 209 110.253 V 102.747 C 209 101.782 208.289 101 207.412 101 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 166.329 107.009 H 154.234 C 153.099 107.009 152.178 107.586 152.178 108.296 V 110.723 C 152.178 111.433 153.099 112.009 154.234 112.009 H 166.329 C 167.465 112.009 168.386 111.433 168.386 110.723 V 108.296 C 168.386 107.586 167.465 107.009 166.329 107.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 189.766 107.009 H 177.671 C 176.535 107.009 175.614 107.586 175.614 108.296 V 110.723 C 175.614 111.433 176.535 112.009 177.671 112.009 H 189.766 C 190.902 112.009 191.823 111.433 191.823 110.723 V 108.296 C 191.823 107.586 190.902 107.009 189.766 107.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 140.412 105.263 H 138.17 V 102.798 C 138.17 101.833 137.459 101.051 136.582 101.051 H 133.588 C 132.711 101.051 132 101.833 132 102.798 V 110.304 C 132 111.269 132.711 112.051 133.588 112.051 H 140.412 C 141.289 112.051 142 111.269 142 110.304 V 107.01 C 142 106.045 141.289 105.263 140.412 105.263 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 133.287 94.8223 H 135.713 C 136.424 94.8223 137 93.9016 137 92.7658 V 80.6708 C 137 79.5349 136.424 78.6142 135.713 78.6142 H 133.287 C 132.576 78.6142 132 79.5349 132 80.6708 V 92.7658 C 132 93.9016 132.576 94.8223 133.287 94.8223 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 133.287 71.3858 H 135.713 C 136.424 71.3858 137 70.4651 137 69.3292 V 57.2342 C 137 56.0984 136.424 55.1777 135.713 55.1777 H 133.287 C 132.576 55.1777 132 56.0984 132 57.2342 V 69.3292 C 132 70.4651 132.576 71.3858 133.287 71.3858 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 140.412 35 H 133.588 C 132.711 35 132 35.7821 132 36.7469 V 44.2531 C 132 45.2179 132.711 46 133.588 46 H 136.582 C 137.459 46 138.17 45.2179 138.17 44.2531 V 41.7876 H 140.412 C 141.289 41.7876 142 41.0055 142 40.0406 V 36.7469 C 142 35.7823 141.289 35 140.412 35 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 189.766 35 H 177.671 C 176.535 35 175.614 35.5761 175.614 36.2869 V 38.7131 C 175.614 39.4239 176.535 40 177.671 40 H 189.766 C 190.902 40 191.823 39.4239 191.823 38.7131 V 36.2869 C 191.823 35.5763 190.902 35 189.766 35 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 154.234 40 H 166.329 C 167.465 40 168.386 39.4239 168.386 38.7131 V 36.2869 C 168.386 35.5761 167.465 35 166.329 35 H 154.234 C 153.098 35 152.177 35.5761 152.177 36.2869 V 38.7131 C 152.177 39.4239 153.098 40 154.234 40 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 207.412 35 H 200.588 C 199.711 35 199 35.7821 199 36.7469 V 40.0406 C 199 41.0055 199.711 41.7876 200.588 41.7876 H 202.83 V 44.2531 C 202.83 45.2179 203.541 46 204.418 46 H 207.412 C 208.289 46 209 45.2179 209 44.2531 V 36.7469 C 209 35.7823 208.289 35 207.412 35 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 207.723 78.6142 H 205.297 C 204.586 78.6142 204.01 79.5349 204.01 80.6708 V 92.7658 C 204.01 93.9014 204.586 94.8223 205.297 94.8223 H 207.723 C 208.434 94.8223 209.01 93.9014 209.01 92.7658 V 80.6708 C 209.01 79.5349 208.434 78.6142 207.723 78.6142 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 207.723 55.1777 H 205.297 C 204.586 55.1777 204.01 56.0984 204.01 57.2342 V 69.3292 C 204.01 70.4651 204.586 71.3858 205.297 71.3858 H 207.723 C 208.434 71.3858 209.01 70.4651 209.01 69.3292 V 57.2342 C 209.01 56.0984 208.434 55.1777 207.723 55.1777 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Canvas UseLayoutRounding="False">
+                    <Canvas.OpacityMask>
+                        <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="227.0 36.0 80.0 80.0" Viewport="227.0 36.0 80.0 80.0">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup>
+                                    <GeometryDrawing Brush="#ffffffff">
+                                        <GeometryDrawing.Geometry>
+                                            <PathGeometry Figures="M 307 36 H 227 V 116 H 307 V 36 Z" FillRule="Nonzero"/>
+                                        </GeometryDrawing.Geometry>
+                                    </GeometryDrawing>
+                                </DrawingGroup>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.OpacityMask>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 302.412 102 H 299.418 C 298.541 102 297.83 102.782 297.83 103.747 V 106.212 H 295.588 C 294.711 106.212 294 106.994 294 107.959 V 111.253 C 294 112.218 294.711 113 295.588 113 H 302.412 C 303.289 113 304 112.218 304 111.253 V 103.747 C 304 102.782 303.289 102 302.412 102 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 261.329 108.009 H 249.234 C 248.099 108.009 247.178 108.586 247.178 109.296 V 111.723 C 247.178 112.433 248.099 113.009 249.234 113.009 H 261.329 C 262.465 113.009 263.386 112.433 263.386 111.723 V 109.296 C 263.386 108.586 262.465 108.009 261.329 108.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 284.766 108.009 H 272.671 C 271.535 108.009 270.614 108.586 270.614 109.296 V 111.723 C 270.614 112.433 271.535 113.009 272.671 113.009 H 284.766 C 285.902 113.009 286.823 112.433 286.823 111.723 V 109.296 C 286.823 108.586 285.902 108.009 284.766 108.009 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 235.412 106.263 H 233.17 V 103.798 C 233.17 102.833 232.459 102.051 231.582 102.051 H 228.588 C 227.711 102.051 227 102.833 227 103.798 V 111.304 C 227 112.269 227.711 113.051 228.588 113.051 H 235.412 C 236.289 113.051 237 112.269 237 111.304 V 108.01 C 237 107.045 236.289 106.263 235.412 106.263 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 228.287 95.8223 H 230.713 C 231.424 95.8223 232 94.9016 232 93.7658 V 81.6708 C 232 80.5349 231.424 79.6142 230.713 79.6142 H 228.287 C 227.576 79.6142 227 80.5349 227 81.6708 V 93.7658 C 227 94.9016 227.576 95.8223 228.287 95.8223 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 228.287 72.3858 H 230.713 C 231.424 72.3858 232 71.4651 232 70.3292 V 58.2342 C 232 57.0984 231.424 56.1777 230.713 56.1777 H 228.287 C 227.576 56.1777 227 57.0984 227 58.2342 V 70.3292 C 227 71.4651 227.576 72.3858 228.287 72.3858 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 235.412 36 H 228.588 C 227.711 36 227 36.7821 227 37.7469 V 45.2531 C 227 46.2179 227.711 47 228.588 47 H 231.582 C 232.459 47 233.17 46.2179 233.17 45.2531 V 42.7876 H 235.412 C 236.289 42.7876 237 42.0055 237 41.0406 V 37.7469 C 237 36.7823 236.289 36 235.412 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 284.766 36 H 272.671 C 271.535 36 270.614 36.5761 270.614 37.2869 V 39.7131 C 270.614 40.4239 271.535 41 272.671 41 H 284.766 C 285.902 41 286.823 40.4239 286.823 39.7131 V 37.2869 C 286.823 36.5763 285.902 36 284.766 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 249.234 41 H 261.329 C 262.465 41 263.386 40.4239 263.386 39.7131 V 37.2869 C 263.386 36.5761 262.465 36 261.329 36 H 249.234 C 248.098 36 247.177 36.5761 247.177 37.2869 V 39.7131 C 247.177 40.4239 248.098 41 249.234 41 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 302.412 36 H 295.588 C 294.711 36 294 36.7821 294 37.7469 V 41.0406 C 294 42.0055 294.711 42.7876 295.588 42.7876 H 297.83 V 45.2531 C 297.83 46.2179 298.541 47 299.418 47 H 302.412 C 303.289 47 304 46.2179 304 45.2531 V 37.7469 C 304 36.7823 303.289 36 302.412 36 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 302.723 79.6142 H 300.297 C 299.586 79.6142 299.01 80.5349 299.01 81.6708 V 93.7658 C 299.01 94.9014 299.586 95.8223 300.297 95.8223 H 302.723 C 303.434 95.8223 304.01 94.9014 304.01 93.7658 V 81.6708 C 304.01 80.5349 303.434 79.6142 302.723 79.6142 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path Fill="#ff0f0c34">
+                        <Path.Data>
+                            <PathGeometry Figures="M 302.723 56.1777 H 300.297 C 299.586 56.1777 299.01 57.0984 299.01 58.2342 V 70.3292 C 299.01 71.4651 299.586 72.3858 300.297 72.3858 H 302.723 C 303.434 72.3858 304.01 71.4651 304.01 70.3292 V 58.2342 C 304.01 57.0984 303.434 56.1777 302.723 56.1777 Z" FillRule="Nonzero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Canvas>
+            <Button x:Name="BackButton" Content="" Height="66" Canvas.Left="1799" Canvas.Top="36" Width="61" BorderBrush="Transparent" Background="Transparent" Click="BackButton_Click"/>
+            <TextBlock Height="59" Canvas.Left="492" TextWrapping="Wrap" Canvas.Top="10" Width="222" HorizontalAlignment="Left" VerticalAlignment="Center" Text="ROUND:" FontSize="60" FontFamily="Bahnschrift SemiBold" Foreground="#FF2D2D2D"/>
+            <TextBlock x:Name="RoundNumberTextBlock" Height="59" Canvas.Left="723" TextWrapping="Wrap" Canvas.Top="10" Width="157" FontSize="60" FontFamily="Bahnschrift SemiBold" Foreground="#FF2D2D2D" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Height="59" Canvas.Left="904" TextWrapping="Wrap" Canvas.Top="10" Width="170" Text="TURN:" FontSize="60" FontFamily="Bahnschrift SemiBold" Foreground="#FF2D2D2D" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock x:Name="PlayerTurnIndicatorTextBlock" Height="59" Canvas.Left="1097" TextWrapping="Wrap" Canvas.Top="10" Width="440" FontSize="60" FontFamily="Bahnschrift SemiBold" Foreground="#FF2D2D2D" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Ellipse x:Name="SpinnerActionArea" Height="293" Canvas.Left="1282" Stroke="Transparent" Canvas.Top="381" Width="293" MouseUp="SpinnerActionArea_MouseUp"/>
+            <Image x:Name="ImageControl" Height="295" Width="301" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="1281" Canvas.Top="374" StretchDirection="DownOnly">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="4.152"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+            <Button x:Name="ActionArea" Height="238" Canvas.Left="1271" Canvas.Top="382" Width="304" BorderBrush="Transparent" Background="Transparent" Click="ActionArea_Click" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="2.367"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+            </Button>
+
+        </Canvas>
+    </Viewbox>
+
+</Page>

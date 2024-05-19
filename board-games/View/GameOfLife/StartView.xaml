@@ -1,0 +1,51 @@
+﻿<Page x:Class="BoardGames.View.StartView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BoardGames.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Viewbox xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform" Name="StartWindowImageBackground_xaml">
+        <Canvas UseLayoutRounding="False" Width="1920.0" Height="1080.0">
+            <Image Source="../../Resources/main_background.png" Width="1920" Height="1080"/>
+
+            <Canvas UseLayoutRounding="False">
+
+
+                <Rectangle RadiusX="0.0" RadiusY="0.0" Canvas.Left="0.0" Canvas.Top="0.0" Width="1920.0" Height="1080.0">
+                    <Rectangle.Fill>
+                        <DrawingBrush ViewboxUnits="Absolute" Viewbox="0 0 1 1" Viewport="0 0 1 1" TileMode="Tile">
+                            <DrawingBrush.Drawing>
+                                <DrawingGroup/>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Path Fill="#ffffffff">
+                    <Path.Data>
+                        <PathGeometry Figures="M 636.465 575.048 L 701.457 595.592 V 606.632 L 636.465 627.08 V 615.368 L 684.465 601.064 L 636.465 586.76 V 575.048 Z M 743.356 629.48 V 617 L 798.556 617.096 C 801.372 617.096 803.516 616.456 804.988 615.176 C 806.524 613.832 807.292 611.688 807.292 608.744 C 807.292 605.8 806.524 603.688 804.988 602.408 C 803.516 601.064 801.372 600.392 798.556 600.392 H 764.188 C 757.084 600.392 751.548 598.696 747.58 595.304 C 743.676 591.848 741.724 586.792 741.724 580.136 C 741.724 573.48 743.676 568.456 747.58 565.064 C 751.548 561.608 757.084 559.88 764.188 559.88 H 818.14 V 572.36 L 765.82 572.264 C 763.068 572.264 760.924 572.904 759.388 574.184 C 757.852 575.4 757.084 577.384 757.084 580.136 C 757.084 582.888 757.852 584.904 759.388 586.184 C 760.924 587.4 763.068 588.008 765.82 588.008 H 800.188 C 807.292 588.008 812.796 589.768 816.7 593.288 C 820.668 596.744 822.652 601.896 822.652 608.744 C 822.652 615.528 820.668 620.68 816.7 624.2 C 812.796 627.72 807.292 629.48 800.188 629.48 H 743.356 Z M 829.883 595.112 V 560.36 H 914.363 V 595.112 H 898.811 V 572.84 H 877.883 V 629 H 862.523 V 572.84 H 845.435 V 595.112 H 829.883 Z M 910.054 629 L 940.966 560.36 H 964.678 L 995.59 629 H 978.886 L 972.358 614.504 H 933.286 L 926.758 629 H 910.054 Z M 938.854 602.024 H 966.79 L 953.446 572.36 H 952.198 L 938.854 602.024 Z M 1003.28 629 V 560.36 H 1060.79 C 1067.89 560.36 1073.39 562.152 1077.3 565.736 C 1081.27 569.32 1083.25 574.76 1083.25 582.056 C 1083.25 588.264 1081.81 593.128 1078.93 596.648 C 1076.05 600.168 1071.95 602.376 1066.64 603.272 L 1082.48 629 H 1065.01 L 1050.32 603.752 H 1018.64 V 629 H 1003.28 Z M 1058.96 572.84 H 1018.64 V 591.176 L 1058.96 591.272 C 1061.78 591.272 1063.92 590.568 1065.39 589.16 C 1066.93 587.752 1067.7 585.384 1067.7 582.056 C 1067.7 578.664 1066.93 576.296 1065.39 574.952 C 1063.92 573.544 1061.78 572.84 1058.96 572.84 Z M 1092.38 595.112 V 560.36 H 1176.86 V 595.112 H 1161.31 V 572.84 H 1140.38 V 629 H 1125.02 V 572.84 H 1107.93 V 595.112 H 1092.38 Z M 1283.55 627.08 L 1218.56 606.536 V 595.496 L 1283.55 575.048 V 586.76 L 1235.55 601.064 L 1283.55 615.368 V 627.08 Z" FillRule="Nonzero"/>
+                    </Path.Data>
+                </Path>
+            </Canvas>
+            <Button x:Name="StartButton" Content="" Height="89" Canvas.Left="720" Canvas.Top="550" Width="478" HorizontalAlignment="Left" VerticalAlignment="Center" Click="StartButton_Click" BorderBrush="Transparent" Background="Transparent" MouseEnter="StartButton_MouseEnter" MouseLeave="StartButton_MouseLeave"/>
+            <Canvas UseLayoutRounding="False" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Canvas.OpacityMask>
+                    <DrawingBrush ViewportUnits="Absolute" ViewboxUnits="Absolute" Viewbox="1778.0 963.0 73.0 73.0" Viewport="1778.0 963.0 73.0 73.0">
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing Brush="#ffffffff">
+                                    <GeometryDrawing.Geometry>
+                                        <PathGeometry Figures="M 1851 963 H 1778 V 1036 H 1851 V 963 Z" FillRule="Nonzero"/>
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </Canvas.OpacityMask>
+            </Canvas>
+            <Button x:Name="BackButton" Content="" Height="72" Canvas.Left="1790" Canvas.Top="964" Width="68" BorderBrush="Transparent" Background="Transparent" Click="BackButton_Click"/>
+            <Button x:Name="SettingsButton" Content="" Height="80" Canvas.Left="1680" Canvas.Top="960" Width="79" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Top" Click="SettingsButton_Click"/>
+        </Canvas>
+    </Viewbox>
+</Page>

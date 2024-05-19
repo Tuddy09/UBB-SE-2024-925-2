@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>UBB_SE_2024_925_2</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="2PlayerGames\**" />
+    <Compile Remove="board-games\**" />
+    <EmbeddedResource Remove="2PlayerGames\**" />
+    <EmbeddedResource Remove="board-games\**" />
+    <None Remove="2PlayerGames\**" />
+    <None Remove="board-games\**" />
+    <Page Remove="2PlayerGames\**" />
+    <Page Remove="board-games\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="2PlayerGames\2PlayerGames.csproj" />
+    <ProjectReference Include="board-games\board-games.csproj" />
+  </ItemGroup>
+
+</Project>

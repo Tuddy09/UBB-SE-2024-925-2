@@ -1,0 +1,15 @@
+﻿<Application x:Class="MainProject.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MainProject"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/2PlayerGames;component/Themes/MenuButtonTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/2PlayerGames;component/Themes/ChessStarDificultyButtonTheme.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/2PlayerGames;component/Themes/ObstructionDifficultyButtonTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
