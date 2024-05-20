@@ -11,12 +11,16 @@
 
   <ItemGroup>
     <Compile Remove="2PlayerGames\**" />
+    <Compile Remove="BACKEND-925-2\**" />
     <Compile Remove="board-games\**" />
     <EmbeddedResource Remove="2PlayerGames\**" />
+    <EmbeddedResource Remove="BACKEND-925-2\**" />
     <EmbeddedResource Remove="board-games\**" />
     <None Remove="2PlayerGames\**" />
+    <None Remove="BACKEND-925-2\**" />
     <None Remove="board-games\**" />
     <Page Remove="2PlayerGames\**" />
+    <Page Remove="BACKEND-925-2\**" />
     <Page Remove="board-games\**" />
   </ItemGroup>
 
