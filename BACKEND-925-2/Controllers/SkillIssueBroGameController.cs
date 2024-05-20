@@ -1,19 +1,16 @@
-﻿using BoardGames.Model.CommonEntities;
+﻿using Board_games.Model.Interfaces;
+using BoardGames.Model.CommonEntities;
 using BoardGames.Model.SkillIssueBroEntities;
-using Board_games.Model.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGames.Controller
 {
-    public class SkillIssueBroGameController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SkillIssueBroGameController : ControllerBase
     {
         private GameBoard gameBoard;
-        private List<Player> players = new List<Player>
-        {
-            new Player(1, "Egg"),
-            new Player(2, "Mario"),
-            new Player(3, "Gigi"),
-            new Player(4, "Flower")
-        };
+        private List<Player> players;
         private List<GameTile> gameTiles;
         private List<Pawn> gamePawns;
 
@@ -23,9 +20,15 @@ namespace BoardGames.Controller
         public delegate void PawnKilledEventHandler(object sender);
         public event PawnKilledEventHandler PawnKilled;
 
-        public SkillIssueBroGameController(List<Player> players)
+        public SkillIssueBroGameController()
         {
-            this.players = players;
+            players = new List<Player>
+        {
+            new Player(1, "Egg"),
+            new Player(2, "Mario"),
+            new Player(3, "Gigi"),
+            new Player(4, "Flower")
+        };
             gameTiles = GenerateTiles();
             gamePawns = new List<Pawn>();
             GeneratePawns();
@@ -252,18 +255,26 @@ namespace BoardGames.Controller
 
             return gameTiles;
         }
-        public List<Pawn> GetPawns()
+
+        // GET: api/SkillIssueBroGameController/GetPawns
+        [HttpGet]
+        [Route("GetPawns")]
+        public async Task<ActionResult<IEnumerable<Pawn>>> GetPawns()
         {
             /*
              * Pawns are in order Blue x 4, Yellow x 4, Green x 4, Red x 4
              */
             return gamePawns;
         }
-        public void SetPawns(List<Pawn> newPawns)
+        private void SetPawns(List<Pawn> newPawns)
         {
             this.gamePawns = newPawns;
         }
-            public int RollDice()
+
+        // GET: api/SkillIssueBroGameController/RollDice
+        [HttpGet]
+        [Route("RollDice")]
+        public int RollDice()
         {
             return gameBoard.GetDice().RollDice();
         }
@@ -437,7 +448,7 @@ namespace BoardGames.Controller
             return playerIndex;
         }
 
-        public int DeterminePawnIdBasedOnColumnAndRow(int column, int row)
+        private int DeterminePawnIdBasedOnColumnAndRow(int column, int row)
         {
             foreach (Pawn pawn in gamePawns)
             {
@@ -450,7 +461,7 @@ namespace BoardGames.Controller
             return -1;
         }
 
-        public Tile FindEmptyHomeTileInRange(int minId, int maxId)
+        private Tile FindEmptyHomeTileInRange(int minId, int maxId)
         {
             List<int> occupiedTiles = new List<int>();
             foreach (Pawn pawn in gamePawns)
@@ -497,7 +508,7 @@ namespace BoardGames.Controller
             OnPawnKilled();
         }
 
-        public void MovePawn(int pawnId, int leftDiceValue, int rightDiceValue, int playerId)
+        private void MovePawn(int pawnId, int leftDiceValue, int rightDiceValue, int playerId)
         {
             int diceValue = leftDiceValue + rightDiceValue;
             if (diceValue == 0)
@@ -543,6 +554,9 @@ namespace BoardGames.Controller
             gameBoard.UpdatePawns(gamePawns);
         }
 
+        // POST: api/SkillIssueBroGameController/MovePawnBasedOnClick
+        [HttpPost]
+        [Route("MovePawnBasedOnClick")]
         public void MovePawnBasedOnClick(int column, int row, int leftDiceValue, int rightDiceValue)
         {
             int pawnId = DeterminePawnIdBasedOnColumnAndRow(column, row);
@@ -550,11 +564,17 @@ namespace BoardGames.Controller
             MovePawn(pawnId, leftDiceValue, rightDiceValue, players[currentPlayerIndex].GetPlayerId());
         }
 
+        // POST: api/SkillIssueBroGameController/MovePawnBasedOnId
+        [HttpPost]
+        [Route("MovePawnBasedOnId")]
         public void ChangeCurrentPlayer()
         {
             currentPlayerIndex = DetermineNextPlayerIndex();
         }
 
+        // GET: api/SkillIssueBroGameController/GetCurrentPlayerColor
+        [HttpGet]
+        [Route("GetCurrentPlayerColor")]
         public string GetCurrentPlayerColor()
         {
             switch (currentPlayerIndex)
