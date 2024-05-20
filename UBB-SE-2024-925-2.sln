@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UBB-SE-2024-925-2", "UBB-SE-2024-925-2.csproj", "{15489ED1-1F25-4969-B80A-0BABA2361843}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UBB-SE-2024-925-2", "UBB-SE-2024-925-2.csproj", "{15489ED1-1F25-4969-B80A-0BABA2361843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2PlayerGames", "2PlayerGames\2PlayerGames.csproj", "{2D7FFE03-561E-4401-90BF-1E85A3740F2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2PlayerGames", "2PlayerGames\2PlayerGames.csproj", "{2D7FFE03-561E-4401-90BF-1E85A3740F2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "board-games", "board-games\board-games.csproj", "{CAC7C55A-0D60-4F4D-B46C-AE44BE7C9F29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "board-games", "board-games\board-games.csproj", "{CAC7C55A-0D60-4F4D-B46C-AE44BE7C9F29}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BACKEND-925-2", "BACKEND-925-2\BACKEND-925-2.csproj", "{7776DE0C-DDED-46EB-8D93-F522090B030F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{CAC7C55A-0D60-4F4D-B46C-AE44BE7C9F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC7C55A-0D60-4F4D-B46C-AE44BE7C9F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC7C55A-0D60-4F4D-B46C-AE44BE7C9F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7776DE0C-DDED-46EB-8D93-F522090B030F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7776DE0C-DDED-46EB-8D93-F522090B030F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7776DE0C-DDED-46EB-8D93-F522090B030F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7776DE0C-DDED-46EB-8D93-F522090B030F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
