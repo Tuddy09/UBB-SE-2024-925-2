@@ -1,4 +1,5 @@
-﻿using BoardGames.Model.CommonEntities;
+﻿using BACKEND_925_2.Service;
+using BoardGames.Model.CommonEntities;
 using BoardGames.Model.SkillIssueBroEntities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,34 +9,15 @@ namespace BoardGames.Controller
     [ApiController]
     public class SkillIssueBroGameController : ControllerBase
     {
-        private GameBoard gameBoard;
-        private List<Player> players;
-        private List<GameTile> gameTiles;
-        private List<Pawn> gamePawns;
 
-        private static int generatedPawnIds = 0;
-        private int currentPlayerIndex;
+        private readonly GameState _gameState;
 
         public delegate void PawnKilledEventHandler(object sender);
         public event PawnKilledEventHandler PawnKilled;
 
-        public SkillIssueBroGameController()
+        public SkillIssueBroGameController(GameState gameState)
         {
-            players = new List<Player>
-        {
-            new Player(1, "Egg"),
-            new Player(2, "Mario"),
-            new Player(3, "Gigi"),
-            new Player(4, "Flower")
-        };
-            gameTiles = GenerateTiles();
-            gamePawns = new List<Pawn>();
-            GeneratePawns();
-
-            // id is subject to change; can do an insert first and then retrieve the id (bcuz identity)
-            // and create the object
-            currentPlayerIndex = DetermineStartingPlayerIndex();    // This is unused later in the code.
-            gameBoard = new GameBoard(gameTiles, gamePawns, this.players);
+            _gameState = gameState;
         }
 
         protected virtual void OnPawnKilled()
@@ -46,216 +28,9 @@ namespace BoardGames.Controller
             }
         }
 
-        private List<Pawn> GenerateBluePawns()
-        {
-            List<Pawn> bluePawns = new List<Pawn>();
-            // 4 pawns on tiles 0-3
-            for (int index = 0; index < 4; index++)
-            {
-                Pawn newPawn = new Pawn(generatedPawnIds, gameTiles[index]);
-                generatedPawnIds++;
-                bluePawns.Add(newPawn);
-            }
 
-            return bluePawns;
-        }
 
-        private List<Pawn> GenerateYellowPawns()
-        {
-            List<Pawn> yellowPawns = new List<Pawn>();
-            for (int index = 4; index < 8; index++)
-            {
-                Pawn newPawn = new Pawn(generatedPawnIds, gameTiles[index]);
-                generatedPawnIds++;
-                yellowPawns.Add(newPawn);
-            }
-            return yellowPawns;
-        }
-
-        private List<Pawn> GenerateGreenPawns()
-        {
-            List<Pawn> greenPawns = new List<Pawn>();
-            for (int i = 8; i < 12; i++)
-            {
-                Pawn newPawn = new Pawn(generatedPawnIds, gameTiles[i]);
-                generatedPawnIds++;
-                greenPawns.Add(newPawn);
-            }
-            return greenPawns;
-        }
-
-        private List<Pawn> GenerateRedPawns()
-        {
-            List<Pawn> redPawns = new List<Pawn>();
-            for (int i = 12; i < 16; i++)
-            {
-                Pawn newPawn = new Pawn(generatedPawnIds, gameTiles[i]);
-                generatedPawnIds++;
-                redPawns.Add(newPawn);
-            }
-            return redPawns;
-        }
-
-        private void GeneratePawns()
-        {
-            // associate pawns depending on the number of players
-            List<string> colors = new List<string> { "Blue", "Yellow", "Green", "Red" };
-            List<Pawn> bluePawns, yellowPawns, greenPawns, redPawns;
-            bluePawns = new List<Pawn>();
-            yellowPawns = new List<Pawn>();
-            greenPawns = new List<Pawn>();
-            redPawns = new List<Pawn>();
-
-            switch (players.Count)
-            {
-                case 2:
-                    bluePawns = GenerateBluePawns();
-                    yellowPawns = GenerateYellowPawns();
-                    break;
-                case 3:
-                    bluePawns = GenerateBluePawns();
-                    yellowPawns = GenerateYellowPawns();
-                    greenPawns = GenerateGreenPawns();
-                    break;
-                case 4:
-                    bluePawns = GenerateBluePawns();
-                    yellowPawns = GenerateYellowPawns();
-                    greenPawns = GenerateGreenPawns();
-                    redPawns = GenerateRedPawns();
-                    break;
-            }
-            foreach (Pawn bluePawn in bluePawns)
-            {
-                bluePawn.SetAssociatedPlayer(players[0]);
-                gamePawns.Add(bluePawn);
-            }
-
-            foreach (Pawn yellowPawn in yellowPawns)
-            {
-                yellowPawn.SetAssociatedPlayer(players[1]);
-                gamePawns.Add(yellowPawn);
-            }
-
-            if (players.Count > 2)
-            {
-                foreach (Pawn greenPawn in greenPawns)
-                {
-                    greenPawn.SetAssociatedPlayer(players[2]);
-                    gamePawns.Add(greenPawn);
-                }
-            }
-            if (players.Count > 3)
-            {
-                foreach (Pawn redPawn in redPawns)
-                {
-                    redPawn.SetAssociatedPlayer(players[3]);
-                    gamePawns.Add(redPawn);
-                }
-            }
-        }
-
-        private List<GameTile> GenerateTiles()
-        {
-            List<GameTile> gameTiles =
-            [
-                // the blue corner
-                new GameTile(0, 9, 0), // id, row, column
-                new GameTile(1, 9, 1),
-                new GameTile(2, 10, 0),
-                new GameTile(3, 10, 1),
-
-                // the yellow corner
-                new GameTile(4, 0, 0),
-                new GameTile(5, 0, 1),
-                new GameTile(6, 1, 0),
-                new GameTile(7, 1, 1),
-
-                // the green corner
-                new GameTile(8, 0, 9),
-                new GameTile(9, 0, 10),
-                new GameTile(10, 1, 9),
-                new GameTile(11, 1, 10),
-
-                // the red corner
-                new GameTile(12, 9, 9),
-                new GameTile(13, 9, 10),
-                new GameTile(14, 10, 9),
-                new GameTile(15, 10, 10),
-            ];
-
-            int index;
-            int count = 16;
-            for (index = 10; index >= 6; index--)
-            {
-                gameTiles.Add(new GameTile(count++, index, 4));
-            }
-            for (index = 3; index >= 0; index--)
-            {
-                gameTiles.Add(new GameTile(count++, 6, index));
-            }
-            for (index = 5; index >= 4; index--)
-            {
-                gameTiles.Add(new GameTile(count++, index, 0));
-            }
-            for (index = 1; index <= 4; index++)
-            {
-                gameTiles.Add(new GameTile(count++, 4, index));
-            }
-            for (index = 3; index >= 0; index--)
-            {
-                gameTiles.Add(new GameTile(count++, index, 4));
-            }
-            for (index = 5; index <= 6; index++)
-            {
-                gameTiles.Add(new GameTile(count++, 0, index));
-            }
-            for (index = 1; index <= 4; index++)
-            {
-                gameTiles.Add(new GameTile(count++, index, 6));
-            }
-            for (index = 7; index <= 10; index++)
-            {
-                gameTiles.Add(new GameTile(count++, 4, index));
-            }
-            for (index = 5; index <= 6; index++)
-            {
-                gameTiles.Add(new GameTile(count++, index, 10));
-            }
-            for (index = 9; index >= 6; index--)
-            {
-                gameTiles.Add(new GameTile(count++, 6, index));
-            }
-            for (index = 7; index <= 10; index++)
-            {
-                gameTiles.Add(new GameTile(count++, index, 6));
-            }
-            gameTiles.Add(new GameTile(count++, 10, 5));
-            // the crosses
-            // the blue cross
-            for (index = 9; index >= 6; index--)
-            {
-                gameTiles.Add(new GameTile(count++, index, 5));
-            }
-            // the yellow cross
-            for (index = 1; index <= 4; index++)
-            {
-                gameTiles.Add(new GameTile(count++, 5, index));
-            }
-            // the green cross
-            for (index = 1; index <= 4; index++)
-            {
-                gameTiles.Add(new GameTile(count++, index, 5));
-            }
-            // the red cross
-            for (index = 9; index >= 6; index--)
-            {
-                gameTiles.Add(new GameTile(count++, 5, index));
-            }
-
-            return gameTiles;
-        }
-
-        // GET: api/SkillIssueBroGameController/GetPawns
+        // GET: api/SkillIssueBroGame/GetPawns
         [HttpGet]
         [Route("GetPawns")]
         public ActionResult<IEnumerable<Pawn>> GetPawns()
@@ -264,19 +39,15 @@ namespace BoardGames.Controller
              * Pawns are in order Blue x 4, Yellow x 4, Green x 4, Red x 4
              */
             // return as json objects
-            return Ok(gamePawns);
-        }
-        private void SetPawns(List<Pawn> newPawns)
-        {
-            this.gamePawns = newPawns;
+            return _gameState.GamePawns;
         }
 
-        // GET: api/SkillIssueBroGameController/RollDice
+        // GET: api/SkillIssueBroGame/RollDice
         [HttpGet]
         [Route("RollDice")]
         public int RollDice()
         {
-            return gameBoard.GetDice().RollDice();
+            return _gameState.GameBoard.GetDice().RollDice();
         }
 
         private int ComputeNewTileId(string pawnColor, int currentTileId, int diceValue)
@@ -437,20 +208,20 @@ namespace BoardGames.Controller
 
         private int DetermineNextPlayerIndex()
         {
-            return (currentPlayerIndex + 1) % players.Count;
+            return (_gameState.currentPlayerIndex + 1) % _gameState.Players.Count;
         }
 
         private int DetermineStartingPlayerIndex()
         {
             Random random = new Random();
-            int playerIndex = random.Next(0, players.Count - 1);
+            int playerIndex = random.Next(0, _gameState.Players.Count - 1);
 
             return playerIndex;
         }
 
         private int DeterminePawnIdBasedOnColumnAndRow(int column, int row)
         {
-            foreach (Pawn pawn in gamePawns)
+            foreach (Pawn pawn in _gameState.GamePawns)
             {
                 Tile occupiedTile = pawn.GetOccupiedTile();
                 if (occupiedTile.GetCenterXPosition() == column && occupiedTile.GetCenterYPosition() == row)
@@ -464,7 +235,7 @@ namespace BoardGames.Controller
         private Tile FindEmptyHomeTileInRange(int minId, int maxId)
         {
             List<int> occupiedTiles = new List<int>();
-            foreach (Pawn pawn in gamePawns)
+            foreach (Pawn pawn in _gameState.GamePawns)
             {
                 Tile occupiedTile = pawn.GetOccupiedTile();
                 occupiedTiles.Add(occupiedTile.GetTileId());
@@ -474,7 +245,7 @@ namespace BoardGames.Controller
             {
                 if (!occupiedTiles.Contains(index))
                 {
-                    return gameTiles[index];
+                    return _gameState.GameTiles[index];
                 }
             }
             throw new Exception("Can't revive pawn??");
@@ -501,9 +272,9 @@ namespace BoardGames.Controller
                     break;
             }
 
-            gamePawns[pawnId].ChangeTile(newTile);
+            _gameState.GamePawns[pawnId].ChangeTile(newTile);
 
-            gameBoard.UpdatePawns(gamePawns);
+            _gameState.GameBoard.UpdatePawns(_gameState.GamePawns);
 
             OnPawnKilled();
         }
@@ -515,12 +286,12 @@ namespace BoardGames.Controller
             {
                 throw new Exception("Can't move pawn yet");
             }
-            if (gamePawns[pawnId].GetPlayer().GetPlayerId() != playerId)
+            if (_gameState.GamePawns[pawnId].GetPlayer().GetPlayerId() != playerId)
             {
                 throw new Exception("Not your pawn :(");
             }
 
-            int currentTileId = gamePawns[pawnId].GetOccupiedTile().GetTileId();
+            int currentTileId = _gameState.GamePawns[pawnId].GetOccupiedTile().GetTileId();
 
             if (currentTileId < 16)
             {
@@ -538,23 +309,23 @@ namespace BoardGames.Controller
                 throw new Exception("Pawn cannot go further");
             }
 
-            GameTile newTile = gameTiles[newTileId];
+            GameTile newTile = _gameState.GameTiles[newTileId];
 
             // Eliminate pawn on the same tile if there is any
             int enemyPawnId = DeterminePawnIdBasedOnColumnAndRow(newTile.GetGridColumnInded(), newTile.GetGridRowIndex());
             if (enemyPawnId != -1)
             {
-                Pawn enemyPawn = gamePawns[enemyPawnId];
+                Pawn enemyPawn = _gameState.GamePawns[enemyPawnId];
                 if (enemyPawn.GetPlayer().GetPlayerId() != playerId)
                 {
                     KillPawn(enemyPawnId);
                 }
             }
-            gamePawns[pawnId].ChangeTile(newTile);
-            gameBoard.UpdatePawns(gamePawns);
+            _gameState.GamePawns[pawnId].ChangeTile(newTile);
+            _gameState.GameBoard.UpdatePawns(_gameState.GamePawns);
         }
 
-        // GET: api/SkillIssueBroGameController/MovePawnBasedOnClick
+        // GET: api/SkillIssueBroGame/MovePawnBasedOnClick
         [HttpGet]
         [Route("MovePawnBasedOnClick")]
         public ActionResult MovePawnBasedOnClick(int column, int row, int leftDiceValue, int rightDiceValue)
@@ -563,7 +334,7 @@ namespace BoardGames.Controller
             {
                 int pawnId = DeterminePawnIdBasedOnColumnAndRow(column, row);
 
-                MovePawn(pawnId, leftDiceValue, rightDiceValue, players[currentPlayerIndex].GetPlayerId());
+                MovePawn(pawnId, leftDiceValue, rightDiceValue, _gameState.Players[_gameState.currentPlayerIndex].GetPlayerId());
 
                 return Ok("Pawn moved successfully");
             }
@@ -575,15 +346,15 @@ namespace BoardGames.Controller
 
         }
 
-        // GET: api/SkillIssueBroGameController/ChangeCurrentPlayer
+        // GET: api/SkillIssueBroGame/ChangeCurrentPlayer
         [HttpGet]
         [Route("ChangeCurrentPlayer")]
         public void ChangeCurrentPlayer()
         {
-            currentPlayerIndex = DetermineNextPlayerIndex();
+            _gameState.currentPlayerIndex = DetermineNextPlayerIndex();
         }
 
-        // GET: api/SkillIssueBroGameController/GetCurrentPlayerColor
+        // GET: api/SkillIssueBroGame/GetCurrentPlayerColor
         [HttpGet]
         [Route("GetCurrentPlayerColor")]
         public IActionResult GetCurrentPlayerColor()
@@ -591,7 +362,7 @@ namespace BoardGames.Controller
             try
             {
                 string color;
-                switch (currentPlayerIndex)
+                switch (_gameState.currentPlayerIndex)
                 {
                     case 0: color = "b"; break;
                     case 1: color = "y"; break;

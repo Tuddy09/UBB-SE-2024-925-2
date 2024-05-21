@@ -124,7 +124,7 @@ namespace BoardGames.View.SkillIssueBro.Board
             column1.column1Grid.Children[1].Visibility = Visibility.Visible;
         }
 
-        private void SwitchToNextTurn()
+        private async Task SwitchToNextTurnAsync()
         {
             leftDiceValue = 0;
             rightDiceValue = 0;
@@ -149,7 +149,7 @@ namespace BoardGames.View.SkillIssueBro.Board
                 client.BaseAddress = new Uri("http://localhost:5070/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.GetAsync("api/SkillIssueBroGame/ChangeCurrentPlayer");
+                var response = await client.GetAsync("api/SkillIssueBroGame/ChangeCurrentPlayer");
             }
             ShowCurrentPlayerColorEllipseAsync();
             HideDice();
@@ -176,7 +176,7 @@ namespace BoardGames.View.SkillIssueBro.Board
                 }
                 if (leftDiceValue != rightDiceValue)
                 {
-                    SwitchToNextTurn();
+                    SwitchToNextTurnAsync();
                 }
                 else
                 {
@@ -185,16 +185,17 @@ namespace BoardGames.View.SkillIssueBro.Board
 }
             catch (Exception ex)
             {
-                if (ex.Message.Equals("Can't move pawn yet"))
+                string message = ex.Message.Replace("\"", string.Empty);
+                if (message.Equals("Can't move pawn yet"))
                 {
                     MessageBox.Show(ex.Message);
                 }
-                else if (ex.Message.Equals("You have to roll two 6s!"))
+                else if (message.Equals("You have to roll two 6s!"))
                 {
                     MessageBox.Show(ex.Message);
                     if (leftDiceValue != rightDiceValue)
                     {
-                        SwitchToNextTurn();
+                        SwitchToNextTurnAsync();
                     }
                     else
                     {
@@ -208,7 +209,7 @@ namespace BoardGames.View.SkillIssueBro.Board
                     if (currentPlayerTries == 0)
                     {
                         MessageBox.Show("Tries left 0\nSkipping turn");
-                        SwitchToNextTurn();
+                        SwitchToNextTurnAsync();
                     }
                     else
                     {
