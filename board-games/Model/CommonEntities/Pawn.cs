@@ -1,49 +1,51 @@
 ﻿namespace BoardGames.Model.CommonEntities;
-    using Board_games.Model.Interfaces;
+public class Pawn
+{
+    public int Id { get; set; }
+    public Tile OccupiedTile { get; set; }
+    public Player AssociatedPlayer { get; set; }
 
-    public class Pawn : IPawn
+
+    public Pawn()
     {
-        private int id;
-        private ITile occupiedTile;
-        private Player associatedPlayer;
-
-        public Pawn(int pawnId, Tile occupiedTile)
-        {
-            id = pawnId;
-            this.occupiedTile = occupiedTile;
-        }
-
-        public Pawn(int pawnId, ITile occupiedTile, Player associatedPlayer)
-        {
-            id = pawnId;
-            this.occupiedTile = occupiedTile;
-            this.associatedPlayer = associatedPlayer;
-        }
-
-        public void ChangeTile(Tile tileToChangeTo)
-        {
-            occupiedTile = tileToChangeTo;
-        }
-        public ITile GetOccupiedTile()
-        {
-            return occupiedTile;
-        }
-        public int GetPawnId()
-        {
-            return id;
-        }
-        public Player GetPlayer()
-        {
-            return associatedPlayer;
-        }
-
-        public void SetAssociatedPlayer(Player associatedPlayer)
-        {
-            this.associatedPlayer = associatedPlayer;
-        }
-
-        public Player GetAssociatedPlayer()
-        {
-            return associatedPlayer;
-        }
     }
+    public Pawn(int pawnId, Tile occupiedTile)
+    {
+        Id = pawnId;
+        this.OccupiedTile = occupiedTile;
+    }
+
+    public Pawn(int pawnId, Tile occupiedTile, Player associatedPlayer)
+    {
+        Id = pawnId;
+        this.OccupiedTile = occupiedTile;
+        this.AssociatedPlayer = associatedPlayer;
+    }
+
+    public void ChangeTile(Tile tileToChangeTo)
+    {
+        OccupiedTile = tileToChangeTo;
+    }
+    public Tile GetOccupiedTile()
+    {
+        return OccupiedTile;
+    }
+    public int GetPawnId()
+    {
+        return Id;
+    }
+    public Player GetPlayer()
+    {
+        return AssociatedPlayer;
+    }
+
+    public void SetAssociatedPlayer(Player associatedPlayer)
+    {
+        this.AssociatedPlayer = associatedPlayer;
+    }
+
+    public Player GetAssociatedPlayer()
+    {
+        return AssociatedPlayer;
+    }
+}

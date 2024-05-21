@@ -1,10 +1,11 @@
 using BACKEND_925_2.Models;
+using BACKEND_925_2.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSingleton<GameState>();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<GamesDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
