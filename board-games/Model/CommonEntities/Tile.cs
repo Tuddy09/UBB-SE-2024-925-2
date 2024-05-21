@@ -1,12 +1,14 @@
-﻿using Board_games.Model.Interfaces;
-
-namespace BoardGames.Model.CommonEntities
+﻿namespace BoardGames.Model.CommonEntities
 {
-    public class Tile : ITile
+    public class Tile 
     {
         public int Id { get; set; }
         public float CenterPositionX { get; set; }
         public float CenterPositionY { get; set; }
+
+        public Tile()
+        {
+        }
 
         public Tile(int tileId, float centerXPosition, float centerYPosition)
         {

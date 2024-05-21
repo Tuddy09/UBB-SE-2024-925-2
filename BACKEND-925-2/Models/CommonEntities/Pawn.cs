@@ -1,49 +1,47 @@
 ﻿namespace BoardGames.Model.CommonEntities;
-    using Board_games.Model.Interfaces;
-
-    public class Pawn : IPawn
+public class Pawn
     {
-    public int id { get; set; }
-    public ITile occupiedTile { get; set; }
-    public Player associatedPlayer { get; set; }
+    public int Id { get; set; }
+    public Tile OccupiedTile { get; set; }
+    public Player AssociatedPlayer { get; set; }
 
     public Pawn(int pawnId, Tile occupiedTile)
         {
-            id = pawnId;
-            this.occupiedTile = occupiedTile;
+            Id = pawnId;
+            this.OccupiedTile = occupiedTile;
         }
 
-        public Pawn(int pawnId, ITile occupiedTile, Player associatedPlayer)
+        public Pawn(int pawnId, Tile occupiedTile, Player associatedPlayer)
         {
-            id = pawnId;
-            this.occupiedTile = occupiedTile;
-            this.associatedPlayer = associatedPlayer;
+            Id = pawnId;
+            this.OccupiedTile = occupiedTile;
+            this.AssociatedPlayer = associatedPlayer;
         }
 
         public void ChangeTile(Tile tileToChangeTo)
         {
-            occupiedTile = tileToChangeTo;
+            OccupiedTile = tileToChangeTo;
         }
-        public ITile GetOccupiedTile()
+        public Tile GetOccupiedTile()
         {
-            return occupiedTile;
+            return OccupiedTile;
         }
         public int GetPawnId()
         {
-            return id;
+            return Id;
         }
         public Player GetPlayer()
         {
-            return associatedPlayer;
+            return AssociatedPlayer;
         }
 
         public void SetAssociatedPlayer(Player associatedPlayer)
         {
-            this.associatedPlayer = associatedPlayer;
+            this.AssociatedPlayer = associatedPlayer;
         }
 
         public Player GetAssociatedPlayer()
         {
-            return associatedPlayer;
+            return AssociatedPlayer;
         }
     }

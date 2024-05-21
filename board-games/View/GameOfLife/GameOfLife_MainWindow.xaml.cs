@@ -3,7 +3,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using BoardGames.Controller;
 using BoardGames.Model.GameOfLife;
 using BoardGames.View;
 
@@ -25,7 +24,6 @@ namespace BoardGames
         // new BitmapImage(new Uri("../../Resources/SpinnerValues/Spinner1.png", UriKind.Relative));
         private const string CommonFileRoot = "../../Resources/SpinnerValues/Spinner";
 
-        private readonly GameOfLifeController controller = new GameOfLifeController();
 
         public GameOfLife_MainWindow()
         {
@@ -41,24 +39,11 @@ namespace BoardGames
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="numberOfIndices"/> is greater than the total number of tiles or smaller than 0.
         /// </exception>
-        private List<int> GenerateRandomIndices(int numberOfIndices)
-        {
-            try
-            {
-                var indices = controller.GenerateRandomIndices(numberOfIndices, NumberOfTiles);
-                return indices;
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                MessageBox.Show(e.Message);
-                return null;
-            }
-        }
 
         private void GameOfLife_MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             int nextIndex = 0;
-            List<int> indicesToColor = GenerateRandomIndices(TotalNumberOfEventTiles + NumberOfGreenTiles);
+            List<int> indicesToColor = new List<int>();
             List<int> indicesOfGreenTiles = indicesToColor.GetRange(nextIndex, NumberOfGreenTiles);
             ColorTiles(indicesOfGreenTiles, Color.FromRgb(150, 187, 32));
             nextIndex = NumberOfGreenTiles;

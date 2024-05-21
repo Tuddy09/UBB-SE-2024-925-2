@@ -2,22 +2,26 @@
 {
     public class Player
     {
-        public int id { get; set; }
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public Player()
+        {
+        }
 
         public Player(int playerId, string playerName)
         {
-            id = playerId;
-            name = playerName;
+            Id = playerId;
+            Name = playerName;
         }
 
         public string GetPlayerName()
         {
-            return name;
+            return Name;
         }
         public int GetPlayerId()
         {
-            return id;
+            return Id;
         }
     }
 }

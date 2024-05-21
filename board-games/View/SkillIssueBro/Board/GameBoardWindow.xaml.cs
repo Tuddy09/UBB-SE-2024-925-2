@@ -2,12 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using BoardGames.Controller;
-using BoardGames.Controller;
 using BoardGames.Model.CommonEntities;
 using BoardGames.View.SkillIssueBro.Dice;
 using BoardGames.View.SkillIssueBro.Pawns;
-using Board_games.Model.Interfaces;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -171,7 +168,11 @@ namespace BoardGames.View.SkillIssueBro.Board
                     client.BaseAddress = new Uri("http://localhost:5070/");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.GetAsync($"api/SkillIssueBroGame/MovePawnBasedOnClick?column={column}&row={row}&leftDiceValue={leftDiceValue}&rightDiceValue={rightDiceValue}");
+                    HttpResponseMessage response = client.GetAsync($"api/SkillIssueBroGame/MovePawnBasedOnClick?column={column}&row={row}&leftDiceValue={leftDiceValue}&rightDiceValue={rightDiceValue}").Result;
+                    if (!response.Content.ReadAsStringAsync().Result.Equals("Moved pawn successfully"))
+                    {
+                        throw new Exception(response.Content.ReadAsStringAsync().Result);
+                    }
                 }
                 if (leftDiceValue != rightDiceValue)
                 {
@@ -333,13 +334,13 @@ namespace BoardGames.View.SkillIssueBro.Board
             // blue and yellow spawned regardless
             for (int i = 0; i < 4; i++)
             {
-                ITile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
+                Tile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
                 gameBoard.AddBluePawn((int)occupiedTile.GetCenterXPosition(), (int)occupiedTile.GetCenterYPosition());
             }
 
             for (int i = 4; i < 8; i++)
             {
-                ITile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
+                Tile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
                 gameBoard.AddYellowPawn((int)occupiedTile.GetCenterXPosition(), (int)occupiedTile.GetCenterYPosition());
             }
 
@@ -348,7 +349,7 @@ namespace BoardGames.View.SkillIssueBro.Board
             {
                 for (int i = 8; i < 12; i++)
                 {
-                    ITile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
+                    Tile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
                     gameBoard.AddGreenPawn((int)occupiedTile.GetCenterXPosition(), (int)occupiedTile.GetCenterYPosition());
                 }
             }
@@ -357,7 +358,7 @@ namespace BoardGames.View.SkillIssueBro.Board
             {
                 for (int i = 12; i < 16; i++)
                 {
-                    ITile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
+                    Tile occupiedTile = pawnsToSpawn[i].GetOccupiedTile();
                     gameBoard.AddRedPawn((int)occupiedTile.GetCenterXPosition(), (int)occupiedTile.GetCenterYPosition());
                 }
             }

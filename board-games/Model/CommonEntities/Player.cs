@@ -5,6 +5,10 @@
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public Player()
+        {
+        }
+
         public Player(int playerId, string playerName)
         {
             Id = playerId;

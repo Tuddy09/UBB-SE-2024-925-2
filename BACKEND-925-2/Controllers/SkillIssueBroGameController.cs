@@ -1,5 +1,4 @@
-﻿using Board_games.Model.Interfaces;
-using BoardGames.Model.CommonEntities;
+﻿using BoardGames.Model.CommonEntities;
 using BoardGames.Model.SkillIssueBroEntities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -453,7 +452,7 @@ namespace BoardGames.Controller
         {
             foreach (Pawn pawn in gamePawns)
             {
-                ITile occupiedTile = pawn.GetOccupiedTile();
+                Tile occupiedTile = pawn.GetOccupiedTile();
                 if (occupiedTile.GetCenterXPosition() == column && occupiedTile.GetCenterYPosition() == row)
                 {
                     return pawn.GetPawnId();
@@ -467,7 +466,7 @@ namespace BoardGames.Controller
             List<int> occupiedTiles = new List<int>();
             foreach (Pawn pawn in gamePawns)
             {
-                ITile occupiedTile = pawn.GetOccupiedTile();
+                Tile occupiedTile = pawn.GetOccupiedTile();
                 occupiedTiles.Add(occupiedTile.GetTileId());
             }
 
@@ -555,14 +554,25 @@ namespace BoardGames.Controller
             gameBoard.UpdatePawns(gamePawns);
         }
 
-        // POST: api/SkillIssueBroGameController/MovePawnBasedOnClick
-        [HttpPost]
+        // GET: api/SkillIssueBroGameController/MovePawnBasedOnClick
+        [HttpGet]
         [Route("MovePawnBasedOnClick")]
-        public void MovePawnBasedOnClick(int column, int row, int leftDiceValue, int rightDiceValue)
+        public ActionResult MovePawnBasedOnClick(int column, int row, int leftDiceValue, int rightDiceValue)
         {
-            int pawnId = DeterminePawnIdBasedOnColumnAndRow(column, row);
+            try
+            {
+                int pawnId = DeterminePawnIdBasedOnColumnAndRow(column, row);
 
-            MovePawn(pawnId, leftDiceValue, rightDiceValue, players[currentPlayerIndex].GetPlayerId());
+                MovePawn(pawnId, leftDiceValue, rightDiceValue, players[currentPlayerIndex].GetPlayerId());
+
+                return Ok("Pawn moved successfully");
+            }
+            catch (Exception ex)
+            {
+                // send the exception message to the client\
+                return Ok(ex.Message);
+            }
+
         }
 
         // GET: api/SkillIssueBroGameController/ChangeCurrentPlayer
