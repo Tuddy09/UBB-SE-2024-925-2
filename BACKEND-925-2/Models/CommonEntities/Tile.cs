@@ -4,9 +4,9 @@ namespace BoardGames.Model.CommonEntities
 {
     public class Tile : ITile
     {
-        private int id;
-        private float centerPositionX;
-        private float centerPositionY;
+        public int id { get; set; }
+        public float centerPositionX { get; set; }
+        public float centerPositionY { get; set; }
 
         public Tile(int tileId, float centerXPosition, float centerYPosition)
         {

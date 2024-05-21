@@ -2,8 +2,8 @@
 {
     public class Player
     {
-        private int id;
-        private string name;
+        public int id { get; set; }
+        public string name { get; set; }
 
         public Player(int playerId, string playerName)
         {

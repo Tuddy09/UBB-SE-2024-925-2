@@ -3,9 +3,9 @@ using Board_games.Model.Interfaces;
 
 public class Pawn : IPawn
 {
-    private int id;
-    private ITile occupiedTile;
-    private Player associatedPlayer;
+    public int Id { get; set; }
+    public ITile OccupiedTile { get; set; }
+    public Player AssociatedPlayer { get; set; }
 
 
     public Pawn()
@@ -13,41 +13,41 @@ public class Pawn : IPawn
     }
     public Pawn(int pawnId, Tile occupiedTile)
     {
-        id = pawnId;
-        this.occupiedTile = occupiedTile;
+        Id = pawnId;
+        this.OccupiedTile = occupiedTile;
     }
 
     public Pawn(int pawnId, ITile occupiedTile, Player associatedPlayer)
     {
-        id = pawnId;
-        this.occupiedTile = occupiedTile;
-        this.associatedPlayer = associatedPlayer;
+        Id = pawnId;
+        this.OccupiedTile = occupiedTile;
+        this.AssociatedPlayer = associatedPlayer;
     }
 
     public void ChangeTile(Tile tileToChangeTo)
     {
-        occupiedTile = tileToChangeTo;
+        OccupiedTile = tileToChangeTo;
     }
     public ITile GetOccupiedTile()
     {
-        return occupiedTile;
+        return OccupiedTile;
     }
     public int GetPawnId()
     {
-        return id;
+        return Id;
     }
     public Player GetPlayer()
     {
-        return associatedPlayer;
+        return AssociatedPlayer;
     }
 
     public void SetAssociatedPlayer(Player associatedPlayer)
     {
-        this.associatedPlayer = associatedPlayer;
+        this.AssociatedPlayer = associatedPlayer;
     }
 
     public Player GetAssociatedPlayer()
     {
-        return associatedPlayer;
+        return AssociatedPlayer;
     }
 }

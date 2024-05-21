@@ -259,12 +259,13 @@ namespace BoardGames.Controller
         // GET: api/SkillIssueBroGameController/GetPawns
         [HttpGet]
         [Route("GetPawns")]
-        public async Task<ActionResult<IEnumerable<Pawn>>> GetPawns()
+        public ActionResult<IEnumerable<Pawn>> GetPawns()
         {
             /*
              * Pawns are in order Blue x 4, Yellow x 4, Green x 4, Red x 4
              */
-            return gamePawns;
+            // return as json objects
+            return Ok(gamePawns);
         }
         private void SetPawns(List<Pawn> newPawns)
         {

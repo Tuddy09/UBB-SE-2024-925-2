@@ -3,11 +3,11 @@
 
     public class Pawn : IPawn
     {
-        private int id;
-        private ITile occupiedTile;
-        private Player associatedPlayer;
+    public int id { get; set; }
+    public ITile occupiedTile { get; set; }
+    public Player associatedPlayer { get; set; }
 
-        public Pawn(int pawnId, Tile occupiedTile)
+    public Pawn(int pawnId, Tile occupiedTile)
         {
             id = pawnId;
             this.occupiedTile = occupiedTile;

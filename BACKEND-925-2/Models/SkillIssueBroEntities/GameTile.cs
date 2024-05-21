@@ -4,9 +4,9 @@ namespace BoardGames.Model.SkillIssueBroEntities
 {
     public class GameTile : Tile
     {
-        private int tileId;
-        private int gridRowIndex;
-        private int gridColumnIndex;
+        public int tileId { get; set; }
+        public int gridRowIndex { get; set; }
+        public int gridColumnIndex { get; set; }
 
         // someone find a solution
         public GameTile(int tileId, int gridRowIndex, int gridColumnIndex) : base(tileId, gridColumnIndex, gridRowIndex)

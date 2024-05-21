@@ -4,27 +4,27 @@ namespace BoardGames.Model.CommonEntities
 {
     public class Tile : ITile
     {
-        private int id;
-        private float centerPositionX;
-        private float centerPositionY;
+        public int Id { get; set; }
+        public float CenterPositionX { get; set; }
+        public float CenterPositionY { get; set; }
 
         public Tile(int tileId, float centerXPosition, float centerYPosition)
         {
-            id = tileId;
-            centerPositionX = centerXPosition;
-            centerPositionY = centerYPosition;
+            Id = tileId;
+            CenterPositionX = centerXPosition;
+            CenterPositionY = centerYPosition;
         }
         public float GetCenterXPosition()
         {
-            return centerPositionX;
+            return CenterPositionX;
         }
         public float GetCenterYPosition()
         {
-            return centerPositionY;
+            return CenterPositionY;
         }
         public int GetTileId()
         {
-            return id;
+            return Id;
         }
     }
 }
