@@ -23,6 +23,7 @@ namespace BoardGames.View
         private void OnGoLButtonClicked(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new StartView());
+
         }
 
         private void OnMyAchievementsClick(object sender, RoutedEventArgs e)

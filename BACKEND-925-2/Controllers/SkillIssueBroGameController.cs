@@ -564,9 +564,9 @@ namespace BoardGames.Controller
             MovePawn(pawnId, leftDiceValue, rightDiceValue, players[currentPlayerIndex].GetPlayerId());
         }
 
-        // POST: api/SkillIssueBroGameController/MovePawnBasedOnId
-        [HttpPost]
-        [Route("MovePawnBasedOnId")]
+        // GET: api/SkillIssueBroGameController/ChangeCurrentPlayer
+        [HttpGet]
+        [Route("ChangeCurrentPlayer")]
         public void ChangeCurrentPlayer()
         {
             currentPlayerIndex = DetermineNextPlayerIndex();
@@ -575,20 +575,27 @@ namespace BoardGames.Controller
         // GET: api/SkillIssueBroGameController/GetCurrentPlayerColor
         [HttpGet]
         [Route("GetCurrentPlayerColor")]
-        public string GetCurrentPlayerColor()
+        public IActionResult GetCurrentPlayerColor()
         {
-            switch (currentPlayerIndex)
+            try
             {
-                case 0:
-                    return "b";
-                case 1:
-                    return "y";
-                case 2:
-                    return "g";
-                case 3:
-                    return "r";
-                default:
-                    return "none";
+                string color;
+                switch (currentPlayerIndex)
+                {
+                    case 0: color = "b"; break;
+                    case 1: color = "y"; break;
+                    case 2: color = "g"; break;
+                    case 3: color = "r"; break;
+                    default:
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Invalid player index.");
+                }
+
+                return Ok(color); // Return result with 200 OK status
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (using your preferred logging mechanism)
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
             }
         }
     }

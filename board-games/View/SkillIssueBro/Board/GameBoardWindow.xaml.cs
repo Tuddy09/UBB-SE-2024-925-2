@@ -8,6 +8,9 @@ using BoardGames.Model.CommonEntities;
 using BoardGames.View.SkillIssueBro.Dice;
 using BoardGames.View.SkillIssueBro.Pawns;
 using Board_games.Model.Interfaces;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 
 namespace BoardGames.View.SkillIssueBro.Board
 {
@@ -30,7 +33,6 @@ namespace BoardGames.View.SkillIssueBro.Board
             new Player(4, "Flower")
         };
 
-        private SkillIssueBroGameController skillIssueBroController;
 
         public GameBoardWindow()
         {
@@ -42,32 +44,56 @@ namespace BoardGames.View.SkillIssueBro.Board
 
         private void OnPawnKilled(object sender)
         {
-            SpawnPawns(skillIssueBroController.GetPawns());
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //get paws and spawn them again
+                var response = client.GetAsync("api/SkillIssueBroGame/GetPawns");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var pawnList = response.Result.Content.ReadFromJsonAsync<List<Pawn>>().Result;
+                    SpawnPawns(pawnList);
+                }
+            }
         }
 
-        private void ShowCurrentPlayerColorEllipse()
+        private async Task ShowCurrentPlayerColorEllipseAsync()
         {
-            string color = skillIssueBroController.GetCurrentPlayerColor();
-            var ellipse = new Ellipse();
-            Color playerColor;
-            switch (color)
+            using (var client = new HttpClient())
             {
-                case "b":
-                    playerColor = Colors.Blue; break;
-                case "y":
-                    playerColor = Colors.Yellow; break;
-                case "g":
-                    playerColor = Colors.Green; break;
-                case "r":
-                    playerColor = Colors.Red; break;
-                default:
-                    playerColor = Colors.White; break;
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var response = await client.GetAsync("api/SkillIssueBroGame/GetCurrentPlayerColor");
+                if (response.IsSuccessStatusCode)
+                {
+                    string color = await response.Content.ReadAsStringAsync();
+                    color = color.Replace("\"", string.Empty);
+                    var ellipse = new Ellipse();
+                    Color playerColor;
+                    switch (color)
+                    {
+                        case "b":
+                            playerColor = Colors.Blue; break;
+                        case "y":
+                            playerColor = Colors.Yellow; break;
+                        case "g":
+                            playerColor = Colors.Green; break;
+                        case "r":
+                            playerColor = Colors.Red; break;
+                        default:
+                            playerColor = Colors.White; break;
+                    }
+                    Brush brush = new SolidColorBrush(playerColor);
+                    ellipse.Fill = brush;
+                    ellipse.Height = 100;
+                    ellipse.Width = 100;
+                    column2.column2Grid.Children.Add(ellipse);
+                }
             }
-            Brush brush = new SolidColorBrush(playerColor);
-            ellipse.Fill = brush;
-            ellipse.Height = 100;
-            ellipse.Width = 100;
-            column2.column2Grid.Children.Add(ellipse);
         }
 
         private void HideDice()
@@ -84,7 +110,19 @@ namespace BoardGames.View.SkillIssueBro.Board
             // this is not business logic, just that after every turn, they cleared the whole
             // grid and spawned the pawns again with their new positions
             ClearPawnChildren();
-            SpawnPawns(skillIssueBroController.GetPawns());
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //get paws and spawn them again
+                var response = client.GetAsync("api/SkillIssueBroGame/GetPawns");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var pawnList = response.Result.Content.ReadFromJsonAsync<List<Pawn>>().Result;
+                    SpawnPawns(pawnList);
+                }
+            }
             HideDice();
             column1.column1Grid.Children[1].Visibility = Visibility.Visible;
         }
@@ -96,9 +134,27 @@ namespace BoardGames.View.SkillIssueBro.Board
             currentPlayerTries = 2;
 
             ClearPawnChildren();
-            SpawnPawns(skillIssueBroController.GetPawns());
-            skillIssueBroController.ChangeCurrentPlayer();
-            ShowCurrentPlayerColorEllipse();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //get paws and spawn them again
+                var response = client.GetAsync("api/SkillIssueBroGame/GetPawns");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var pawnList = response.Result.Content.ReadFromJsonAsync<List<Pawn>>().Result;
+                    SpawnPawns(pawnList);
+                }
+            }
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.GetAsync("api/SkillIssueBroGame/ChangeCurrentPlayer");
+            }
+            ShowCurrentPlayerColorEllipseAsync();
             HideDice();
             column1.column1Grid.Children[1].Visibility = Visibility.Visible;
         }
@@ -110,7 +166,13 @@ namespace BoardGames.View.SkillIssueBro.Board
 
             try
             {
-                skillIssueBroController.MovePawnBasedOnClick(column, row, leftDiceValue, rightDiceValue);
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("http://localhost:5070/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    client.GetAsync($"api/SkillIssueBroGame/MovePawnBasedOnClick?column={column}&row={row}&leftDiceValue={leftDiceValue}&rightDiceValue={rightDiceValue}");
+                }
                 if (leftDiceValue != rightDiceValue)
                 {
                     SwitchToNextTurn();
@@ -157,8 +219,30 @@ namespace BoardGames.View.SkillIssueBro.Board
 
         private void RollButton_Clicked(object sender, EventArgs e)
         {
-            leftDiceValue = skillIssueBroController.RollDice();
-            rightDiceValue = skillIssueBroController.RollDice();
+            // request the controller to roll the dice
+            // will need to make 2 requests to get the values of the dice
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.GetAsync("api/SkillIssueBroGame/RollDice");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    leftDiceValue = response.Result.Content.ReadFromJsonAsync<int>().Result;
+                }
+            }
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var response = client.GetAsync("api/SkillIssueBroGame/RollDice");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    rightDiceValue = response.Result.Content.ReadFromJsonAsync<int>().Result;
+                }
+            }
             // show the dice in the view
             GenerateLeftDice(leftDiceValue);
             GenerateRightDice(rightDiceValue);
@@ -226,11 +310,22 @@ namespace BoardGames.View.SkillIssueBro.Board
         private void GameBoardWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // create the controller when the window is loaded
-            skillIssueBroController = new SkillIssueBroGameController(players);
-            SpawnPawns(skillIssueBroController.GetPawns());
-            ShowCurrentPlayerColorEllipse();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://localhost:5070/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //get paws and spawn them again
+                var response = client.GetAsync("api/SkillIssueBroGame/GetPawns");
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    var pawnList = response.Result.Content.ReadFromJsonAsync<List<Pawn>>().Result;
+                    SpawnPawns(pawnList);
+                }
+            }
+            ShowCurrentPlayerColorEllipseAsync();
 
-            skillIssueBroController.PawnKilled += OnPawnKilled;
+            // skillIssueBroController.PawnKilled += OnPawnKilled;
         }
 
         private void SpawnPawns(List<Pawn> pawnsToSpawn)
