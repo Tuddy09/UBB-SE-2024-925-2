@@ -1,6 +1,7 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using System.Linq;
 using TwoPlayerGames.Domain.Auxiliary;
 using TwoPlayerGames.Domain.DatabaseObjects;
 using TwoPlayerGames.Repo;
@@ -9,117 +10,88 @@ namespace TwoPlayerGames.Repository
 {
     public class StatsRepository
     {
-        public static bool AddStats(GameStats gameStats)
+        private readonly GamesDbContext _context;
+
+        public StatsRepository(GamesDbContext context)
         {
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using SqlCommand command = new ("addGameStats", sqlConnection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@playerId", gameStats.Player.Id);
-            command.Parameters.AddWithValue("@gameId", gameStats.Game.Id);
-            command.Parameters.AddWithValue("@eloRating", gameStats.EloRating);
-            command.Parameters.AddWithValue("@highestEloRating", gameStats.HighestElo);
-            command.Parameters.AddWithValue("@totalPlayTime", gameStats.TotalPlayTime);
-            command.Parameters.AddWithValue("@totalGamesPlayed", gameStats.TotalMatches);
-            command.Parameters.AddWithValue("@totalWins", gameStats.TotalWins);
-            command.Parameters.AddWithValue("@totalDraws", gameStats.TotalDraws);
-            command.Parameters.AddWithValue("@numberTurns", gameStats.TotalNumberOfTurn);
-            sqlConnection.Open();
-
-            int result = command.ExecuteNonQuery();
-
-            sqlConnection.Close();
-
-            return result == 1;
+            _context = context;
         }
 
-        public static bool UpdateStatsForPlayer(Player player, Games gameType, int newEloRating)
+        public bool AddStats(GameStats gameStats)
         {
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using SqlCommand command = new ("updateGameStatsAuto", sqlConnection);
-            command.CommandType = System.Data.CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@playerId", player.Id);
-            command.Parameters.AddWithValue("@gameId", gameType.Id);
-            command.Parameters.AddWithValue("@eloRating", newEloRating);
-            sqlConnection.Open();
-
-            int result = command.ExecuteNonQuery();
-
-            sqlConnection.Close();
-
-            return result == 1;
-        }
-
-        public static GameStats GetGameStatsForPlayer(Player player, Games gameType)
-        {
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using SqlCommand command = new ("SELECT * FROM getGameStats(@playerId, @gameId)", sqlConnection);
-            command.Parameters.AddWithValue("@playerId", player.Id);
-            command.Parameters.AddWithValue("@gameId", gameType.Id);
-            sqlConnection.Open();
-            using SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                GameStats newGameStats = new GameStats(player, gameType, reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4),
-                    reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7), reader.GetInt32(8));
-                reader.Close();
-                sqlConnection.Close();
-                return newGameStats;
+                _context.GameStats.Add(gameStats);
+                _context.SaveChanges();
+                return true;
             }
-            else
+            catch (Exception)
             {
-                reader.Close();
-                sqlConnection.Close();
-                return new GameStats(player, gameType);
+                return false;
             }
         }
 
-        public static List<GameHistory> GetGameHistoryForPlayer(Player player)
+        public bool UpdateStatsForPlayer(Player player, Games gameType, int newEloRating)
         {
-            List<GameHistory> gameHistories = new ();
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using (SqlCommand command = new ("SELECT * FROM getGameHistory(@playerId)", sqlConnection))
+            try
             {
-                command.Parameters.AddWithValue("@playerId", player.Id);
-                sqlConnection.Open();
-                using SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                var gameStats = _context.GameStats.FirstOrDefault(gs => gs.Player == player && gs.Game == gameType);
+                if (gameStats != null)
                 {
-                    Player player1 = PlayerRepository.GetPlayerById((Guid)reader["player1"]);
-                    Player player2 = PlayerRepository.GetPlayerById((Guid)reader["player2"]);
-                    gameHistories.Add(new GameHistory(
-                        player1,
-                        player2,
-                        GameStore.GetGameById((Guid)reader["gameId"]),
-                        player1.Id != (Guid)reader["winner"] ? player2 : player1));
+                    gameStats.EloRating = newEloRating;
+                    _context.SaveChanges();
+                    return true;
                 }
-                reader.Close();
+                return false;
             }
-            sqlConnection.Close();
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public GameStats GetGameStatsForPlayer(Player player, Games gameType)
+        {
+            var gameStats = _context.GameStats.FirstOrDefault(gs => gs.Player == player && gs.Game == gameType);
+            return gameStats ?? new GameStats(player, gameType);
+        }
+
+        public List<GameHistory> GetGameHistoryForPlayer(Player player)
+        {
+            var gameHistories = _context.GameHistories
+                .Where(gh => gh.Players[0] == player || gh.Players[1] == player)
+                .ToList();
+
+            foreach (var history in gameHistories)
+            {
+                history.Players[0] = _context.Players.Find(history.Players[0].Id);
+                history.Players[1] = _context.Players.Find(history.Players[1].Id);
+                history.GameType = _context.Games.Find(history.GameType);
+                history.Winner = _context.Players.Find(history.Winner);
+            }
+
             return gameHistories;
         }
 
-        public static PlayerStats GetProfileStatsForPlayer(Player player)
+        public PlayerStats GetProfileStatsForPlayer(Player player)
         {
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using SqlCommand command = new ("SELECT * FROM getPlayerStatsGood(@playerId)", sqlConnection);
-            command.Parameters.AddWithValue("@playerId", player.Id);
-            sqlConnection.Open();
-            using SqlDataReader reader = command.ExecuteReader();
-            if (reader.Read())
+            var playerStatsQuery = (from gs in _context.GameStats
+                                    where gs.Player == player
+                                    group gs by gs.Player into g
+                                    select new
+                                    {
+                                        Trophies = g.Sum(gs => gs.TotalWins),
+                                        AverageElo = g.Average(gs => gs.EloRating),
+                                        MostPlayedGame = g.OrderByDescending(gs => gs.Game).FirstOrDefault().Game
+                                    }).FirstOrDefault();
+
+            if (playerStatsQuery != null)
             {
-                int trophies = (int)reader["trophies"];
-                int eloRating = (int)reader["averageElo"];
-                Games game = GameStore.GetGameById((Guid)reader["mostPlayedGame"]);
-                string rank = RankDeterminer.DetermineRank(eloRating);
-                PlayerStats playerStats = new (player, trophies, eloRating, rank, game);
-                reader.Close();
-                sqlConnection.Close();
-                return playerStats;
+                var rank = RankDeterminer.DetermineRank((int)playerStatsQuery.AverageElo);
+                return new PlayerStats(player, playerStatsQuery.Trophies, (int)playerStatsQuery.AverageElo, rank, playerStatsQuery.MostPlayedGame);
             }
             else
             {
-                reader.Close();
-                sqlConnection.Close();
                 return new PlayerStats(player);
             }
         }

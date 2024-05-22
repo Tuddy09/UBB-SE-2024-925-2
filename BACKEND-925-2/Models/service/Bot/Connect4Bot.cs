@@ -1,13 +1,14 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using TwoPlayerGames.Repo;
 using TwoPlayerGames.Repository;
 
 namespace TwoPlayerGames.Service.Bot
 {
-    public class Connect4Bot(string difficulty, Guid gameStateId, Player player) : IBot
+    public class Connect4Bot(string difficulty, Guid gameStateId, Player player, GamesDbContext gameDbContext) : IBot
     {
-        private readonly Connect4Service gameService = new (gameStateId, player, Player.Null(), new Connect4Repository());
+        private readonly Connect4Service gameService = new (gameStateId, player, Player.Null(), new Connect4Repository(gameDbContext));
         private readonly Player player = player;
         private readonly int searchDepth = difficulty.ToLower() switch
         {

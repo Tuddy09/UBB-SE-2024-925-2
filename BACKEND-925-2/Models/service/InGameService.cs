@@ -8,6 +8,7 @@ namespace TwoPlayerGames.Service
     public class InGameService
     {
         public MediaPlayer MediaPlayer;
+        StatsRepository StatsRepository;
 
         public void Play(Sounds sound)
         {

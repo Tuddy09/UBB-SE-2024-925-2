@@ -1,3 +1,4 @@
+using BACKEND_925_2.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -13,6 +14,7 @@ namespace TwoPlayerGames.Service
         private ObstructionGame obstructionGame;
         private List<Player> players;
         private IGameRepo obstructionRepo;
+        private readonly GamesDbContext _context;
 
         public ObstructionService(Guid gameStateID, Player player1, Player player2, int width, int height, IGameRepo repo)
         {
@@ -130,17 +132,6 @@ namespace TwoPlayerGames.Service
         public void SetGame(IGame game)
         {
             obstructionGame = (ObstructionGame)game;
-        }
-
-        public void RemoveTestGames()
-        {
-            SqlConnection connection = Configurator.SqlConnection;
-            using (SqlCommand command = new SqlCommand("delete from GameState where player1Id = '00000000-0000-0000-0000-000000000000' and player2Id = '00000000-0000-0000-0000-000000000000'", connection))
-            {
-                connection.Open();
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
         }
     }
 }

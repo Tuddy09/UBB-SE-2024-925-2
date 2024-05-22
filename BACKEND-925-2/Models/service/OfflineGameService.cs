@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using TwoPlayerGames.Domain.Enums;
@@ -18,7 +19,7 @@ namespace TwoPlayerGames.Service
         private IBot bot;
         private Player player;
 
-        public OfflineGameService(string gameType, Player player, List<object> optional_params)
+        public OfflineGameService(string gameType, Player player, GamesDbContext gamesDbContext, List<object> optional_params)
         {
             this.gameType = gameType;
             this.player = player;
@@ -30,24 +31,24 @@ namespace TwoPlayerGames.Service
             {
                 case "Darts":
 
-                    gameService = new DartsService(Guid.Empty, player, Player.Bot(), new DartsRepository());
+                    gameService = new DartsService(Guid.Empty, player, Player.Bot(), new DartsRepository(gamesDbContext));
                     break;
                 case "Obstruction":
                     int boardWidth = (int)optional_params[1];
                     int boardHeight = (int)optional_params[2];
-                    gameService = new ObstructionService(Guid.Empty, player, Player.Bot(), boardWidth, boardHeight, new ObstructionRepository());
+                    gameService = new ObstructionService(Guid.Empty, player, Player.Bot(), boardWidth, boardHeight, new ObstructionRepository(gamesDbContext));
                     break;
                 case "Connect4":
 
-                    gameService = new Connect4Service(Guid.Empty, player, Player.Bot(), new Connect4Repository());
+                    gameService = new Connect4Service(Guid.Empty, player, Player.Bot(), new Connect4Repository(gamesDbContext));
                     break;
                 case "Chess":
                     string mode = (string)optional_params[1];
                     ChessModes modes = ChessModeStore.GetMode(mode);
-                    gameService = new ChessService(Guid.Empty, Player.Bot(), player, modes, startPlayer == Guid.Empty ? 0 : 1,  new ChessRepository());
+                    gameService = new ChessService(Guid.Empty, Player.Bot(), player, modes, startPlayer == Guid.Empty ? 0 : 1, new ChessRepository(gamesDbContext));
                     break;
             }
-            bot = BotStore.GetBotForTheGivenGameType(gameType, difficulty, gameService.GetGame().GameState.Id, player);
+            bot = BotStore.GetBotForTheGivenGameType(gameType, difficulty, gameService.GetGame().GameState.Id, player, gamesDbContext);
         }
 
         public void Play(int nrParameters, object[] parameters)

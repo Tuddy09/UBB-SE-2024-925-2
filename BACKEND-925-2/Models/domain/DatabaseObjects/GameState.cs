@@ -15,7 +15,7 @@ namespace TwoPlayerGames
         public Guid Id { get => id; set => id = value; }
         public Player[] Players { get => players; set => players = value; }
 
-        public Games GameType { get => gameType; }
+        public Games GameType { get => gameType; set => gameType = value; }
         public string StateJson { get => stateJson; set => stateJson = value; }
 
         public Player? Winner { get => winnerPlayer; set => winnerPlayer = value; }

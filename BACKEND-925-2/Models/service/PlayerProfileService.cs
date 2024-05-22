@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using TwoPlayerGames.Domain.DatabaseObjects;
 using TwoPlayerGames.Repository;
@@ -7,8 +8,10 @@ namespace TwoPlayerGames.Service
 {
     public class PlayerProfileService
     {
-        public PlayerProfileService()
+        StatsRepository StatsRepository;
+        public PlayerProfileService(GamesDbContext gamesDbContext)
         {
+            StatsRepository = new StatsRepository(gamesDbContext);
         }
 
         public List<string> GetProfileStats(Player player)

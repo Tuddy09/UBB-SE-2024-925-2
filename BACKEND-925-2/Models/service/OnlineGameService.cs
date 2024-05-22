@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -41,7 +42,7 @@ namespace TwoPlayerGames.Service
         {
             firstTurn = false;
         }
-        public OnlineGameService(string gameType, Player player, params object[] optional_params)
+        public OnlineGameService(string gameType, Player player, GamesDbContext gameDbContext, params object[] optional_params)
         {
             this.player = player;
             this.gameType = gameType;
@@ -71,11 +72,12 @@ namespace TwoPlayerGames.Service
             }
             PlayerRepository.GetPlayerById(Guid.Empty);
             List<PlayerQueue> availablePlayers;
-            availablePlayers = PlayerQueueRepository.GetPlayers();
+            PlayerQueueRepository playerQueueRepository = new PlayerQueueRepository(gameDbContext);
+            availablePlayers = playerQueueRepository.GetPlayers();
 
             if (availablePlayers.Count == 0)
             {
-                PlayerQueueRepository.AddPlayer(playerQueue);
+                playerQueueRepository.AddPlayer(playerQueue);
                 int minPort = 1024;
                 int maxPort = 65535;
 
@@ -99,7 +101,7 @@ namespace TwoPlayerGames.Service
                 PlayerQueue opponent = availablePlayers[random_idx];
                 opponentPlayer = opponent.Player;
                 startPlayer = opponentPlayer.Id;
-                PlayerQueueRepository.RemovePlayer(opponent);
+                playerQueueRepository.RemovePlayer(opponent);
                 client = new TcpClient("localhost", 69);
                 socket = client.Client;
                 SendPlayer(player);
@@ -110,32 +112,32 @@ namespace TwoPlayerGames.Service
                 {
                     case "Obstruction":
 
-                        gameService = new ObstructionService(Guid.Empty, player, opponentPlayer, boardWidth, boardHeight, new ObstructionRepository());
+                        gameService = new ObstructionService(Guid.Empty, player, opponentPlayer, boardWidth, boardHeight, new ObstructionRepository(gameDbContext));
                         break;
                     case "Connect4":
-                        gameService = new Connect4Service(Guid.Empty, player, opponentPlayer, new Connect4Repository());
+                        gameService = new Connect4Service(Guid.Empty, player, opponentPlayer, new Connect4Repository(gameDbContext));
                         break;
                     case "Chess":
-                        gameService = new ChessService(Guid.Empty, player, opponentPlayer, modes, 0,  new ChessRepository());
+                        gameService = new ChessService(Guid.Empty, player, opponentPlayer, modes, 0,  new ChessRepository(gameDbContext));
                         break;
                     case "Darts":
-                        gameService = new DartsService(Guid.Empty, player, opponentPlayer, new DartsRepository());
+                        gameService = new DartsService(Guid.Empty, player, opponentPlayer, new DartsRepository(gameDbContext));
                         break;
                 }
                 SendGame(gameService.GetGame());
                 switch (gameType)
                 {
                     case "Obstruction":
-                        gameRepo = new ObstructionRepository();
+                        gameRepo = new ObstructionRepository(gameDbContext);
                         break;
                     case "Connect4":
-                        gameRepo = new Connect4Repository();
+                        gameRepo = new Connect4Repository(gameDbContext);
                         break;
                     case "Chess":
-                        gameRepo = new ChessRepository();
+                        gameRepo = new ChessRepository(gameDbContext);
                         break;
                     case "Darts":
-                        gameRepo = new DartsRepository();
+                        gameRepo = new DartsRepository(gameDbContext);
                         break;
                     default:
                         throw new NotImplementedException();
@@ -146,16 +148,16 @@ namespace TwoPlayerGames.Service
                 switch (gameType)
                 {
                     case "Obstruction":
-                        gameRepo = new ObstructionRepository();
+                        gameRepo = new ObstructionRepository(gameDbContext);
                         break;
                     case "Connect4":
-                        gameRepo = new Connect4Repository();
+                        gameRepo = new Connect4Repository(gameDbContext);
                         break;
                     case "Chess":
-                        gameRepo = new ChessRepository();
+                        gameRepo = new ChessRepository(gameDbContext);
                         break;
                     case "Darts":
-                        gameRepo = new DartsRepository();
+                        gameRepo = new DartsRepository(gameDbContext);
                         break;
                     default:
                         throw new NotImplementedException();
@@ -164,16 +166,16 @@ namespace TwoPlayerGames.Service
                 switch (gameType)
                 {
                     case "Darts":
-                        gameService = new DartsService(game1.GameState.Id, player, opponentPlayer, new DartsRepository());
+                        gameService = new DartsService(game1.GameState.Id, player, opponentPlayer, new DartsRepository(gameDbContext));
                         break;
                     case "Obstruction":
-                        gameService = new ObstructionService(game1.GameState.Id, player, opponentPlayer, boardWidth, boardHeight,  new ObstructionRepository());
+                        gameService = new ObstructionService(game1.GameState.Id, player, opponentPlayer, boardWidth, boardHeight,  new ObstructionRepository(gameDbContext));
                         break;
                     case "Connect4":
-                        gameService = new Connect4Service(game1.GameState.Id, player, opponentPlayer, new Connect4Repository());
+                        gameService = new Connect4Service(game1.GameState.Id, player, opponentPlayer, new Connect4Repository(gameDbContext));
                         break;
                     case "Chess":
-                        gameService = new ChessService(game1.GameState.Id, player, opponentPlayer, modes, 1, new ChessRepository());
+                        gameService = new ChessService(game1.GameState.Id, player, opponentPlayer, modes, 1, new ChessRepository(gameDbContext));
                         break;
                 }
             }

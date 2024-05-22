@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,27 +9,22 @@ namespace TwoPlayerGames.Repository
 {
     public class GameStore
     {
-        public static Dictionary<string, Games> Games { get; } = InitializeGamesFromDatabase();
+        private readonly GamesDbContext _context;
+        GameStore(GamesDbContext gamesDbContext)
+        {
+            _context = gamesDbContext;
+            Games = InitializeGamesFromDatabase();
+        }
 
-        private static Dictionary<string, Games> InitializeGamesFromDatabase()
+        public static Dictionary<string, Games> Games { get; set; }
+
+        private Dictionary<string, Games> InitializeGamesFromDatabase()
         {
             Dictionary<string, Games> dictionaryOfGames = new Dictionary<string, Games>();
-            SqlConnection sqlConnection = Configurator.SqlConnection;
-            using (SqlCommand command = new SqlCommand("SELECT * FROM Game", sqlConnection))
+            foreach (var game in _context.Games)
             {
-                sqlConnection.Open();
-                using (SqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        dictionaryOfGames.Add(reader.GetString(1), new Games(reader.GetGuid(0), reader.GetString(1), reader.GetString(2)));
-                    }
-                    reader.Close();
-                }
-
-                sqlConnection.Close();
+                dictionaryOfGames.Add(game.Name, game);
             }
-
             return dictionaryOfGames;
         }
 

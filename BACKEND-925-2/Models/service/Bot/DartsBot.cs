@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BACKEND_925_2.Models;
+using System;
 using System.Collections.Generic;
 using TwoPlayerGames.Repo;
 using TwoPlayerGames.Service;
@@ -13,9 +14,9 @@ namespace TwoPlayerGames.Domain.Bot
 
         private readonly Player player;
 
-        public DartsBot(string difficulty, Guid gameStateId, Player player)
+        public DartsBot(string difficulty, Guid gameStateId, Player player, GamesDbContext gameDbContext)
         {
-            gameService = new DartsService(gameStateId, player, new Player(Guid.NewGuid(), "DartsBot", "Nacho", 89), new DartsRepository());
+            gameService = new DartsService(gameStateId, player, new Player(Guid.NewGuid(), "DartsBot", "Nacho", 89), new DartsRepository(gameDbContext));
             this.difficulty = difficulty;
             this.player = player;
         }

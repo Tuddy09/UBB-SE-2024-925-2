@@ -7,7 +7,7 @@
         private Player _winnerPlayer;
 
         public Player[] Players { get => _players; set => _players = value; }
-        public Games GameType { get => _gameType; }
+        public Games GameType { get => _gameType; set => _gameType = value; }
         public Player Winner { get => _winnerPlayer; set => _winnerPlayer = value; }
 
         public GameHistory(Player player1, Player player2, Games gameType, int winnerIndex)
