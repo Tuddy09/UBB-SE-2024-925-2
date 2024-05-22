@@ -50,9 +50,9 @@ namespace TwoPlayerGames.Pages
                         {
                             ObstructionGrid.IsEnabled = false;
                         });
-                        client.GetAsync(client.BaseAddress + "2PlayerGames/PlayOther");
+                        client.GetAsync("2PlayerGames/PlayOther");
                         SetCurrentTurn();
-                        client.GetAsync(client.BaseAddress + "2PlayerGames/SetFirstTurn");
+                        client.GetAsync("2PlayerGames/SetFirstTurn");
                         this.Dispatcher.Invoke(() => { UpdateBoard(); });
                         this.Dispatcher.Invoke(() =>
                         {

@@ -67,9 +67,9 @@ namespace TwoPlayerGames.Pages
                         {
                             chessBoard.IsEnabled = true;
                         });
-                        if (client.GetAsync(client.BaseAddress + "2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
+                        if (client.GetAsync("2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
                         {
-                            Guid? winner = Guid.Parse(client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString());
+                            Guid? winner = Guid.Parse(client.GetAsync("2PlayerGames/GetWinner").Result.Content.ToString());
                             if (winner == Guid.Empty)
                             {
                                 this.Dispatcher.Invoke(() =>
@@ -79,7 +79,7 @@ namespace TwoPlayerGames.Pages
                             }
                             else
                             {
-                                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
+                                if (client.GetAsync("2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
                                 {
                                     this.Dispatcher.Invoke(() =>
                                     {
@@ -114,7 +114,7 @@ namespace TwoPlayerGames.Pages
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
-                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result != Router.UserPlayer.Id.ToString() && Router.OnlineGame)
+                if (client.GetAsync("2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result != Router.UserPlayer.Id.ToString() && Router.OnlineGame)
                 {
                     worker.RunWorkerAsync();
                 }
@@ -148,12 +148,12 @@ namespace TwoPlayerGames.Pages
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
-                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync("2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
                 Player1Name.Text = playerStats.Player.Name;
                 Player1Rank.Text = playerStats.Rank;
                 Player1Trophies.Text = playerStats.Trophies.ToString();
 
-                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync("2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
                 Player2Name.Text = playerStats.Player.Name;
                 Player2Rank.Text = playerStats.Rank;
                 Player2Trophies.Text = playerStats.Trophies.ToString();
@@ -165,7 +165,7 @@ namespace TwoPlayerGames.Pages
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
-                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result == Router.UserPlayer.Id.ToString())
+                if (client.GetAsync("2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result == Router.UserPlayer.Id.ToString())
                 {
                     this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.UserPlayer.Name + "'s turn"; });
                 }
@@ -249,18 +249,18 @@ namespace TwoPlayerGames.Pages
                     using (HttpClient client = new HttpClient())
                     {
                         client.BaseAddress = new Uri("https://localhost:5070/api/");
-                        client.PostAsync(client.BaseAddress + "2PlayerGames/Play", new StringContent(JsonConvert.SerializeObject(arg), System.Text.Encoding.UTF8, "application/json"));
+                        client.PostAsync("2PlayerGames/Play", new StringContent(JsonConvert.SerializeObject(arg), System.Text.Encoding.UTF8, "application/json"));
                         UpdateBoard();
-                        if (client.GetAsync(client.BaseAddress + "2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
+                        if (client.GetAsync("2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
                         {
-                            Guid? winner = Guid.Parse(client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString());
+                            Guid? winner = Guid.Parse(client.GetAsync("2PlayerGames/GetWinner").Result.Content.ToString());
                             if (winner == null)
                             {
                                 MessageBox.Show("It's a draw!");
                             }
                             else
                             {
-                                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
+                                if (client.GetAsync("2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
                                 {
                                     MessageBox.Show("You won!");
                                 }
@@ -303,10 +303,10 @@ namespace TwoPlayerGames.Pages
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
                 chessBoard.Children.Clear();
                 InitializeBoard();
-                List<IPiece> pieces = JsonConvert.DeserializeObject<List<IPiece>>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetBoard").Result.Content.ReadAsStringAsync().Result);
+                List<IPiece> pieces = JsonConvert.DeserializeObject<List<IPiece>>(client.GetAsync("2PlayerGames/GetBoard").Result.Content.ReadAsStringAsync().Result);
                 foreach (IPiece piece in pieces)
                 {
-                    string color = piece.Player.Id.ToString() == client.GetAsync(client.BaseAddress + "2PlayerGames/StartPlayer").Result.Content.ToString() ? "white" : "black";
+                    string color = piece.Player.Id.ToString() == client.GetAsync("2PlayerGames/StartPlayer").Result.Content.ToString() ? "white" : "black";
                     AddPiece(piece.YPosition, piece.XPosition, ((IChessPiece)piece).GetPieceType(), color);
                 }
             }

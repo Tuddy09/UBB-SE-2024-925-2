@@ -59,12 +59,12 @@ namespace TwoPlayerGames.Pages
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
-                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync("2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
                 Player1Name.Text = playerStats.Player.Name;
                 Player1Rank.Text = playerStats.Rank;
                 Player1Trophies.Text = playerStats.Trophies.ToString();
 
-                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync("2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
                 Player2Name.Text = playerStats.Player.Name;
                 Player2Rank.Text = playerStats.Rank;
                 Player2Trophies.Text = playerStats.Trophies.ToString();
@@ -77,7 +77,7 @@ namespace TwoPlayerGames.Pages
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:5070/api/");
-                CurrentPlayerTurn.Text = client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result;
+                CurrentPlayerTurn.Text = client.GetAsync("2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result;
             }
         }
 

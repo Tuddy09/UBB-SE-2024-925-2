@@ -48,9 +48,9 @@ namespace TwoPlayerGames.Pages
                         {
                             connect4Grid.IsEnabled = false;
                         });
-                        client.GetAsync(client.BaseAddress + "2PlayerGames/PlayOther");
+                        client.GetAsync("2PlayerGames/PlayOther");
                         SetCurrentTurn();
-                        client.GetAsync(client.BaseAddress + "2PlayerGames/SetFirstTurn");
+                        client.GetAsync("2PlayerGames/SetFirstTurn");
                         this.Dispatcher.Invoke(() => { UpdateBoard(); });
                         this.Dispatcher.Invoke(() =>
                         {
@@ -218,7 +218,7 @@ namespace TwoPlayerGames.Pages
                 object[] arg = [column];
                 try
                 {
-                    client.GetAsync(client.BaseAddress + "2PlayerGames/Play?numberOfParameters=1&parameters=" + arg);
+                    client.GetAsync("2PlayerGames/Play?numberOfParameters=1&parameters=" + arg);
                     UpdateBoard();
                     if (client.GetAsync("2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
                     {
