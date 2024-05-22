@@ -1,36 +1,35 @@
 using System;
+using TwoPlayerGames.Domain.DatabaseObjects;
 
 namespace TwoPlayerGames
 {
     public class Games
     {
-        private Guid id;
-        private string name;
-        private string category;
-
-        public string Name { get => name; set => name = value; }
-        public Guid Id { get => id; set => id = value; }
-        public string Category { get => category; set => category = value; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public List<GameStats> GameStats { get; set; }
+        public List<PlayerQueue> Queues { get; set; }
 
         public Games(string name, string category)
         {
-            this.id = Guid.NewGuid();
-            this.name = name;
-            this.category = category;
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.Category = category;
         }
 
         public Games(Guid id, string name, string category)
         {
-            this.id = id;
-            this.name = name;
-            this.category = category;
+            this.Id = id;
+            this.Name = name;
+            this.Category = category;
         }
 
         public Games()
         {
-            this.id = Guid.Empty;
-            this.name = string.Empty;
-            this.category = string.Empty;
+            this.Id = Guid.Empty;
+            this.Name = string.Empty;
+            this.Category = string.Empty;
         }
     }
 }

@@ -4,16 +4,15 @@ namespace TwoPlayerGames
 {
     public class GameState
     {
-        private Guid id;
-        private Player2PlayerGame[] players;
-        private Games gameType;
-        private Player2PlayerGame? winnerPlayer;
-        private string stateJson;
-        private int turn;
-        private int timePlayed;
+        public Guid Id { get; set; }
+        public List<Player2PlayerGame> players { get; set; }
+        public Games gameType { get; set; }
+        public Player2PlayerGame? winnerPlayer { get; set; }
+        public string stateJson { get; set; }
+        public int turn { get; set; }
+        public int timePlayed { get; set; }
 
-        public Guid Id { get => id; set => id = value; }
-        public Player2PlayerGame[] Players { get => players; set => players = value; }
+        public List<Player2PlayerGame> Players { get => players; set => players = value; }
 
         public Games GameType { get => gameType; set => gameType = value; }
         public string StateJson { get => stateJson; set => stateJson = value; }
@@ -25,8 +24,8 @@ namespace TwoPlayerGames
 
         public GameState(Player2PlayerGame player1, Player2PlayerGame player2, Games gameType)
         {
-            this.id = Guid.NewGuid();
-            this.players = new Player2PlayerGame[2];
+            this.Id = Guid.NewGuid();
+            this.players = new List<Player2PlayerGame>(2);
             this.players[0] = player1;
             this.players[1] = player2;
             this.gameType = gameType;
@@ -38,8 +37,8 @@ namespace TwoPlayerGames
 
         public GameState(Player2PlayerGame player1, Player2PlayerGame player2, Games gameType, int turn)
         {
-            this.id = Guid.NewGuid();
-            this.players = new Player2PlayerGame[2];
+            this.Id = Guid.NewGuid();
+            this.players = new List<Player2PlayerGame>(2);
             this.players[0] = player1;
             this.players[1] = player2;
             this.gameType = gameType;
@@ -51,8 +50,8 @@ namespace TwoPlayerGames
 
         public GameState()
         {
-            this.id = Guid.Empty;
-            this.players = new Player2PlayerGame[2];
+            this.Id = Guid.Empty;
+            this.players = new List<Player2PlayerGame>(2);
             this.players[0] = new Player2PlayerGame();
             this.players[1] = new Player2PlayerGame();
             this.gameType = new Games();
@@ -64,8 +63,8 @@ namespace TwoPlayerGames
 
         public GameState(Guid gameStateId, Player2PlayerGame player1, Player2PlayerGame player2, Games gameType, int turn, int timePlayed, Player2PlayerGame? winner, string jsonString)
         {
-            this.id = gameStateId;
-            this.players = new Player2PlayerGame[2];
+            this.Id = gameStateId;
+            this.players = new List<Player2PlayerGame>(2);
             this.players[0] = player1;
             this.players[1] = player2;
             this.gameType = gameType;

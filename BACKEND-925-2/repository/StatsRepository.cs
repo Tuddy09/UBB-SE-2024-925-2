@@ -56,22 +56,6 @@ namespace TwoPlayerGames.Repository
             return gameStats ?? new GameStats(player, gameType);
         }
 
-        public List<GameHistory> GetGameHistoryForPlayer(Player2PlayerGame player)
-        {
-            var gameHistories = _context.GameHistories
-                .Where(gh => gh.Players[0] == player || gh.Players[1] == player)
-                .ToList();
-
-            foreach (var history in gameHistories)
-            {
-                history.Players[0] = _context.Players.Find(history.Players[0].Id);
-                history.Players[1] = _context.Players.Find(history.Players[1].Id);
-                history.GameType = _context.Games.Find(history.GameType);
-                history.Winner = _context.Players.Find(history.Winner);
-            }
-
-            return gameHistories;
-        }
 
         public PlayerStats GetProfileStatsForPlayer(Player2PlayerGame player)
         {

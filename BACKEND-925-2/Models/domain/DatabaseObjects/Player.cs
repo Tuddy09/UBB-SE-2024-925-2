@@ -1,47 +1,45 @@
 using System;
+using TwoPlayerGames.Domain.DatabaseObjects;
 
 namespace TwoPlayerGames
 {
-    [Serializable]
     public class Player2PlayerGame
     {
-        private Guid id;
-        private string name;
-        private string? ip;
-        private int? port;
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Ip { get; set; }
+        public int Port { get; set; }
+        public List<GameStats> GameStats { get; set; }
+        public List<PlayerQueue> Queues { get; set; }
 
-        public string Name { get => name; set => name = value; }
-        public Guid Id { get => id; set => id = value; }
-        public string? Ip { get => ip; set => ip = value; }
-        public int? Port { get => port; set => port = value; }
 
-        public Player2PlayerGame(string name, string? ip, int? port)
+        public Player2PlayerGame(string name, string ip, int port)
         {
-            this.id = Guid.NewGuid();
-            this.name = name;
-            this.ip = ip;
-            this.port = port;
+            this.Id = Guid.NewGuid();
+            this.Name = name;
+            this.Ip = ip;
+            this.Port = port;
         }
 
-        public Player2PlayerGame(Guid id, string name, string? ip, int? port)
+        public Player2PlayerGame(Guid id, string name, string ip, int port)
         {
-            this.id = id;
-            this.name = name;
-            this.ip = ip;
-            this.port = port;
+            this.Id = id;
+            this.Name = name;
+            this.Ip = ip;
+            this.Port = port;
         }
 
         public Player2PlayerGame()
         {
-            this.id = Guid.Empty;
-            this.name = string.Empty;
-            this.ip = string.Empty;
-            this.port = 0;
+            this.Id = Guid.Empty;
+            this.Name = string.Empty;
+            this.Ip = string.Empty;
+            this.Port = 0;
         }
 
         public override string ToString()
         {
-            return this.name;
+            return this.Name;
         }
 
         public (int nrParameters, object[] parameters) Play(IGame newGame)
@@ -65,7 +63,7 @@ namespace TwoPlayerGames
                 return false;
             }
             Player2PlayerGame p = (Player2PlayerGame)obj;
-            return this.id == p.Id;
+            return this.Id == p.Id;
         }
     }
 }

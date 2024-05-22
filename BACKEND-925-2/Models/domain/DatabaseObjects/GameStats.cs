@@ -1,26 +1,23 @@
-﻿namespace TwoPlayerGames.Domain.DatabaseObjects
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TwoPlayerGames.Domain.DatabaseObjects
 {
     public class GameStats
     {
-        private Player2PlayerGame player;
-        private Games game;
-        private int eloRating;
-        private int highestElo;
-        private int totalMatches;
-        private int totalWins;
-        private int totalDraws;
-        private int totalPlayTime;
-        private int totalNumberOfTurn;
+        public Guid PlayerId { get; set; }
+        [ForeignKey("PlayerId")] // Foreign key to Player2PlayerGame
+        public Player2PlayerGame Player { get; set; } // Reference to the Player object
+        public Guid GameId { get; set; }
+        [ForeignKey("GameId")] // Foreign key to Games
+        public Games Game { get; set; }
+        public int EloRating { get; set; }
+        public int HighestElo { get; set; }
+        public int TotalMatches { get; set; }
+        public int TotalWins { get; set; }
+        public int TotalDraws { get; set; }
+        public int TotalPlayTime { get; set;}
+        public int TotalNumberOfTurn { get; set; }
 
-        public Player2PlayerGame Player { get => player; set => this.player = value; }
-        public Games Game { get => game; set => this.game = value; }
-        public int EloRating { get => eloRating; set => this.eloRating = value; }
-        public int HighestElo { get => highestElo; set => this.highestElo = value; }
-        public int TotalMatches { get => totalMatches; set => this.totalMatches = value; }
-        public int TotalWins { get => totalWins; set => this.totalWins = value; }
-        public int TotalDraws { get => totalDraws; set => this.totalDraws = value; }
-        public int TotalPlayTime { get => totalPlayTime; set => this.totalPlayTime = value; }
-        public int TotalNumberOfTurn { get => totalNumberOfTurn; set => this.totalNumberOfTurn = value; }
 
 
         public GameStats()
@@ -29,28 +26,28 @@
         }
         public GameStats(Player2PlayerGame player, Games game)
         {
-            this.player = player;
-            this.game = game;
-            this.eloRating = 420;
-            this.highestElo = 420;
-            this.totalMatches = 0;
-            this.totalWins = 0;
-            this.totalDraws = 0;
-            this.totalPlayTime = 0;
-            this.totalNumberOfTurn = 0;
+            this.Player = player;
+            this.Game = game;
+            this.EloRating = 420;
+            this.HighestElo = 420;
+            this.TotalMatches = 0;
+            this.TotalWins = 0;
+            this.TotalDraws = 0;
+            this.TotalPlayTime = 0;
+            this.TotalNumberOfTurn = 0;
         }
 
         public GameStats(Player2PlayerGame player, Games game, int eloRating, int highestElo, int totalMathces, int totalWins, int totalDraws, int totalPlayTime, int totalNumberOfTurn)
         {
-            this.player = player;
-            this.game = game;
-            this.eloRating = eloRating;
-            this.highestElo = highestElo;
-            this.totalMatches = totalMathces;
-            this.totalWins = totalWins;
-            this.totalDraws = totalDraws;
-            this.totalPlayTime = totalPlayTime;
-            this.totalNumberOfTurn = totalNumberOfTurn;
+            this.Player = player;
+            this.Game = game;
+            this.EloRating = eloRating;
+            this.HighestElo = highestElo;
+            this.TotalMatches = totalMathces;
+            this.TotalWins = totalWins;
+            this.TotalDraws = totalDraws;
+            this.TotalPlayTime = totalPlayTime;
+            this.TotalNumberOfTurn = totalNumberOfTurn;
         }
     }
 }

@@ -1,10 +1,15 @@
-﻿using TwoPlayerGames.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TwoPlayerGames.Domain.Enums;
 
 namespace TwoPlayerGames.Domain.DatabaseObjects
 {
     public class PlayerQueue
     {
+        public Guid PlayerId { get; set; }
+        [ForeignKey("PlayerId")]
         private Player2PlayerGame player;
+        public Guid GameId { get; set; }
+        [ForeignKey("GameId")]
         private Games gameType;
         private int eloRating;
         private ChessModes? chessMode;
