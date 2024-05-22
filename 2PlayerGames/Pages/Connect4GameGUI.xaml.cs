@@ -1,13 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using _2PlayerGames.Core;
 using TwoPlayerGames.Core;
 using TwoPlayerGames.exceptions;
-using TwoPlayerGames.Service;
 
 namespace TwoPlayerGames.Pages
 {
@@ -16,80 +18,80 @@ namespace TwoPlayerGames.Pages
     /// </summary>
     public partial class Connect4GameGUI : Page
     {
-        private IPlayService playService;
-        private InGameService inGameService;
         private int column;
         private Grid connect4Grid;
         private BackgroundWorker worker = new BackgroundWorker();
 
         public Connect4GameGUI()
         {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5001/api/2PlayerGames/CreatePlayService/");
+                client.PostAsJsonAsync($"?playServiceType=OfflineGameService", Router.PlayService);
+            }
             InitializeComponent();
             Loaded += Connect4GameGUI_Loaded;
             InitializeBoard();
-            inGameService = Router.InGameService;
             worker.DoWork += Worker_DoWork;
         }
 
         private void Worker_DoWork(object? sender, DoWorkEventArgs e)
         {
-            while (true)
+            using (HttpClient client = new HttpClient())
             {
-                if (((OnlineGameService)playService).HasData())
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                while (true)
                 {
-                    this.Dispatcher.Invoke(() =>
+                    if (client.GetAsync("2PlayerGames/HasData").Result.Content.ReadAsStringAsync().Result == "True")
                     {
-                        connect4Grid.IsEnabled = false;
-                    });
-                    playService.PlayOther();
-                    SetCurrentTurn();
-                    ((OnlineGameService)playService).SetFirstTurn();
-                    this.Dispatcher.Invoke(() => { UpdateBoard(); });
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        connect4Grid.IsEnabled = true;
-                    });
-                    if (playService.GetTurn() != Router.UserPlayer.Id)
-                    {
-                        throw new NotYourTurnException();
-                    }
-                    if (playService.IsGameOver())
-                    {
-                        Guid? winner = playService.GetWinner();
-                        if (winner == Guid.Empty)
+                        this.Dispatcher.Invoke(() =>
                         {
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                MessageBox.Show("It's a draw!");
-                            });
-                        }
-                        else
+                            connect4Grid.IsEnabled = false;
+                        });
+                        client.GetAsync("2PlayerGames/PlayOther");
+                        SetCurrentTurn();
+                        client.GetAsync("2PlayerGames/SetFirstTurn");
+                        this.Dispatcher.Invoke(() => { UpdateBoard(); });
+                        this.Dispatcher.Invoke(() =>
                         {
-                            if (playService.GetWinner() == Router.UserPlayer.Id)
+                            connect4Grid.IsEnabled = true;
+                        });
+                        if (client.GetAsync("2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
+                        {
+                            Guid? winner = client.GetAsync("2PlayerGames/GetWinner").Result.Content.ReadFromJsonAsync<Guid>().Result;
+                            if (winner == Guid.Empty)
                             {
                                 this.Dispatcher.Invoke(() =>
                                 {
-                                    MessageBox.Show("You Win!");
+                                    MessageBox.Show("It's a draw!");
                                 });
                             }
                             else
                             {
-                                this.Dispatcher.Invoke(() =>
+                                if (winner == Router.UserPlayer.Id)
                                 {
-                                    MessageBox.Show("You Lost!");
-                                });
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        MessageBox.Show("You Win!");
+                                    });
+                                }
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        MessageBox.Show("You Lost!");
+                                    });
+                                }
                             }
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                this.NavigationService.Navigate(Router.MenuPage);
+                            });
+                            return;
                         }
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            this.NavigationService.Navigate(Router.MenuPage);
-                        });
-                        return;
                     }
-                    break;
                 }
             }
-            return;
         }
 
         private void InitializeBoard()
@@ -127,10 +129,13 @@ namespace TwoPlayerGames.Pages
 
         private void Connect4GameGUI_Loaded(object sender, RoutedEventArgs e)
         {
-            playService = Router.PlayService;
-            if (playService.GetTurn() != Router.UserPlayer.Id && Router.OnlineGame)
+            using (HttpClient client = new HttpClient())
             {
-                worker.RunWorkerAsync();
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                if (client.GetAsync("2PlayerGames/GetTurn").Result.Content.ReadFromJsonAsync<Guid>().Result != Router.UserPlayer.Id && Router.OnlineGame)
+                {
+                    worker.RunWorkerAsync();
+                }
             }
             // populatePlayersData();
             SetCurrentTurn();
@@ -169,13 +174,23 @@ namespace TwoPlayerGames.Pages
 
         private void SetCurrentTurn()
         {
-            if (playService.GetTurn() == Router.UserPlayer.Id)
+            using (HttpClient client = new HttpClient())
             {
-                this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.UserPlayer.Name + "'s turn"; });
-            }
-            else
-            {
-                this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.OpponentPlayer.Name + "'s turn"; });
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                if (client.GetAsync("2PlayerGames/GetTurn").Result.Content.ReadFromJsonAsync<Guid>().Result == Router.UserPlayer.Id)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        CurrentPlayerTurn.Text = Router.UserPlayer.Name + "'s turn";
+                    });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        CurrentPlayerTurn.Text = Router.OpponentPlayer.Name + "'s turn";
+                    });
+                }
             }
         }
 
@@ -195,48 +210,51 @@ namespace TwoPlayerGames.Pages
         private void MouseDownHandler(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point position = e.GetPosition(this);
-
-            // Get the column number
-            column = (int)(Math.Floor((position.X - 235) / 56));
-            object[] arg =[column];
-            try
+            using (HttpClient client = new HttpClient())
             {
-                playService.Play(1, arg);
-                UpdateBoard();
-                if (playService.IsGameOver())
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                // Get the column number
+                column = (int)(Math.Floor((position.X - 235) / 56));
+                object[] arg = [column];
+                try
                 {
-                    Guid? winner = playService.GetWinner();
-                    if (winner == null)
+                    client.GetAsync("2PlayerGames/Play?numberOfParameters=1&parameters=" + arg);
+                    UpdateBoard();
+                    if (client.GetAsync("2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
                     {
-                        MessageBox.Show("It's a draw!");
-                    }
-                    else
-                    {
-                        if (playService.GetWinner() == Router.UserPlayer.Id)
+                        Guid? winner = client.GetAsync("2PlayerGames/GetWinner").Result.Content.ReadFromJsonAsync<Guid>().Result;
+                        if (winner == null)
                         {
-                            MessageBox.Show("You won!");
+                            MessageBox.Show("It's a draw!");
                         }
                         else
                         {
-                            MessageBox.Show("You lost!");
+                            if (client.GetAsync("2PlayerGames/GetWinner").Result.Content.ReadFromJsonAsync<Guid>().Result == Router.UserPlayer.Id)
+                            {
+                                MessageBox.Show("You won!");
+                            }
+                            else
+                            {
+                                MessageBox.Show("You lost!");
+                            }
                         }
+                        this.NavigationService.Navigate(Router.MenuPage);
+                        return;
                     }
-                    this.NavigationService.Navigate(Router.MenuPage);
-                    return;
+                    SetCurrentTurn();
+                    if (Router.OnlineGame)
+                    {
+                        worker.RunWorkerAsync();
+                    }
                 }
-                SetCurrentTurn();
-                if (Router.OnlineGame)
+                catch (InvalidColumnException)
                 {
-                    worker.RunWorkerAsync();
+                    MessageBox.Show("Invalid column. Please try again.");
                 }
-            }
-            catch (InvalidColumnException)
-            {
-                MessageBox.Show("Invalid column. Please try again.");
-            }
-            catch (NotYourTurnException)
-            {
-                MessageBox.Show("It is not your turn.");
+                catch (NotYourTurnException)
+                {
+                    MessageBox.Show("It is not your turn.");
+                }
             }
         }
 
@@ -256,26 +274,30 @@ namespace TwoPlayerGames.Pages
 
         public void UpdateBoard()
         {
-            foreach (IPiece piece in playService.GetBoard())
+            using (HttpClient client = new HttpClient())
             {
-                Color p;
-                Guid? id = piece.Player.Id;
-                if (id == Guid.Empty)
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                foreach (IPiece piece in client.GetAsync("2PlayerGames/GetBoard").Result.Content.ReadFromJsonAsync<IPiece[]>().Result)
                 {
-                    p = Colors.Purple;
-                }
-                else
-                {
-                    if (id == Router.UserPlayer.Id)
+                    Color p;
+                    Guid? id = piece.Player.Id;
+                    if (id == Guid.Empty)
                     {
-                        p = Colors.Red;
+                        p = Colors.Purple;
                     }
                     else
                     {
-                        p = Colors.Yellow;
+                        if (id == Router.UserPlayer.Id)
+                        {
+                            p = Colors.Red;
+                        }
+                        else
+                        {
+                            p = Colors.Yellow;
+                        }
                     }
+                    ChangeCellColor(piece.YPosition + 1, piece.XPosition, p);
                 }
-                ChangeCellColor(piece.YPosition + 1, piece.XPosition, p);
             }
         }
 

@@ -1,0 +1,12 @@
+namespace TwoPlayerGames
+{
+    public interface IGame
+    {
+        string SaveGame();
+        void LoadGame();
+        IBoard Board { get; set; }
+        GameState GameState { get; set; }
+        Player2PlayerGame CurrentPlayer { get; }
+        int CurrentPlayerIndex { get; }
+    }
+}
