@@ -16,19 +16,19 @@ namespace TwoPlayerGames.Repository
             DrawPlayer = GetPlayerById(Guid.Empty);
             AIPlayer = GetPlayerById(Guid.Parse("00000000-0000-0000-0000-000000000001"));
         }
-        public static Dictionary<Guid, Player> Players { get; set; }
-        public static Player DrawPlayer { get; set; }
-        public static Player AIPlayer { get; set; }
+        public static Dictionary<Guid, Player2PlayerGame> Players { get; set; }
+        public static Player2PlayerGame DrawPlayer { get; set; }
+        public static Player2PlayerGame AIPlayer { get; set; }
 
-        public static Player? GetPlayerById(Guid id)
+        public static Player2PlayerGame? GetPlayerById(Guid id)
         {
-            return Players.TryGetValue(id, out Player? value) ? value : null;
+            return Players.TryGetValue(id, out Player2PlayerGame? value) ? value : null;
         }
 
-        public Dictionary<Guid, Player> GetAllPlayers()
+        public Dictionary<Guid, Player2PlayerGame> GetAllPlayers()
         {
             //add from GamesDbContext to players
-            Dictionary<Guid, Player> players = new Dictionary<Guid, Player>();
+            Dictionary<Guid, Player2PlayerGame> players = new Dictionary<Guid, Player2PlayerGame>();
             foreach (var player in _context.Players)
             {
                 players.Add(player.Id, player);
@@ -36,7 +36,7 @@ namespace TwoPlayerGames.Repository
             return players;
         }
 
-        public bool AddPlayer(Player player)
+        public bool AddPlayer(Player2PlayerGame player)
         {
             _context.Players.Add(player);
             return _context.SaveChanges() == 1;
@@ -44,7 +44,7 @@ namespace TwoPlayerGames.Repository
 
         public bool RemoveAddressById(Guid id)
         {
-            Player player = GetPlayerById(id);
+            Player2PlayerGame player = GetPlayerById(id);
             if (player == null)
             {
                 return false;
@@ -53,9 +53,9 @@ namespace TwoPlayerGames.Repository
             return _context.SaveChanges() == 1;
         }
 
-        public  bool UpdatePlayer(Player player)
+        public  bool UpdatePlayer(Player2PlayerGame player)
         {
-            Player? playerToUpdate = GetPlayerById(player.Id);
+            Player2PlayerGame? playerToUpdate = GetPlayerById(player.Id);
             if (playerToUpdate == null)
             {
                 return false;
@@ -66,7 +66,7 @@ namespace TwoPlayerGames.Repository
 
         public static bool RemovePlayerWhereNameEqualsTestOrUpdated()
         {
-            Player? player = Players.Values.FirstOrDefault(x => x.Name == "Test" || x.Name == "Updated");
+            Player2PlayerGame? player = Players.Values.FirstOrDefault(x => x.Name == "Test" || x.Name == "Updated");
             if (player == null)
             {
                 return false;

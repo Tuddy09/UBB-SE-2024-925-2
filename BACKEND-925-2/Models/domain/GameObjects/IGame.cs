@@ -6,7 +6,7 @@ namespace TwoPlayerGames
         void LoadGame();
         IBoard Board { get; set; }
         GameState GameState { get; set; }
-        Player CurrentPlayer { get; }
+        Player2PlayerGame CurrentPlayer { get; }
         int CurrentPlayerIndex { get; }
     }
 }

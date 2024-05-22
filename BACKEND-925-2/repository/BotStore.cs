@@ -1,13 +1,13 @@
 ﻿using BACKEND_925_2.Models;
+using BACKEND_925_2.Service.Bot;
 using System;
 using TwoPlayerGames.exceptions;
-using TwoPlayerGames.Service.Bot;
 
 namespace TwoPlayerGames.Repository
 {
     public class BotStore
     {
-        public static IBot GetBotForTheGivenGameType(string gameType, string difficulty, Guid gameStateId, Player player, GamesDbContext gamesDbContext)
+        public static IBot GetBotForTheGivenGameType(string gameType, string difficulty, Guid gameStateId, Player2PlayerGame player, GamesDbContext gamesDbContext)
         {
             if (difficulty != "easy" && difficulty != "medium" && difficulty != "hard")
             {

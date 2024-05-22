@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text.Json;
-using TwoPlayerGames.Repository;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using _2PlayerGames.Core;
 
 namespace TwoPlayerGames.Domain.GameObjects
 {

@@ -2,30 +2,14 @@
 {
     public class GameHistory
     {
-        private Player[] _players;
-        private Games _gameType;
-        private Player _winnerPlayer;
+        public Player2PlayerGame[] Players { get; set;}
+        public Games GameType { get; set; }
+        public Player2PlayerGame Winner { get; set; }
 
-        public Player[] Players { get => _players; set => _players = value; }
-        public Games GameType { get => _gameType; set => _gameType = value; }
-        public Player Winner { get => _winnerPlayer; set => _winnerPlayer = value; }
 
-        public GameHistory(Player player1, Player player2, Games gameType, int winnerIndex)
+        public GameHistory()
         {
-            this._players = new Player[2];
-            this._players[0] = player1;
-            this._players[1] = player2;
-            this._gameType = gameType;
-            this._winnerPlayer = this._players[winnerIndex];
-        }
 
-        public GameHistory(Player player1, Player player2, Games gameType, Player winnerPlayer)
-        {
-            this._players = new Player[2];
-            this._players[0] = player1;
-            this._players[1] = player2;
-            this._gameType = gameType;
-            this._winnerPlayer = winnerPlayer;
         }
     }
 }

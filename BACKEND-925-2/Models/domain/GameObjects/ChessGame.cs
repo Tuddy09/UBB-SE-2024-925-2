@@ -14,7 +14,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         private GameState gameState;
         private int currentPlayer;
 
-        public ChessGame(Player player1, Player player2, ChessModes mode, int startPlayer)
+        public ChessGame(Player2PlayerGame player1, Player2PlayerGame player2, ChessModes mode, int startPlayer)
         {
             this.board = new ChessBoard([player1, player2], mode);
             this.currentPlayer = startPlayer;
@@ -33,7 +33,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         public GameState GameState { get => gameState; set => gameState = value; }
 
         [JsonIgnore]
-        public Player CurrentPlayer { get => this.gameState.Players[this.currentPlayer]; }
+        public Player2PlayerGame CurrentPlayer { get => this.gameState.Players[this.currentPlayer]; }
 
         [JsonIgnore]
         public IBoard Board { get => board; set => board = value; }

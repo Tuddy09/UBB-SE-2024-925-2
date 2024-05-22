@@ -6,7 +6,7 @@ namespace TwoPlayerGames
     {
         protected int xPosition;
         protected int yPosition;
-        protected Player player;
+        protected Player2PlayerGame player;
         protected bool movedFromInitialPosition;
         protected string pieceType;
 
@@ -22,7 +22,7 @@ namespace TwoPlayerGames
             set { yPosition = value; }
         }
 
-        public Player Player
+        public Player2PlayerGame Player
         {
             get => player;
             set => player = value;
@@ -36,7 +36,7 @@ namespace TwoPlayerGames
 
         public string PieceType { get => pieceType; }
 
-        public ChessPiece(int x, int y, Player player)
+        public ChessPiece(int x, int y, Player2PlayerGame player)
         {
             this.xPosition = x;
             this.yPosition = y;

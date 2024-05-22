@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TwoPlayerGames.Core;
 using TwoPlayerGames.Domain.Auxiliary;
-using TwoPlayerGames.Service;
 
 namespace TwoPlayerGames.Pages
 {
@@ -12,21 +14,25 @@ namespace TwoPlayerGames.Pages
     /// </summary>
     public partial class DartGameGUI : Page
     {
-        private IPlayService playService;
-        private InGameService inGameService;
 
         public DartGameGUI()
         {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5001/api/2PlayerGames/CreatePlayService/");
+                client.PostAsJsonAsync($"?playServiceType=OfflineGameService", Router.PlayService);
+            }
             InitializeComponent();
-            playService = Router.PlayService;
-            inGameService = Router.InGameService;
             Loaded += DartGameGUI_Loaded;
         }
 
         private void DartGameGUI_Loaded(object sender, RoutedEventArgs e)
         {
-            while (!playService.IsGameOver())
+            using (HttpClient client = new HttpClient())
             {
+                client.BaseAddress = new Uri("https://localhost:5070/");
+                while (client.GetAsync("api/2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "False")
+                { }
             }
         }
 
@@ -50,21 +56,29 @@ namespace TwoPlayerGames.Pages
 
         private void PopulatePlayersData()
         {
-            PlayerStats playerStats = inGameService.GetStats(Router.UserPlayer);
-            Player1Name.Text = playerStats.Player.Name;
-            Player1Rank.Text = playerStats.Rank;
-            Player1Trophies.Text = playerStats.Trophies.ToString();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                Player1Name.Text = playerStats.Player.Name;
+                Player1Rank.Text = playerStats.Rank;
+                Player1Trophies.Text = playerStats.Trophies.ToString();
 
-            playerStats = inGameService.GetStats(Router.OpponentPlayer);
-            Player2Name.Text = playerStats.Player.Name;
-            Player2Rank.Text = playerStats.Rank;
-            Player2Trophies.Text = playerStats.Trophies.ToString();
+                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                Player2Name.Text = playerStats.Player.Name;
+                Player2Rank.Text = playerStats.Rank;
+                Player2Trophies.Text = playerStats.Trophies.ToString();
+            }
 
         }
 
         private void SetCurrentTurn()
         {
-            CurrentPlayerTurn.Text = playService.GetTurn().ToString();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                CurrentPlayerTurn.Text = client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result;
+            }
         }
 
         private void Slider1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

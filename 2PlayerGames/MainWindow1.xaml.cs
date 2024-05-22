@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using TwoPlayerGames.Core;
-using TwoPlayerGames.Repository;
 
 namespace TwoPlayerGames
 {
@@ -21,7 +19,6 @@ namespace TwoPlayerGames
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             Router.UserPlayer = new Player(Guid.NewGuid(), "David", "0.0.0.0", 69);
-            PlayerRepository.AddPlayer(Router.UserPlayer);
             MainFrame.NavigationService.Navigate(Router.MenuPage);
         }
 

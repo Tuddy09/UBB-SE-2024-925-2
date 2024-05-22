@@ -2,21 +2,21 @@
 {
     public class PlayerSettings
     {
-        private Player player;
+        private Player2PlayerGame player;
         private string ip;
         private bool isSoundOn;
         private bool isMusicOn;
         private float soundVolume;
         private float musicVolume;
 
-        public Player Player { get => player; set => player = value; }
+        public Player2PlayerGame Player { get => player; set => player = value; }
         public bool IsSoundOn { get => isSoundOn; set => isSoundOn = value; }
         public bool IsMusicOn { get => isMusicOn; set => isMusicOn = value; }
         public float SoundVolume { get => soundVolume; set => soundVolume = value; }
         public float MusicVolume { get => musicVolume; set => musicVolume = value; }
         public string Ip { get => ip; set => ip = value; }
 
-        public PlayerSettings(Player player, string ip, bool isSoundOn, bool isMusicOn, float soundVolume, float musicVolume)
+        public PlayerSettings(Player2PlayerGame player, string ip, bool isSoundOn, bool isMusicOn, float soundVolume, float musicVolume)
         {
             this.player = player;
             this.ip = ip;
@@ -28,7 +28,7 @@
 
         public PlayerSettings()
         {
-            this.player = new Player();
+            this.player = new Player2PlayerGame();
             this.ip = string.Empty;
             this.isSoundOn = true;
             this.isMusicOn = true;

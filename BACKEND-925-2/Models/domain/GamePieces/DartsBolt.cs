@@ -6,7 +6,7 @@ namespace TwoPlayerGames
     {
         private int xPosition;
         private int yPosition;
-        private Player player;
+        private Player2PlayerGame player;
 
         [JsonProperty]
         public int XPosition
@@ -23,13 +23,13 @@ namespace TwoPlayerGames
         }
 
         [JsonProperty]
-        public Player Player
+        public Player2PlayerGame Player
         {
             get { return player; }
             set { player = value; }
         }
 
-        public DartsBolt(int xPosition, int yPosition, Player player)
+        public DartsBolt(int xPosition, int yPosition, Player2PlayerGame player)
         {
             this.xPosition = xPosition;
             this.yPosition = yPosition;

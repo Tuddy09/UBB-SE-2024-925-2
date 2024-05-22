@@ -3,7 +3,7 @@ using TwoPlayerGames;
 
 public class PawnPiece : ChessPiece
 {
-    public PawnPiece(int x, int y, Player player) : base(x, y, player)
+    public PawnPiece(int x, int y, Player2PlayerGame player) : base(x, y, player)
     {
         this.pieceType = "Pawn";
     }

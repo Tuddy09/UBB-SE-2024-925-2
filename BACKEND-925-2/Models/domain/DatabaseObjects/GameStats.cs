@@ -2,7 +2,7 @@
 {
     public class GameStats
     {
-        private Player player;
+        private Player2PlayerGame player;
         private Games game;
         private int eloRating;
         private int highestElo;
@@ -12,7 +12,7 @@
         private int totalPlayTime;
         private int totalNumberOfTurn;
 
-        public Player Player { get => player; set => this.player = value; }
+        public Player2PlayerGame Player { get => player; set => this.player = value; }
         public Games Game { get => game; set => this.game = value; }
         public int EloRating { get => eloRating; set => this.eloRating = value; }
         public int HighestElo { get => highestElo; set => this.highestElo = value; }
@@ -22,7 +22,12 @@
         public int TotalPlayTime { get => totalPlayTime; set => this.totalPlayTime = value; }
         public int TotalNumberOfTurn { get => totalNumberOfTurn; set => this.totalNumberOfTurn = value; }
 
-        public GameStats(Player player, Games game)
+
+        public GameStats()
+        {
+
+        }
+        public GameStats(Player2PlayerGame player, Games game)
         {
             this.player = player;
             this.game = game;
@@ -35,7 +40,7 @@
             this.totalNumberOfTurn = 0;
         }
 
-        public GameStats(Player player, Games game, int eloRating, int highestElo, int totalMathces, int totalWins, int totalDraws, int totalPlayTime, int totalNumberOfTurn)
+        public GameStats(Player2PlayerGame player, Games game, int eloRating, int highestElo, int totalMathces, int totalWins, int totalDraws, int totalPlayTime, int totalNumberOfTurn)
         {
             this.player = player;
             this.game = game;

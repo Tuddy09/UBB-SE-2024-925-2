@@ -46,7 +46,7 @@ namespace TwoPlayerGames
             IPiece piece = this.connect4Pieces.FirstOrDefault(piece => piece.XPosition == xPosition && piece.YPosition == yPosition);
             if (piece == null)
             {
-                return new Connect4Piece(xPosition, yPosition, Player.Null());
+                return new Connect4Piece(xPosition, yPosition, Player2PlayerGame.Null());
             }
 
             return piece;

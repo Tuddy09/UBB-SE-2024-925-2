@@ -4,7 +4,7 @@ namespace TwoPlayerGames
     {
         private int xPosition;
         private int yPosition;
-        private Player player;
+        private Player2PlayerGame player;
 
         public int XPosition
         {
@@ -18,13 +18,13 @@ namespace TwoPlayerGames
             set { yPosition = value; }
         }
 
-        public Player Player
+        public Player2PlayerGame Player
         {
             get => player;
             set => player = value;
         }
 
-        public Connect4Piece(int x, int y, Player player)
+        public Connect4Piece(int x, int y, Player2PlayerGame player)
         {
             this.xPosition = x;
             this.yPosition = y;

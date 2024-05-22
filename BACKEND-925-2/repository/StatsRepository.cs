@@ -31,7 +31,7 @@ namespace TwoPlayerGames.Repository
             }
         }
 
-        public bool UpdateStatsForPlayer(Player player, Games gameType, int newEloRating)
+        public bool UpdateStatsForPlayer(Player2PlayerGame player, Games gameType, int newEloRating)
         {
             try
             {
@@ -50,13 +50,13 @@ namespace TwoPlayerGames.Repository
             }
         }
 
-        public GameStats GetGameStatsForPlayer(Player player, Games gameType)
+        public GameStats GetGameStatsForPlayer(Player2PlayerGame player, Games gameType)
         {
             var gameStats = _context.GameStats.FirstOrDefault(gs => gs.Player == player && gs.Game == gameType);
             return gameStats ?? new GameStats(player, gameType);
         }
 
-        public List<GameHistory> GetGameHistoryForPlayer(Player player)
+        public List<GameHistory> GetGameHistoryForPlayer(Player2PlayerGame player)
         {
             var gameHistories = _context.GameHistories
                 .Where(gh => gh.Players[0] == player || gh.Players[1] == player)
@@ -73,7 +73,7 @@ namespace TwoPlayerGames.Repository
             return gameHistories;
         }
 
-        public PlayerStats GetProfileStatsForPlayer(Player player)
+        public PlayerStats GetProfileStatsForPlayer(Player2PlayerGame player)
         {
             var playerStatsQuery = (from gs in _context.GameStats
                                     where gs.Player == player

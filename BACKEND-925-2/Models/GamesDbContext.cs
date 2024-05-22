@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿    using Microsoft.EntityFrameworkCore;
 using TwoPlayerGames;
 using TwoPlayerGames.Domain.Auxiliary;
 using TwoPlayerGames.Domain.DatabaseObjects;
@@ -12,7 +12,7 @@ namespace BACKEND_925_2.Models
         {
         }
         public DbSet<GameState> GameStates { get; set; }
-        public DbSet<Player> Players { get; set; }
+        public DbSet<Player2PlayerGame> Players { get; set; }
         public DbSet<Games> Games { get; set; }
 
         public DbSet<GameStats> GameStats { get; set; }
@@ -21,5 +21,9 @@ namespace BACKEND_925_2.Models
 
         public DbSet<PlayerQueue> PlayerQueue { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GameHistory>().HasKey(g => new { g.Players, g.GameType });
+        }
     }
 }

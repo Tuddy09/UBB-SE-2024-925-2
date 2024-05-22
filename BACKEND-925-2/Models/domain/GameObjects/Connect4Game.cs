@@ -11,7 +11,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         private GameState gameState;
         private int currentPlayer;
 
-        public Connect4Game(Player player1, Player player2)
+        public Connect4Game(Player2PlayerGame player1, Player2PlayerGame player2)
         {
             this.board = new Connect4Board();
             this.currentPlayer = 0;
@@ -32,7 +32,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         public GameState GameState { get => gameState; set => gameState = value; }
 
         [JsonIgnore]
-        public Player CurrentPlayer => this.gameState.Players[this.currentPlayer];
+        public Player2PlayerGame CurrentPlayer => this.gameState.Players[this.currentPlayer];
 
         [JsonProperty]
         public Connect4Board JsonBoard { get => (Connect4Board)this.board; set => this.board = value; }

@@ -3,7 +3,7 @@ using System;
 namespace TwoPlayerGames
 {
     [Serializable]
-    public class Player
+    public class Player2PlayerGame
     {
         private Guid id;
         private string name;
@@ -15,7 +15,7 @@ namespace TwoPlayerGames
         public string? Ip { get => ip; set => ip = value; }
         public int? Port { get => port; set => port = value; }
 
-        public Player(string name, string? ip, int? port)
+        public Player2PlayerGame(string name, string? ip, int? port)
         {
             this.id = Guid.NewGuid();
             this.name = name;
@@ -23,7 +23,7 @@ namespace TwoPlayerGames
             this.port = port;
         }
 
-        public Player(Guid id, string name, string? ip, int? port)
+        public Player2PlayerGame(Guid id, string name, string? ip, int? port)
         {
             this.id = id;
             this.name = name;
@@ -31,7 +31,7 @@ namespace TwoPlayerGames
             this.port = port;
         }
 
-        public Player()
+        public Player2PlayerGame()
         {
             this.id = Guid.Empty;
             this.name = string.Empty;
@@ -49,14 +49,14 @@ namespace TwoPlayerGames
             throw new NotImplementedException();
         }
 
-        public static Player Null()
+        public static Player2PlayerGame Null()
         {
-            return new Player(Guid.Empty, "Null", "Null", 0);
+            return new Player2PlayerGame(Guid.Empty, "Null", "Null", 0);
         }
 
-        public static Player Bot()
+        public static Player2PlayerGame Bot()
         {
-            return new Player(Guid.Empty, "Bot", "Null", 0);
+            return new Player2PlayerGame(Guid.Empty, "Bot", "Null", 0);
         }
         public override bool Equals(object? obj)
         {
@@ -64,7 +64,7 @@ namespace TwoPlayerGames
             {
                 return false;
             }
-            Player p = (Player)obj;
+            Player2PlayerGame p = (Player2PlayerGame)obj;
             return this.id == p.Id;
         }
     }

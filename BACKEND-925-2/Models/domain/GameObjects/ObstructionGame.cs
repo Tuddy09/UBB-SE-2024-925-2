@@ -13,7 +13,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         private GameState gameState;
         private int currentPlayer;
 
-        public ObstructionGame(Player player1, Player player2, int width, int heigth)
+        public ObstructionGame(Player2PlayerGame player1, Player2PlayerGame player2, int width, int heigth)
         {
             this.board = new ObstructionBoard(width, heigth);
             this.currentPlayer = 0;
@@ -34,7 +34,7 @@ namespace TwoPlayerGames.Domain.GameObjects
         public GameState GameState { get => gameState; set => gameState = value; }
 
         [JsonIgnore]
-        public Player CurrentPlayer => this.gameState.Players[this.currentPlayer];
+        public Player2PlayerGame CurrentPlayer => this.gameState.Players[this.currentPlayer];
 
         [JsonProperty]
         public ObstructionBoard JsonBoard { get => (ObstructionBoard)this.board; set => this.board = value; }

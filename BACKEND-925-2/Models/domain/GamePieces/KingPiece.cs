@@ -4,7 +4,7 @@ namespace TwoPlayerGames
 {
     public class KingPiece : ChessPiece
     {
-        public KingPiece(int x, int y, Player player) : base(x, y, player)
+        public KingPiece(int x, int y, Player2PlayerGame player) : base(x, y, player)
         {
             this.pieceType = "King";
         }

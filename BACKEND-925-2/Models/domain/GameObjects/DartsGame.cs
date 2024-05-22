@@ -17,7 +17,7 @@ namespace TwoPlayerGames
         public GameState GameState { get => gameState; set => gameState = value; }
 
         [JsonIgnore]
-        public Player CurrentPlayer { get => this.gameState.Players[this.currentPlayer]; }
+        public Player2PlayerGame CurrentPlayer { get => this.gameState.Players[this.currentPlayer]; }
 
         [JsonIgnore]
         public IBoard Board { get => board; set => board = (DartsBoard)value; }
@@ -28,7 +28,7 @@ namespace TwoPlayerGames
         [JsonProperty]
         public int CurrentPlayerIndex { get => this.currentPlayer; }
 
-        public DartsGame(Player player1, Player player2)
+        public DartsGame(Player2PlayerGame player1, Player2PlayerGame player2)
         {
             this.board = new DartsBoard();
             this.currentPlayer = 0;

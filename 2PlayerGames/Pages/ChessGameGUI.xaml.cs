@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using _2PlayerGames.Core;
+using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,8 +13,6 @@ using System.Windows.Threading;
 using TwoPlayerGames.Core;
 using TwoPlayerGames.Domain.Auxiliary;
 using TwoPlayerGames.exceptions;
-using TwoPlayerGames.Repository;
-using TwoPlayerGames.Service;
 
 namespace TwoPlayerGames.Pages
 {
@@ -21,8 +21,6 @@ namespace TwoPlayerGames.Pages
     /// </summary>
     public partial class ChessGameGUI : Page
     {
-        private IPlayService playService;
-        private InGameService inGameService;
         private Grid chessBoard;
         private int initial_row = -1;
         private int initial_column = -1;
@@ -34,6 +32,11 @@ namespace TwoPlayerGames.Pages
         private BackgroundWorker worker = new BackgroundWorker();
         public ChessGameGUI()
         {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5001/api/2PlayerGames/CreatePlayService/");
+                client.PostAsJsonAsync($"?playServiceType=OfflineGameService", Router.PlayService);
+            }
             InitializeComponent();
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -45,71 +48,78 @@ namespace TwoPlayerGames.Pages
 
         private void Worker_DoWork(object? sender, DoWorkEventArgs e)
         {
-            while (true)
+            using (HttpClient client = new HttpClient())
             {
-                if (((OnlineGameService)playService).HasData())
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                while (true)
                 {
-                    this.Dispatcher.Invoke(() =>
+                    if (client.GetAsync("2PlayerGames/HasData").Result.Content.ReadAsStringAsync().Result == "True")
                     {
-                        chessBoard.IsEnabled = false;
-                    });
-                    playService.PlayOther();
-                    SetCurrentTurn();
-                    ((OnlineGameService)playService).SetFirstTurn();
-                    this.Dispatcher.Invoke(() => { UpdateBoard(); });
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        chessBoard.IsEnabled = true;
-                    });
-                    if (playService.IsGameOver())
-                    {
-                        Guid? winner = playService.GetWinner();
-                        if (winner == Guid.Empty)
+                        this.Dispatcher.Invoke(() =>
                         {
-                            this.Dispatcher.Invoke(() =>
-                            {
-                                MessageBox.Show("It's a draw!");
-                            });
-                        }
-                        else
+                            chessBoard.IsEnabled = false;
+                        });
+                        client.GetAsync("2PlayerGames/PlayOther");
+                        SetCurrentTurn();
+                        client.GetAsync("2PlayerGames/SetFirstTurn");
+                        this.Dispatcher.Invoke(() => { UpdateBoard(); });
+                        this.Dispatcher.Invoke(() =>
                         {
-                            if (playService.GetWinner() == Router.UserPlayer.Id)
+                            chessBoard.IsEnabled = true;
+                        });
+                        if (client.GetAsync(client.BaseAddress + "2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
+                        {
+                            Guid? winner = Guid.Parse(client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString());
+                            if (winner == Guid.Empty)
                             {
                                 this.Dispatcher.Invoke(() =>
                                 {
-                                    MessageBox.Show("You Win!");
+                                    MessageBox.Show("It's a draw!");
                                 });
                             }
                             else
                             {
-                                this.Dispatcher.Invoke(() =>
+                                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
                                 {
-                                    MessageBox.Show("You Lost!");
-                                });
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        MessageBox.Show("You Win!");
+                                    });
+                                }
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        MessageBox.Show("You Lost!");
+                                    });
+                                }
                             }
+                            this.Dispatcher.Invoke(() =>
+                            {
+                                this.NavigationService.Navigate(Router.MenuPage);
+                            });
+                            return;
                         }
-                        this.Dispatcher.Invoke(() =>
-                        {
-                            this.NavigationService.Navigate(Router.MenuPage);
-                        });
-                        return;
+                        break;
                     }
-                    break;
                 }
+                return;
             }
-            return;
         }
 
         private void ChessGameGUI_Loaded(object sender, RoutedEventArgs e)
         {
-            playService = Router.PlayService;
-            inGameService = Router.InGameService;
             InitializeBoard();
             UpdateBoard();
-            if (playService.GetTurn() != Router.UserPlayer.Id && Router.OnlineGame)
+            using (HttpClient client = new HttpClient())
             {
-                worker.RunWorkerAsync();
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result != Router.UserPlayer.Id.ToString() && Router.OnlineGame)
+                {
+                    worker.RunWorkerAsync();
+                }
             }
+
             SetCurrentTurn();
             // populatePlayersData();
             // StartTimer();
@@ -135,27 +145,36 @@ namespace TwoPlayerGames.Pages
 
         private void PopulatePlayersData()
         {
-            PlayerStats playerStats = inGameService.GetStats(Router.UserPlayer);
-            Player1Name.Text = playerStats.Player.Name;
-            Player1Rank.Text = playerStats.Rank;
-            Player1Trophies.Text = playerStats.Trophies.ToString();
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                PlayerStats playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                Player1Name.Text = playerStats.Player.Name;
+                Player1Rank.Text = playerStats.Rank;
+                Player1Trophies.Text = playerStats.Trophies.ToString();
 
-            playerStats = inGameService.GetStats(Router.OpponentPlayer);
-            Player2Name.Text = playerStats.Player.Name;
-            Player2Rank.Text = playerStats.Rank;
-            Player2Trophies.Text = playerStats.Trophies.ToString();
+                playerStats = JsonConvert.DeserializeObject<PlayerStats>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetStats").Result.Content.ReadAsStringAsync().Result);
+                Player2Name.Text = playerStats.Player.Name;
+                Player2Rank.Text = playerStats.Rank;
+                Player2Trophies.Text = playerStats.Trophies.ToString();
+            }
         }
 
         private void SetCurrentTurn()
         {
-            if (playService.GetTurn() == Router.UserPlayer.Id)
+            using (HttpClient client = new HttpClient())
             {
-                this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.UserPlayer.Name + "'s turn"; });
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetTurn").Result.Content.ReadAsStringAsync().Result == Router.UserPlayer.Id.ToString())
+                {
+                    this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.UserPlayer.Name + "'s turn"; });
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.OpponentPlayer.Name + "'s turn"; });
+                }
             }
-            else
-            {
-                this.Dispatcher.Invoke(() => { CurrentPlayerTurn.Text = Router.OpponentPlayer.Name + "'s turn"; });
-            }
+
         }
         private void InitializeBoard()
         {
@@ -227,28 +246,32 @@ namespace TwoPlayerGames.Pages
                 initial_row = -1;
                 try
                 {
-                    playService.Play(1, arg);
-                    UpdateBoard();
-                    if (playService.IsGameOver())
+                    using (HttpClient client = new HttpClient())
                     {
-                        Guid? winner = playService.GetWinner();
-                        if (winner == null)
+                        client.BaseAddress = new Uri("https://localhost:5070/api/");
+                        client.PostAsync(client.BaseAddress + "2PlayerGames/Play", new StringContent(JsonConvert.SerializeObject(arg), System.Text.Encoding.UTF8, "application/json"));
+                        UpdateBoard();
+                        if (client.GetAsync(client.BaseAddress + "2PlayerGames/IsGameOver").Result.Content.ReadAsStringAsync().Result == "True")
                         {
-                            MessageBox.Show("It's a draw!");
-                        }
-                        else
-                        {
-                            if (playService.GetWinner() == Router.UserPlayer.Id)
+                            Guid? winner = Guid.Parse(client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString());
+                            if (winner == null)
                             {
-                                MessageBox.Show("You won!");
+                                MessageBox.Show("It's a draw!");
                             }
                             else
                             {
-                                MessageBox.Show("You lost!");
+                                if (client.GetAsync(client.BaseAddress + "2PlayerGames/GetWinner").Result.Content.ToString() == Router.UserPlayer.Id.ToString())
+                                {
+                                    MessageBox.Show("You won!");
+                                }
+                                else
+                                {
+                                    MessageBox.Show("You lost!");
+                                }
                             }
+                            this.NavigationService.Navigate(Router.MenuPage);
+                            return;
                         }
-                        this.NavigationService.Navigate(Router.MenuPage);
-                        return;
                     }
                     SetCurrentTurn();
                     if (Router.OnlineGame)
@@ -275,15 +298,19 @@ namespace TwoPlayerGames.Pages
 
         private void UpdateBoard()
         {
-            chessBoard.Children.Clear();
-            InitializeBoard();
-            List<IPiece> pieces = playService.GetBoard();
-            foreach (IPiece piece in pieces)
+            using (HttpClient client = new HttpClient())
             {
-                string color = piece.Player.Id == playService.StartPlayer() ? "white" : "black";
-                AddPiece(piece.YPosition, piece.XPosition, ((IChessPiece)piece).GetPieceType(), color);
+                client.BaseAddress = new Uri("https://localhost:5070/api/");
+                chessBoard.Children.Clear();
+                InitializeBoard();
+                List<IPiece> pieces = JsonConvert.DeserializeObject<List<IPiece>>(client.GetAsync(client.BaseAddress + "2PlayerGames/GetBoard").Result.Content.ReadAsStringAsync().Result);
+                foreach (IPiece piece in pieces)
+                {
+                    string color = piece.Player.Id.ToString() == client.GetAsync(client.BaseAddress + "2PlayerGames/StartPlayer").Result.Content.ToString() ? "white" : "black";
+                    AddPiece(piece.YPosition, piece.XPosition, ((IChessPiece)piece).GetPieceType(), color);
+                }
             }
-        }
+    }
 
         private void AddPiece(int row, int column, string pieceType, string color)
         {

@@ -4,6 +4,6 @@ namespace TwoPlayerGames
     {
         int XPosition { get; set; }
         int YPosition { get; set; }
-        Player? Player { get; set; }
+        Player2PlayerGame? Player { get; set; }
     }
 }

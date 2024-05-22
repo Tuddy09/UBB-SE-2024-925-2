@@ -38,7 +38,7 @@ namespace TwoPlayerGames
 
         public int[] Timers { get => timers; set => timers = value; }
 
-        public ChessBoard(Player[] players, ChessModes mode)
+        public ChessBoard(Player2PlayerGame[] players, ChessModes mode)
         {
             this.chessPieces = ChessBoard.InitializeBoard(players);
             this.boardWidth = 8;
@@ -69,7 +69,7 @@ namespace TwoPlayerGames
             this.timers = new int[2];
         }
 
-        private static List<IPiece> InitializeBoard(Player[] players)
+        private static List<IPiece> InitializeBoard(Player2PlayerGame[] players)
         {
             List<IPiece> chessPieces = new List<IPiece>();
             chessPieces.Add(new RookPiece(0, 0, players[0]));

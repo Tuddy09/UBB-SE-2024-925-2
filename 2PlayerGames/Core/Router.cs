@@ -1,5 +1,5 @@
-﻿using TwoPlayerGames.Pages;
-using TwoPlayerGames.Service;
+﻿using _2PlayerGames.Core;
+using TwoPlayerGames.Pages;
 
 namespace TwoPlayerGames.Core
 {

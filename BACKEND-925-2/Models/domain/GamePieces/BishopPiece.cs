@@ -3,7 +3,7 @@ using TwoPlayerGames;
 
 public class BishopPiece : ChessPiece
 {
-    public BishopPiece(int x, int y, Player player) : base(x, y, player)
+    public BishopPiece(int x, int y, Player2PlayerGame player) : base(x, y, player)
     {
         this.pieceType = "Bishop";
     }

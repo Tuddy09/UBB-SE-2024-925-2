@@ -3,7 +3,7 @@ using TwoPlayerGames;
 
 public class QueenPiece : ChessPiece
 {
-    public QueenPiece(int x, int y, Player player) : base(x, y, player)
+    public QueenPiece(int x, int y, Player2PlayerGame player) : base(x, y, player)
     {
         this.pieceType = "Queen";
     }
