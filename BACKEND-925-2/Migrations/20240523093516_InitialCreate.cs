@@ -6,43 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BACKEND_925_2.Migrations
 {
     /// <inheritdoc />
-    public partial class SecondCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
-                name: "Port",
-                table: "Players",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Ip",
-                table: "Players",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "GameStateId",
-                table: "Players",
-                type: "uniqueidentifier",
-                nullable: true);
-
-            migrationBuilder.AddColumn<Guid>(
-                name: "GameStateId1",
-                table: "Players",
-                type: "uniqueidentifier",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
@@ -61,14 +29,9 @@ namespace BACKEND_925_2.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    gameTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    winnerPlayerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    stateJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    turn = table.Column<int>(type: "int", nullable: false),
-                    timePlayed = table.Column<int>(type: "int", nullable: false),
                     GameTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StateJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     WinnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StateJson = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Turn = table.Column<int>(type: "int", nullable: false),
                     TimePlayed = table.Column<int>(type: "int", nullable: false)
                 },
@@ -81,21 +44,25 @@ namespace BACKEND_925_2.Migrations
                         principalTable: "Games",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Players",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ip = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Port = table.Column<int>(type: "int", nullable: false),
+                    GameStateId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Players", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GameStates_Games_gameTypeId",
-                        column: x => x.gameTypeId,
-                        principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GameStates_Players_WinnerId",
-                        column: x => x.WinnerId,
-                        principalTable: "Players",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GameStates_Players_winnerPlayerId",
-                        column: x => x.winnerPlayerId,
-                        principalTable: "Players",
+                        name: "FK_Players_GameStates_GameStateId",
+                        column: x => x.GameStateId,
+                        principalTable: "GameStates",
                         principalColumn: "Id");
                 });
 
@@ -159,21 +126,6 @@ namespace BACKEND_925_2.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_GameStateId",
-                table: "Players",
-                column: "GameStateId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Players_GameStateId1",
-                table: "Players",
-                column: "GameStateId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GameStates_gameTypeId",
-                table: "GameStates",
-                column: "gameTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GameStates_GameTypeId",
                 table: "GameStates",
                 column: "GameTypeId");
@@ -182,11 +134,6 @@ namespace BACKEND_925_2.Migrations
                 name: "IX_GameStates_WinnerId",
                 table: "GameStates",
                 column: "WinnerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GameStates_winnerPlayerId",
-                table: "GameStates",
-                column: "winnerPlayerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GameStats_GameId",
@@ -198,18 +145,16 @@ namespace BACKEND_925_2.Migrations
                 table: "PlayerQueue",
                 column: "GameId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Players_GameStates_GameStateId",
+            migrationBuilder.CreateIndex(
+                name: "IX_Players_GameStateId",
                 table: "Players",
-                column: "GameStateId",
-                principalTable: "GameStates",
-                principalColumn: "Id");
+                column: "GameStateId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Players_GameStates_GameStateId1",
-                table: "Players",
-                column: "GameStateId1",
-                principalTable: "GameStates",
+                name: "FK_GameStates_Players_WinnerId",
+                table: "GameStates",
+                column: "WinnerId",
+                principalTable: "Players",
                 principalColumn: "Id");
         }
 
@@ -217,15 +162,12 @@ namespace BACKEND_925_2.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Players_GameStates_GameStateId",
-                table: "Players");
+                name: "FK_GameStates_Games_GameTypeId",
+                table: "GameStates");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Players_GameStates_GameStateId1",
-                table: "Players");
-
-            migrationBuilder.DropTable(
-                name: "GameStates");
+                name: "FK_GameStates_Players_WinnerId",
+                table: "GameStates");
 
             migrationBuilder.DropTable(
                 name: "GameStats");
@@ -236,37 +178,11 @@ namespace BACKEND_925_2.Migrations
             migrationBuilder.DropTable(
                 name: "Games");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Players_GameStateId",
-                table: "Players");
+            migrationBuilder.DropTable(
+                name: "Players");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Players_GameStateId1",
-                table: "Players");
-
-            migrationBuilder.DropColumn(
-                name: "GameStateId",
-                table: "Players");
-
-            migrationBuilder.DropColumn(
-                name: "GameStateId1",
-                table: "Players");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "Port",
-                table: "Players",
-                type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Ip",
-                table: "Players",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.DropTable(
+                name: "GameStates");
         }
     }
 }

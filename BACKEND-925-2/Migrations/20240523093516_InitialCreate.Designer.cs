@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BACKEND_925_2.Migrations
 {
     [DbContext(typeof(GamesDbContext))]
-    [Migration("20240522162727_SecondCreate")]
-    partial class SecondCreate
+    [Migration("20240523093516_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,31 +110,11 @@ namespace BACKEND_925_2.Migrations
                     b.Property<Guid?>("WinnerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("gameTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("stateJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("timePlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("turn")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("winnerPlayerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GameTypeId");
 
                     b.HasIndex("WinnerId");
-
-                    b.HasIndex("gameTypeId");
-
-                    b.HasIndex("winnerPlayerId");
 
                     b.ToTable("GameStates");
                 });
@@ -167,9 +147,6 @@ namespace BACKEND_925_2.Migrations
                     b.Property<Guid?>("GameStateId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("GameStateId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Ip")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -184,8 +161,6 @@ namespace BACKEND_925_2.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GameStateId");
-
-                    b.HasIndex("GameStateId1");
 
                     b.ToTable("Players");
                 });
@@ -240,23 +215,9 @@ namespace BACKEND_925_2.Migrations
                         .WithMany()
                         .HasForeignKey("WinnerId");
 
-                    b.HasOne("TwoPlayerGames.Games", "gameType")
-                        .WithMany()
-                        .HasForeignKey("gameTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TwoPlayerGames.Player2PlayerGame", "winnerPlayer")
-                        .WithMany()
-                        .HasForeignKey("winnerPlayerId");
-
                     b.Navigation("GameType");
 
                     b.Navigation("Winner");
-
-                    b.Navigation("gameType");
-
-                    b.Navigation("winnerPlayer");
                 });
 
             modelBuilder.Entity("TwoPlayerGames.Player2PlayerGame", b =>
@@ -264,17 +225,11 @@ namespace BACKEND_925_2.Migrations
                     b.HasOne("TwoPlayerGames.GameState", null)
                         .WithMany("Players")
                         .HasForeignKey("GameStateId");
-
-                    b.HasOne("TwoPlayerGames.GameState", null)
-                        .WithMany("players")
-                        .HasForeignKey("GameStateId1");
                 });
 
             modelBuilder.Entity("TwoPlayerGames.GameState", b =>
                 {
                     b.Navigation("Players");
-
-                    b.Navigation("players");
                 });
 
             modelBuilder.Entity("TwoPlayerGames.Games", b =>
