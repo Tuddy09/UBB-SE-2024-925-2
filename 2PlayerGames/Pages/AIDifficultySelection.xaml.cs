@@ -26,19 +26,19 @@ namespace TwoPlayerGames.Pages
         private void EasyMode_Click(object sender, RoutedEventArgs e)
         {
             Router.AiDifficulty = "easy";
-            NavigationService.Navigate(Router.LoadingPage);
+            //NavigationService.Navigate(Router.LoadingPage);
         }
 
         private void MediumMode_Click(object sender, RoutedEventArgs e)
         {
             Router.AiDifficulty = "medium";
-            NavigationService.Navigate(Router.LoadingPage);
+            //NavigationService.Navigate(Router.LoadingPage);
         }
 
         private void HardMode_Click(object sender, RoutedEventArgs e)
         {
             Router.AiDifficulty = "hard";
-            NavigationService.Navigate(Router.LoadingPage);
+            //NavigationService.Navigate(Router.LoadingPage);
         }
         private void Page_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

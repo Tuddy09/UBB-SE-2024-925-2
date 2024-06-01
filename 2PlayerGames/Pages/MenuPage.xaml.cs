@@ -16,7 +16,7 @@ namespace TwoPlayerGames
 
         public void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(Router.ProfilePage);
+            // this.NavigationService.Navigate(Router.ProfilePage);
         }
 
         private void ChessButton_Click(object sender, RoutedEventArgs e)

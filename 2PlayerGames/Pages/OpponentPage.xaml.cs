@@ -17,7 +17,7 @@ namespace TwoPlayerGames.Pages
         private void HumanButton_Click(object sender, RoutedEventArgs e)
         {
             Router.OnlineGame = true;
-            this.NavigationService.Navigate(Router.LoadingPage);
+            // this.NavigationService.Navigate(Router.LoadingPage);
         }
 
         private void RobotButton_Click(object sender, RoutedEventArgs e)
@@ -28,7 +28,7 @@ namespace TwoPlayerGames.Pages
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.GoBack();
+            this.NavigationService.Navigate(Router.MenuPage);
         }
     }
 }
